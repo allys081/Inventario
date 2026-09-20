@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Reposición y Compras</title>
+  <title>Reposición & Compras</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
       --border: #e2e8f0;
       --text: #0f172a;
       --text-muted: #64748b;
-      --pink: #ec4899;
+      --pink: #f472b6;
       --accent: #f1f5f9;
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -26,13 +26,18 @@
       padding: 16px 12px 60px;
     }
     .container { max-width: 800px; margin: 0 auto; }
+    
     .top-bar {
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
+      justify-content: center;
+      margin-bottom: 20px;
+      min-height: 40px;
     }
     .btn-back {
+      position: absolute;
+      left: 0;
       text-decoration: none;
       font-size: 0.85rem;
       font-weight: 700;
@@ -41,7 +46,14 @@
       align-items: center;
       gap: 4px;
     }
-    h1 { font-size: 1.35rem; font-weight: 700; margin: 0; }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+      text-align: center;
+      color: var(--text);
+    }
+
     .search-box {
       position: sticky;
       top: 10px;
@@ -119,14 +131,30 @@
       align-items: center;
       gap: 8px;
     }
-    .item-name { font-weight: 600; font-size: 0.9rem; }
+    .item-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+    .badge-categoria {
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+    }
     .item-meta {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .meta-line {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
+      align-items: center;
     }
     .badge-price {
       background: #dcfce7;
@@ -135,6 +163,26 @@
       border-radius: 4px;
       font-weight: 600;
       font-size: 0.7rem;
+    }
+    .badge-repuesto-si {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+    .badge-repuesto-no {
+      background: #fff1f2;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      display: inline-block;
     }
     .btn-icon {
       background: none; border: none; cursor: pointer; padding: 4px 6px; font-size: 0.85rem;
@@ -149,16 +197,17 @@
     }
     .modal-overlay.active { display: grid; }
     .modal {
-      background: #fff; border-radius: 14px; width: 100%; max-width: 380px; padding: 18px;
+      background: #fff; border-radius: 14px; width: 100%; max-width: 400px; padding: 18px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
     .modal h3 { margin: 0 0 12px; font-size: 1.05rem; }
     .form-group { margin-bottom: 10px; }
     .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
-    .form-input {
+    .form-input, .form-select {
       width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
-      font-size: 0.88rem; font-family: inherit; outline: none;
+      font-size: 0.88rem; font-family: inherit; outline: none; background: #fff;
     }
+    .form-input:focus, .form-select:focus { border-color: var(--pink); }
     .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
   </style>
 </head>
@@ -167,17 +216,17 @@
   <div class="container">
     <div class="top-bar">
       <a href="index.html" class="btn-back">←</a>
-      <h1>🛍️ Reposición y Compras</h1>
+      <h1>Reposición & Compras</h1>
     </div>
 
     <div class="search-box">
       <span>🔍</span>
-      <input type="text" id="busqueda" class="search-input" placeholder="Buscar producto (ej: crema, bloqueador)...">
+      <input type="text" id="busqueda" class="search-input" placeholder="Buscar producto">
       <button id="btn-limpiar" class="btn-clear">✕</button>
     </div>
 
     <div class="actions-row">
-      <button class="btn btn-pink" onclick="abrirModalCat()">+ Nueva Categoría (ej: Skincare)</button>
+      <button class="btn btn-pink" onclick="abrirModalCat()">+ Nueva Categoría</button>
       <div style="display: flex; gap: 6px;">
         <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
         <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
@@ -214,24 +263,49 @@
       <h3 id="modal-item-titulo">Registrar Producto</h3>
       <div class="form-group">
         <label class="form-label">Nombre del Producto</label>
-        <input type="text" id="p-nombre" class="form-input" placeholder="Ej: Crema hidratante facial">
+        <input type="text" id="p-nombre" class="form-input" placeholder="Ej: Jabon Dove, Crema facial">
       </div>
+
       <div class="form-group">
-        <label class="form-label">¿Cuánto me queda?</label>
-        <input type="text" id="p-queda" class="form-input" placeholder="Ej: 1 cuarto de frasco, casi nada">
+        <label class="form-label">¿Tienes repuesto de este producto?</label>
+        <select id="p-tiene-repuesto" class="form-select" onchange="cambiarVistaFormulario()">
+          <option value="si">Sí, ya tengo un repuesto guardado</option>
+          <option value="no">No tengo repuesto (tengo que comprar)</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">¿Cuándo comprarlo?</label>
-        <input type="text" id="p-cuando" class="form-input" placeholder="Ej: Esta semana, Fin de mes">
+
+      <!-- CASO A: TIENE REPUESTO -->
+      <div id="bloque-lugar-repuesto">
+        <div class="form-group">
+          <label class="form-label">¿Dónde está guardado el repuesto?</label>
+          <input type="text" id="p-lugar-repuesto" class="form-input" placeholder="Ej: Caja con cordel, Cajón del medio">
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Cuánto repuesto hay guardado?</label>
+          <input type="text" id="p-cantidad-repuesto" class="form-input" placeholder="Ej: 1 caja sellada, 3 bolsas">
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Precio estimado ($)</label>
-        <input type="text" id="p-precio" class="form-input" placeholder="Ej: 9.990">
+
+      <!-- CASO B: NO TIENE REPUESTO -->
+      <div id="bloque-datos-compra" style="display: none;">
+        <div class="form-group">
+          <label class="form-label">¿Cuánto te queda actualmente?</label>
+          <input type="text" id="p-queda" class="form-input" placeholder="Ej: casi nada, último concho">
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Cuándo comprarlo?</label>
+          <input type="text" id="p-cuando" class="form-input" placeholder="Ej: fin de mes, esta semana">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Precio estimado ($)</label>
+          <input type="text" id="p-precio" class="form-input" placeholder="Ej: 4.000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Dónde comprarlo?</label>
+          <input type="text" id="p-donde" class="form-input" placeholder="Ej: DBS, Cruz Verde">
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">¿Dónde comprarlo?</label>
-        <input type="text" id="p-donde" class="form-input" placeholder="Ej: Cruz Verde, DBS, Líder">
-      </div>
+
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
         <button class="btn btn-pink" id="btn-guardar-item">Guardar</button>
@@ -250,6 +324,12 @@
       renderizar();
     }
 
+    function cambiarVistaFormulario() {
+      const tieneRep = document.getElementById('p-tiene-repuesto').value === 'si';
+      document.getElementById('bloque-lugar-repuesto').style.display = tieneRep ? 'block' : 'none';
+      document.getElementById('bloque-datos-compra').style.display = tieneRep ? 'none' : 'block';
+    }
+
     function renderizar() {
       const cont = document.getElementById('contenedor-compras');
       cont.innerHTML = '';
@@ -266,15 +346,28 @@
         let itemsHTML = '';
         if (cant > 0) {
           cat.items.forEach(it => {
+            const tieneRep = it.tieneRepuesto === 'si';
+            const cantRep = it.cantidadRepuesto || (tieneRep ? it.queda : '');
+
             itemsHTML += `
               <div class="item-row">
                 <div style="flex:1;">
                   <div class="item-name">${it.nombre}</div>
                   <div class="item-meta">
-                    ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
-                    ${it.cuando ? `<span>Comprar: <b>${it.cuando}</b></span>` : ''}
-                    ${it.donde ? `<span>En: <b>${it.donde}</b></span>` : ''}
-                    ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
+                    ${tieneRep 
+                      ? `<div class="meta-line">
+                           <span class="badge-repuesto-si">Repuesto en: <b>${it.lugarRepuesto || 'Guardado'}</b></span>
+                         </div>
+                         ${cantRep ? `<div class="meta-line" style="color:#047857;">Hay de repuesto: <b>${cantRep}</b></div>` : ''}`
+                      : `<div class="meta-line">
+                           <span class="badge-repuesto-no">Falta comprar</span>
+                           ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
+                         </div>
+                         <div class="meta-line">
+                           ${it.cuando ? `<span>Comprar: <b>${it.cuando}</b></span>` : ''}
+                           ${it.donde ? `<span>En: <b>${it.donde}</b></span>` : ''}
+                           ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
+                         </div>`}
                   </div>
                 </div>
                 <div>
@@ -284,13 +377,13 @@
               </div>`;
           });
         } else {
-          itemsHTML = `<div style="font-size:0.78rem;color:var(--text-muted);font-style:italic;padding:4px 0;">Sin productos por reponer.</div>`;
+          itemsHTML = `<div style="font-size:0.78rem;color:var(--text-muted);font-style:italic;padding:4px 0;">Sin productos registrados.</div>`;
         }
 
         div.innerHTML = `
           <div class="group-header" onclick="toggleColapso('${cat.id}')">
             <div class="group-title-box">
-              <span class="group-title">🛍️ ${cat.nombre}</span>
+              <span class="group-title">${cat.nombre}</span>
               <span class="group-count">${cant}</span>
             </div>
             <div onclick="event.stopPropagation()">
@@ -344,34 +437,50 @@
       activoId = catId; itemActivoId = null;
       document.getElementById('modal-item-titulo').textContent = 'Registrar Producto';
       document.getElementById('p-nombre').value = '';
+      document.getElementById('p-tiene-repuesto').value = 'si';
+      document.getElementById('p-lugar-repuesto').value = '';
+      document.getElementById('p-cantidad-repuesto').value = '';
       document.getElementById('p-queda').value = '';
       document.getElementById('p-cuando').value = '';
       document.getElementById('p-precio').value = '';
       document.getElementById('p-donde').value = '';
+      cambiarVistaFormulario();
       document.getElementById('modal-item').classList.add('active');
     }
+
     function editarItem(catId, itemId) {
       activoId = catId; itemActivoId = itemId;
       const it = db.find(x => x.id === catId).items.find(x => x.id === itemId);
       document.getElementById('modal-item-titulo').textContent = 'Editar Producto';
       document.getElementById('p-nombre').value = it.nombre;
-      document.getElementById('p-queda').value = it.queda || '';
+      document.getElementById('p-tiene-repuesto').value = it.tieneRepuesto || 'si';
+      document.getElementById('p-lugar-repuesto').value = it.lugarRepuesto || '';
+      document.getElementById('p-cantidad-repuesto').value = it.cantidadRepuesto || (it.tieneRepuesto === 'si' ? (it.queda || '') : '');
+      document.getElementById('p-queda').value = it.tieneRepuesto === 'no' ? (it.queda || '') : '';
       document.getElementById('p-cuando').value = it.cuando || '';
       document.getElementById('p-precio').value = it.precio || '';
       document.getElementById('p-donde').value = it.donde || '';
+      cambiarVistaFormulario();
       document.getElementById('modal-item').classList.add('active');
     }
+
     document.getElementById('btn-guardar-item').onclick = () => {
       const nom = document.getElementById('p-nombre').value.trim();
-      if (!nom) return;
+      if (!nom) return alert('Ingresa el nombre del producto');
       const cat = db.find(x => x.id === activoId);
+      const tieneRep = document.getElementById('p-tiene-repuesto').value;
+
       const datos = {
         nombre: nom,
-        queda: document.getElementById('p-queda').value.trim(),
-        cuando: document.getElementById('p-cuando').value.trim(),
-        precio: document.getElementById('p-precio').value.trim(),
-        donde: document.getElementById('p-donde').value.trim()
+        tieneRepuesto: tieneRep,
+        lugarRepuesto: tieneRep === 'si' ? document.getElementById('p-lugar-repuesto').value.trim() : '',
+        cantidadRepuesto: tieneRep === 'si' ? document.getElementById('p-cantidad-repuesto').value.trim() : '',
+        queda: tieneRep === 'no' ? document.getElementById('p-queda').value.trim() : '',
+        cuando: tieneRep === 'no' ? document.getElementById('p-cuando').value.trim() : '',
+        precio: tieneRep === 'no' ? document.getElementById('p-precio').value.trim() : '',
+        donde: tieneRep === 'no' ? document.getElementById('p-donde').value.trim() : ''
       };
+
       if (itemActivoId) {
         const it = cat.items.find(x => x.id === itemActivoId);
         Object.assign(it, datos);
@@ -384,15 +493,16 @@
         document.getElementById('busqueda').dispatchEvent(new Event('input'));
       }
     };
+
     function eliminarItem(catId, itemId) {
-      if (confirm('¿Eliminar producto?')) {
+      if (confirm('¿Eliminar este producto?')) {
         const cat = db.find(x => x.id === catId);
         cat.items = cat.items.filter(x => x.id !== itemId);
         guardar();
       }
     }
 
-    // Buscador
+    // Buscador interactivo
     const inBusq = document.getElementById('busqueda');
     const boxRes = document.getElementById('search-box-results');
     const resIt = document.getElementById('search-items');
@@ -406,17 +516,36 @@
       let match = 0;
       db.forEach(c => {
         (c.items || []).forEach(it => {
-          if (it.nombre.toLowerCase().includes(q) || (it.donde && it.donde.toLowerCase().includes(q))) {
+          const nom = it.nombre.toLowerCase();
+          const donde = (it.donde || '').toLowerCase();
+          const repLugar = (it.lugarRepuesto || '').toLowerCase();
+          if (nom.includes(q) || donde.includes(q) || repLugar.includes(q)) {
             match++;
+            const tieneRep = it.tieneRepuesto === 'si';
+            const cantRep = it.cantidadRepuesto || (tieneRep ? it.queda : '');
+
             resIt.innerHTML += `
-              <div class="item-row" style="background:#fdf2f8; border-color:#fbcfe8; margin-bottom:6px;">
+              <div class="item-row" style="background:var(--accent); border-color:var(--border); margin-bottom:6px;">
                 <div style="flex:1;">
-                  <div class="item-name" style="color:#9d174d;">${it.nombre}</div>
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                    <span class="item-name" style="margin-bottom:0;">${it.nombre}</span>
+                    <span class="badge-categoria">${c.nombre}</span>
+                  </div>
                   <div class="item-meta">
-                    <span style="background:#fce7f3;color:#be185d;padding:2px 6px;border-radius:4px;font-weight:600;">🛍️ ${c.nombre}</span>
-                    ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
-                    ${it.donde ? `<span>Comprar en: <b>${it.donde}</b></span>` : ''}
-                    ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
+                    ${tieneRep 
+                      ? `<div class="meta-line">
+                           <span class="badge-repuesto-si">Repuesto en: <b>${it.lugarRepuesto || 'Guardado'}</b></span>
+                         </div>
+                         ${cantRep ? `<div class="meta-line" style="color:#047857;">Hay de repuesto: <b>${cantRep}</b></div>` : ''}`
+                      : `<div class="meta-line">
+                           <span class="badge-repuesto-no">Falta comprar</span>
+                           ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
+                         </div>
+                         <div class="meta-line">
+                           ${it.cuando ? `<span>Comprar: <b>${it.cuando}</b></span>` : ''}
+                           ${it.donde ? `<span>En: <b>${it.donde}</b></span>` : ''}
+                           ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
+                         </div>`}
                   </div>
                 </div>
               </div>`;
@@ -433,7 +562,7 @@
       activoId = null; itemActivoId = null;
     }
 
-    // Respaldo
+    // Respaldos
     document.getElementById('btn-exportar').onclick = () => {
       const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
