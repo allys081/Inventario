@@ -191,14 +191,30 @@
     .search-results-box { margin-bottom: 20px; display: none; }
     .search-title { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 
+    /* Modal adaptado a pantallas táctiles con teclado */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
-      display: none; place-items: center; z-index: 50; padding: 16px;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      z-index: 50;
+      padding: 16px;
+      overflow-y: auto;
+      align-items: flex-start;
+      justify-content: center;
     }
-    .modal-overlay.active { display: grid; }
+    .modal-overlay.active { display: flex; }
     .modal {
-      background: #fff; border-radius: 14px; width: 100%; max-width: 400px; padding: 18px;
+      background: #fff;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 400px;
+      padding: 18px;
+      margin: auto 0;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-height: calc(100dvh - 32px);
+      overflow-y: auto;
     }
     .modal h3 { margin: 0 0 12px; font-size: 1.05rem; }
     .form-group { margin-bottom: 10px; }
@@ -340,6 +356,7 @@
       db.forEach(cat => {
         const div = document.createElement('div');
         div.className = 'group-card';
+        div.setAttribute('data-id', cat.id);
         const cant = cat.items ? cat.items.length : 0;
         const col = !!colapso[cat.id];
 
@@ -422,9 +439,18 @@
     document.getElementById('btn-guardar-cat').onclick = () => {
       const val = document.getElementById('cat-nombre').value.trim();
       if (!val) return;
+      const esNueva = !activoId;
       if (activoId) db.find(x => x.id === activoId).nombre = val;
       else db.push({ id: 'cat_' + Date.now(), nombre: val, items: [] });
-      cerrarModales(); guardar();
+      cerrarModales(); 
+      guardar();
+
+      if (esNueva) {
+        setTimeout(() => {
+          const cards = document.querySelectorAll('#contenedor-compras .group-card');
+          if (cards.length > 0) cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+      }
     };
     function eliminarCat(id) {
       if (confirm('¿Eliminar esta categoría y sus productos?')) {
@@ -469,6 +495,7 @@
       if (!nom) return alert('Ingresa el nombre del producto');
       const cat = db.find(x => x.id === activoId);
       const tieneRep = document.getElementById('p-tiene-repuesto').value;
+      const contenedorActualId = activoId;
 
       const datos = {
         nombre: nom,
@@ -488,7 +515,14 @@
         if (!cat.items) cat.items = [];
         cat.items.push({ id: 'p_' + Date.now(), ...datos });
       }
-      cerrarModales(); guardar();
+      cerrarModales(); 
+      guardar();
+
+      setTimeout(() => {
+        const catEl = document.querySelector(`.group-card[data-id="${contenedorActualId}"]`);
+        if (catEl) catEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 150);
+
       if (document.getElementById('busqueda').value.trim()) {
         document.getElementById('busqueda').dispatchEvent(new Event('input'));
       }
@@ -552,7 +586,7 @@
           }
         });
       });
-      if (match === 0) resIt.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);">Sin coincidencias.</div>`;
+      if (match === 0) resIt.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);padding:6px 0;">Sin coincidencias.</div>`;
       boxRes.style.display = 'block';
     });
     btnClr.onclick = () => { inBusq.value = ''; btnClr.style.display = 'none'; boxRes.style.display = 'none'; };
