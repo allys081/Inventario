@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Organizador Personal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #eef2ff 0%, #f8fafc 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      color: #0f172a;
+    }
+
+    .menu-container {
+      width: 100%;
+      max-width: 460px;
+      text-align: center;
+    }
+
+    .badge-welcome {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: #e0e7ff;
+      color: #4338ca;
+      padding: 6px 14px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 36px;
+    }
+
+    .buttons-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .nav-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 20px 22px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s, border-color 0.2s;
+      text-align: left;
+    }
+
+    .nav-card:active {
+      transform: scale(0.97);
+    }
+
+    .nav-card:hover {
+      border-color: #c7d2fe;
+      box-shadow: 0 10px 24px rgba(79, 70, 229, 0.1);
+    }
+
+    .icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      flex-shrink: 0;
+    }
+
+    .icon-cajas {
+      background: #eef2ff;
+    }
+
+    .icon-compras {
+      background: #fdf2f8;
+    }
+
+    .card-texts {
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 3px;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: #64748b;
+      line-height: 1.35;
+    }
+
+    .arrow {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="menu-container">
+    <span class="badge-welcome">App Personal</span>
+    <h1>Mi Organizador</h1>
+    <p class="subtitle">¿Qué deseas revisar o gestionar hoy?</p>
+
+    <div class="buttons-wrapper">
+      <!-- Botón 1 -->
+      <a href="cajas.html" class="nav-card">
+        <div class="icon-box icon-cajas">📦</div>
+        <div class="card-texts">
+          <div class="card-title">Mis Cajas y Espacios</div>
+          <div class="card-desc">Cajas, cajones y buscador de objetos con fecha de edición.</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <!-- Botón 2 -->
+      <a href="compras.html" class="nav-card">
+        <div class="icon-box icon-compras">🛍️</div>
+        <div class="card-texts">
+          <div class="card-title">Reposición y Compras</div>
+          <div class="card-desc">Higiene, skincare, precios estimados, stock y lugares.</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reposición y Compras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --pink: #ec4899;
+      --accent: #f1f5f9;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 16px 12px 60px;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .btn-back {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--pink);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    h1 { font-size: 1.35rem; font-weight: 700; margin: 0; }
+    .search-box {
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .search-input { border: none; outline: none; width: 100%; font-size: 0.95rem; font-family: inherit; }
+    .btn-clear { border: none; background: none; cursor: pointer; color: var(--text-muted); font-size: 1rem; display: none; }
+    .actions-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+    .btn-pink { background: var(--pink); color: #fff; }
+    .btn-secondary { background: var(--card); border: 1px solid var(--border); color: var(--text); }
+    .card-list { display: flex; flex-direction: column; gap: 14px; }
+    .group-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .group-title-box { display: flex; align-items: center; gap: 8px; }
+    .group-title { font-weight: 700; font-size: 1.05rem; margin: 0; }
+    .group-count {
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: var(--accent);
+      padding: 2px 8px;
+      border-radius: 12px;
+      color: var(--text-muted);
+    }
+    .chevron { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; }
+    .chevron.rotated { transform: rotate(-180deg); }
+    .items-container { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+    .item-row {
+      background: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .item-name { font-weight: 600; font-size: 0.9rem; }
+    .item-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .badge-price {
+      background: #dcfce7;
+      color: #15803d;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.7rem;
+    }
+    .btn-icon {
+      background: none; border: none; cursor: pointer; padding: 4px 6px; font-size: 0.85rem;
+      color: var(--text-muted); border-radius: 4px;
+    }
+    .search-results-box { margin-bottom: 20px; display: none; }
+    .search-title { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
+      display: none; place-items: center; z-index: 50; padding: 16px;
+    }
+    .modal-overlay.active { display: grid; }
+    .modal {
+      background: #fff; border-radius: 14px; width: 100%; max-width: 380px; padding: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .modal h3 { margin: 0 0 12px; font-size: 1.05rem; }
+    .form-group { margin-bottom: 10px; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+    .form-input {
+      width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+      font-size: 0.88rem; font-family: inherit; outline: none;
+    }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="top-bar">
+      <a href="index.html" class="btn-back">← Volver al Menú</a>
+      <h1>🛍️ Reposición y Compras</h1>
+    </div>
+
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="busqueda" class="search-input" placeholder="Buscar producto (ej: crema, bloqueador)...">
+      <button id="btn-limpiar" class="btn-clear">✕</button>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-pink" onclick="abrirModalCat()">+ Nueva Categoría (ej: Skincare)</button>
+      <div style="display: flex; gap: 6px;">
+        <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
+        <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
+        <input type="file" id="file-input" style="display: none;" accept=".json">
+      </div>
+    </div>
+
+    <div id="search-box-results" class="search-results-box">
+      <div class="search-title">Resultados</div>
+      <div id="search-items"></div>
+    </div>
+
+    <div id="contenedor-compras" class="card-list"></div>
+  </div>
+
+  <!-- Modal Categoría -->
+  <div class="modal-overlay" id="modal-cat">
+    <div class="modal">
+      <h3 id="modal-cat-titulo">Nueva Categoría</h3>
+      <div class="form-group">
+        <label class="form-label">Nombre de Categoría</label>
+        <input type="text" id="cat-nombre" class="form-input" placeholder="Ej: Skincare, Higiene, Limpieza">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
+        <button class="btn btn-pink" id="btn-guardar-cat">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Producto -->
+  <div class="modal-overlay" id="modal-item">
+    <div class="modal">
+      <h3 id="modal-item-titulo">Registrar Producto</h3>
+      <div class="form-group">
+        <label class="form-label">Nombre del Producto</label>
+        <input type="text" id="p-nombre" class="form-input" placeholder="Ej: Crema hidratante facial">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Cuánto me queda?</label>
+        <input type="text" id="p-queda" class="form-input" placeholder="Ej: 1 cuarto de frasco, casi nada">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Cuándo comprarlo?</label>
+        <input type="text" id="p-cuando" class="form-input" placeholder="Ej: Esta semana, Fin de mes">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Precio estimado ($)</label>
+        <input type="text" id="p-precio" class="form-input" placeholder="Ej: 9.990">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Dónde comprarlo?</label>
+        <input type="text" id="p-donde" class="form-input" placeholder="Ej: Cruz Verde, DBS, Líder">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
+        <button class="btn btn-pink" id="btn-guardar-item">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let db = JSON.parse(localStorage.getItem('org_compras') || '[]');
+    let colapso = JSON.parse(localStorage.getItem('colapso_compras') || '{}');
+    let activoId = null;
+    let itemActivoId = null;
+
+    function guardar() {
+      localStorage.setItem('org_compras', JSON.stringify(db));
+      renderizar();
+    }
+
+    function renderizar() {
+      const cont = document.getElementById('contenedor-compras');
+      cont.innerHTML = '';
+      if (db.length === 0) {
+        cont.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:40px 0;">No hay categorías creadas.<br>Toca <b>+ Nueva Categoría</b> para comenzar.</div>`;
+        return;
+      }
+      db.forEach(cat => {
+        const div = document.createElement('div');
+        div.className = 'group-card';
+        const cant = cat.items ? cat.items.length : 0;
+        const col = !!colapso[cat.id];
+
+        let itemsHTML = '';
+        if (cant > 0) {
+          cat.items.forEach(it => {
+            itemsHTML += `
+              <div class="item-row">
+                <div style="flex:1;">
+                  <div class="item-name">${it.nombre}</div>
+                  <div class="item-meta">
+                    ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
+                    ${it.cuando ? `<span>Comprar: <b>${it.cuando}</b></span>` : ''}
+                    ${it.donde ? `<span>En: <b>${it.donde}</b></span>` : ''}
+                    ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
+                  </div>
+                </div>
+                <div>
+                  <button class="btn-icon" onclick="editarItem('${cat.id}', '${it.id}')">✎</button>
+                  <button class="btn-icon" onclick="eliminarItem('${cat.id}', '${it.id}')">🗑</button>
+                </div>
+              </div>`;
+          });
+        } else {
+          itemsHTML = `<div style="font-size:0.78rem;color:var(--text-muted);font-style:italic;padding:4px 0;">Sin productos por reponer.</div>`;
+        }
+
+        div.innerHTML = `
+          <div class="group-header" onclick="toggleColapso('${cat.id}')">
+            <div class="group-title-box">
+              <span class="group-title">🛍️ ${cat.nombre}</span>
+              <span class="group-count">${cant}</span>
+            </div>
+            <div onclick="event.stopPropagation()">
+              <button class="btn-icon" onclick="editarCat('${cat.id}')">✎</button>
+              <button class="btn-icon" onclick="eliminarCat('${cat.id}')">🗑</button>
+              <span class="chevron ${col ? 'rotated' : ''}" onclick="toggleColapso('${cat.id}')">▼</span>
+            </div>
+          </div>
+          <div style="${col ? 'display:none;' : ''}">
+            <div class="items-container">${itemsHTML}</div>
+            <button class="btn btn-secondary" style="width:100%;justify-content:center;" onclick="nuevoItem('${cat.id}')">+ Agregar producto a ${cat.nombre}</button>
+          </div>`;
+        cont.appendChild(div);
+      });
+    }
+
+    function toggleColapso(id) {
+      colapso[id] = !colapso[id];
+      localStorage.setItem('colapso_compras', JSON.stringify(colapso));
+      renderizar();
+    }
+
+    function abrirModalCat() {
+      activoId = null;
+      document.getElementById('modal-cat-titulo').textContent = 'Nueva Categoría';
+      document.getElementById('cat-nombre').value = '';
+      document.getElementById('modal-cat').classList.add('active');
+    }
+    function editarCat(id) {
+      activoId = id;
+      const c = db.find(x => x.id === id);
+      document.getElementById('modal-cat-titulo').textContent = 'Editar Categoría';
+      document.getElementById('cat-nombre').value = c.nombre;
+      document.getElementById('modal-cat').classList.add('active');
+    }
+    document.getElementById('btn-guardar-cat').onclick = () => {
+      const val = document.getElementById('cat-nombre').value.trim();
+      if (!val) return;
+      if (activoId) db.find(x => x.id === activoId).nombre = val;
+      else db.push({ id: 'cat_' + Date.now(), nombre: val, items: [] });
+      cerrarModales(); guardar();
+    };
+    function eliminarCat(id) {
+      if (confirm('¿Eliminar esta categoría y sus productos?')) {
+        db = db.filter(x => x.id !== id);
+        guardar();
+      }
+    }
+
+    function nuevoItem(catId) {
+      activoId = catId; itemActivoId = null;
+      document.getElementById('modal-item-titulo').textContent = 'Registrar Producto';
+      document.getElementById('p-nombre').value = '';
+      document.getElementById('p-queda').value = '';
+      document.getElementById('p-cuando').value = '';
+      document.getElementById('p-precio').value = '';
+      document.getElementById('p-donde').value = '';
+      document.getElementById('modal-item').classList.add('active');
+    }
+    function editarItem(catId, itemId) {
+      activoId = catId; itemActivoId = itemId;
+      const it = db.find(x => x.id === catId).items.find(x => x.id === itemId);
+      document.getElementById('modal-item-titulo').textContent = 'Editar Producto';
+      document.getElementById('p-nombre').value = it.nombre;
+      document.getElementById('p-queda').value = it.queda || '';
+      document.getElementById('p-cuando').value = it.cuando || '';
+      document.getElementById('p-precio').value = it.precio || '';
+      document.getElementById('p-donde').value = it.donde || '';
+      document.getElementById('modal-item').classList.add('active');
+    }
+    document.getElementById('btn-guardar-item').onclick = () => {
+      const nom = document.getElementById('p-nombre').value.trim();
+      if (!nom) return;
+      const cat = db.find(x => x.id === activoId);
+      const datos = {
+        nombre: nom,
+        queda: document.getElementById('p-queda').value.trim(),
+        cuando: document.getElementById('p-cuando').value.trim(),
+        precio: document.getElementById('p-precio').value.trim(),
+        donde: document.getElementById('p-donde').value.trim()
+      };
+      if (itemActivoId) {
+        const it = cat.items.find(x => x.id === itemActivoId);
+        Object.assign(it, datos);
+      } else {
+        if (!cat.items) cat.items = [];
+        cat.items.push({ id: 'p_' + Date.now(), ...datos });
+      }
+      cerrarModales(); guardar();
+      if (document.getElementById('busqueda').value.trim()) {
+        document.getElementById('busqueda').dispatchEvent(new Event('input'));
+      }
+    };
+    function eliminarItem(catId, itemId) {
+      if (confirm('¿Eliminar producto?')) {
+        const cat = db.find(x => x.id === catId);
+        cat.items = cat.items.filter(x => x.id !== itemId);
+        guardar();
+      }
+    }
+
+    // Buscador
+    const inBusq = document.getElementById('busqueda');
+    const boxRes = document.getElementById('search-box-results');
+    const resIt = document.getElementById('search-items');
+    const btnClr = document.getElementById('btn-limpiar');
+
+    inBusq.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      btnClr.style.display = q ? 'block' : 'none';
+      if (!q) { boxRes.style.display = 'none'; return; }
+      resIt.innerHTML = '';
+      let match = 0;
+      db.forEach(c => {
+        (c.items || []).forEach(it => {
+          if (it.nombre.toLowerCase().includes(q) || (it.donde && it.donde.toLowerCase().includes(q))) {
+            match++;
+            resIt.innerHTML += `
+              <div class="item-row" style="background:#fdf2f8; border-color:#fbcfe8; margin-bottom:6px;">
+                <div style="flex:1;">
+                  <div class="item-name" style="color:#9d174d;">${it.nombre}</div>
+                  <div class="item-meta">
+                    <span style="background:#fce7f3;color:#be185d;padding:2px 6px;border-radius:4px;font-weight:600;">🛍️ ${c.nombre}</span>
+                    ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
+                    ${it.donde ? `<span>Comprar en: <b>${it.donde}</b></span>` : ''}
+                    ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
+                  </div>
+                </div>
+              </div>`;
+          }
+        });
+      });
+      if (match === 0) resIt.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);">Sin coincidencias.</div>`;
+      boxRes.style.display = 'block';
+    });
+    btnClr.onclick = () => { inBusq.value = ''; btnClr.style.display = 'none'; boxRes.style.display = 'none'; };
+
+    function cerrarModales() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+      activoId = null; itemActivoId = null;
+    }
+
+    // Respaldo
+    document.getElementById('btn-exportar').onclick = () => {
+      const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `respaldo-compras-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    };
+    document.getElementById('btn-importar').onclick = () => document.getElementById('file-input').click();
+    document.getElementById('file-input').onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = (ev) => {
+        try {
+          db = JSON.parse(ev.target.result);
+          guardar();
+          alert('¡Compras cargadas con éxito!');
+        } catch (err) { alert('Archivo no válido.'); }
+      };
+      r.readAsText(file);
+    };
+
+    renderizar();
+  </script>
+</body>
+</html>
