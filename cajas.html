@@ -3,139 +3,271 @@
 <head>
   <meta charset="UTF-8">
   <title>Cajas y Espacios</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f8fafc">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #f8fafc;
       --card: #ffffff;
       --border: #e2e8f0;
+      --border-focus: #c084fc;
       --text: #0f172a;
       --text-muted: #64748b;
-      --primary: #a855f7;
-      --accent: #f1f5f9;
+      --primary: #9333ea;
+      --primary-hover: #7e22ce;
+      --accent: #f8fafc;
+      --badge-bg: #f1f5f9;
+      --badge-text: #475569;
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      margin: 0;
-      padding: 16px 12px 60px;
+      padding: 16px 14px 80px;
+      -webkit-font-smoothing: antialiased;
     }
-    .container { max-width: 800px; margin: 0 auto; }
-    
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
     .top-bar {
-      position: relative;
-      display: flex;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
       align-items: center;
-      justify-content: center;
       margin-bottom: 20px;
       min-height: 40px;
     }
+
     .btn-back {
-      position: absolute;
-      left: 0;
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--primary);
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
     }
+
     h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 800;
       text-align: center;
       color: var(--text);
+      letter-spacing: -0.3px;
     }
 
     .search-box {
       position: sticky;
       top: 10px;
       z-index: 20;
-      background: var(--card);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 14px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      border-radius: 16px;
+      padding: 11px 15px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       margin-bottom: 16px;
     }
-    .search-input { border: none; outline: none; width: 100%; font-size: 0.95rem; font-family: inherit; }
-    .btn-clear { border: none; background: none; cursor: pointer; color: var(--text-muted); font-size: 1rem; display: none; }
-    
+
+    .search-box:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.15);
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      background: transparent;
+    }
+
+    .btn-clear {
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1rem;
+      display: none;
+      padding: 2px 6px;
+    }
+
     .actions-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 16px;
       gap: 8px;
-      flex-wrap: wrap;
     }
+
     .btn {
       border: none;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-weight: 600;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 700;
       font-size: 0.82rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-family: inherit;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-secondary { background: var(--card); border: 1px solid var(--border); color: var(--text); }
-    
-    .card-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .btn:active {
+      transform: scale(0.94);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(147, 51, 234, 0.25);
+    }
+
+    .btn-secondary {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .btn-add-item {
+      background: #faf5ff;
+      border: 1.5px dashed #d8b4fe;
+      color: var(--primary);
+      width: 100%;
+      justify-content: center;
+      padding: 9px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      margin: 10px 0 12px;
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
     .group-card {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
     }
+
     .group-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       user-select: none;
-      padding-bottom: 8px;
+      padding-bottom: 10px;
       border-bottom: 1px dashed var(--border);
     }
-    .group-title-box { display: flex; align-items: center; gap: 8px; }
-    .group-title { font-weight: 700; font-size: 1.05rem; margin: 0; }
+
+    .group-title-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .group-title {
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: var(--text);
+    }
+
     .group-count {
       font-size: 0.72rem;
-      font-weight: 600;
-      background: var(--accent);
-      padding: 2px 8px;
-      border-radius: 12px;
-      color: var(--text-muted);
+      font-weight: 700;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      padding: 3px 8px;
+      border-radius: 99px;
     }
-    .chevron { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; }
-    .chevron.rotated { transform: rotate(-180deg); }
-    .items-container { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
-    
+
+    .chevron {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-block;
+    }
+
+    .chevron.rotated {
+      transform: rotate(-180deg);
+    }
+
+    .items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
     .item-row {
-      background: var(--accent);
+      background: #f8fafc;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 14px;
       padding: 10px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
     }
-    .item-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
-    
+
+    .item-content-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .item-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #e2e8f0;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .item-name {
+      font-weight: 600;
+      font-size: 0.93rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
     .badge-categoria {
       background: #f1f5f9;
       color: #64748b;
@@ -152,16 +284,16 @@
       background: #ecfdf5;
       color: #047857;
       border: 1px solid #a7f3d0;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 600;
       display: inline-block;
       width: fit-content;
     }
 
     .item-meta {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
@@ -169,59 +301,182 @@
     }
 
     .btn-icon {
-      background: none; border: none; cursor: pointer; padding: 4px 6px; font-size: 0.85rem;
-      color: var(--text-muted); border-radius: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 8px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-radius: 8px;
     }
-    .search-results-box { margin-bottom: 20px; display: none; }
-    .search-title { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 
-    /* Modal adaptado a pantallas táctiles con teclado */
+    .btn-icon:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .search-results-box {
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .search-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
+    }
+
+    /* Modales */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(4px);
-      display: none;
-      z-index: 50;
-      padding: 16px;
-      overflow-y: auto;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
       align-items: flex-start;
       justify-content: center;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal {
-      background: #fff;
-      border-radius: 14px;
-      width: 100%;
-      max-width: 380px;
-      padding: 18px;
-      margin: auto 0;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      max-height: calc(100dvh - 32px);
+      z-index: 100;
+      padding: 20px 14px 40px;
       overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .modal h3 { margin: 0 0 12px; font-size: 1.05rem; }
-    .form-group { margin-bottom: 10px; }
-    .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 24px;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
     .form-input {
-      width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
-      font-size: 0.88rem; font-family: inherit; outline: none;
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      color: var(--text);
+      background: #fff;
     }
-    .form-input:focus { border-color: var(--primary); }
-    .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.15);
+    }
+
+    /* Caja para capturar y mostrar vista previa de la foto */
+    .photo-upload-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .preview-box {
+      width: 58px;
+      height: 58px;
+      border-radius: 12px;
+      border: 1.5px dashed var(--border);
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .btn-remove-photo {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    /* Modal Visor de Imagen Completa */
+    #modal-viewer img {
+      width: 100%;
+      border-radius: 14px;
+      max-height: 70vh;
+      object-fit: contain;
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
     <div class="top-bar">
-      <a href="index.html" class="btn-back">←</a>
-      <h1>Cajas & Contenido</h1>
+      <a href="index.html" class="btn-back" title="Volver al menú">←</a>
+      <h1>Cajas y Espacios</h1>
+      <div></div>
     </div>
 
     <div class="search-box">
       <span>🔍</span>
-      <input type="text" id="busqueda" class="search-input" placeholder="Buscar objeto">
+      <input type="text" id="busqueda" class="search-input" placeholder="Buscar objeto guardado...">
       <button id="btn-limpiar" class="btn-clear">✕</button>
     </div>
 
@@ -243,12 +498,12 @@
   </div>
 
   <!-- Modal Caja -->
-  <div class="modal-overlay" id="modal-caja">
+  <div class="modal-overlay" id="modal-caja" onclick="cerrarSiFondo(event)">
     <div class="modal">
       <h3 id="modal-caja-titulo">Nueva Caja</h3>
       <div class="form-group">
         <label class="form-label">Nombre del contenedor o lugar</label>
-        <input type="text" id="caja-nombre" class="form-input" placeholder="Ej: Caja Negra, Cajón del medio">
+        <input type="text" id="caja-nombre" class="form-input" placeholder="Ej: Caja Negra, Cajón de escritorio...">
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
@@ -257,21 +512,49 @@
     </div>
   </div>
 
-  <!-- Modal Objeto con Detalle Opcional -->
-  <div class="modal-overlay" id="modal-item">
+  <!-- Modal Objeto con Cámara -->
+  <div class="modal-overlay" id="modal-item" onclick="cerrarSiFondo(event)">
     <div class="modal">
       <h3 id="modal-item-titulo">Agregar Objeto</h3>
       <div class="form-group">
         <label class="form-label">Nombre del Objeto</label>
-        <input type="text" id="item-nombre" class="form-input" placeholder="Ej: Elásticos, Cinta adhesiva">
+        <input type="text" id="item-nombre" class="form-input" placeholder="Ej: Elásticos, Cargador, Libreta...">
       </div>
       <div class="form-group">
-        <label class="form-label">Detalle opcional (Cantidad, estado, etc.)</label>
-        <input type="text" id="item-detalles" class="form-input" placeholder="Ej: 2 bolsas nuevas, sellado, color azul">
+        <label class="form-label">Detalle opcional (Cantidad, color, etc.)</label>
+        <input type="text" id="item-detalles" class="form-input" placeholder="Ej: 2 unidades, sellado, color negro">
       </div>
+
+      <!-- Sección Foto -->
+      <div class="form-group">
+        <label class="form-label">Foto del objeto (Opcional)</label>
+        <div class="photo-upload-box">
+          <div class="preview-box" id="item-preview-box">
+            <span id="preview-placeholder" style="font-size: 1.2rem; color: #94a3b8;">📷</span>
+            <img id="item-preview-img" style="display: none;" alt="Foto">
+            <button class="btn-remove-photo" id="btn-remove-photo" onclick="quitarFoto()">✕</button>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('input-foto').click()">
+            📸 Tomar / Elegir Foto
+          </button>
+          <input type="file" id="input-foto" style="display: none;" accept="image/*" onchange="procesarFoto(event)">
+        </div>
+      </div>
+
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
         <button class="btn btn-primary" id="btn-guardar-item">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Visor de Imagen -->
+  <div class="modal-overlay" id="modal-viewer" onclick="cerrarSiFondo(event)">
+    <div class="modal" style="text-align: center; max-width: 440px;">
+      <h3 id="viewer-title" style="margin-bottom: 10px;">Foto</h3>
+      <img id="viewer-img" src="" alt="Vista previa grande">
+      <div class="modal-footer" style="justify-content: center; margin-top: 14px;">
+        <button class="btn btn-secondary" onclick="cerrarModales()">Cerrar</button>
       </div>
     </div>
   </div>
@@ -281,6 +564,11 @@
     let colapso = JSON.parse(localStorage.getItem('colapso_cajas') || '{}');
     let activoId = null;
     let itemActivoId = null;
+    let fotoTemporalBase64 = null;
+
+    function vibrar() {
+      if (navigator.vibrate) navigator.vibrate(10);
+    }
 
     function guardar() {
       localStorage.setItem('org_cajas', JSON.stringify(db));
@@ -293,11 +581,79 @@
       });
     }
 
+    // Comprime la imagen en un Canvas a máx 500px y baja el peso a ~30-50KB
+    function procesarFoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 500;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxDim) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          fotoTemporalBase64 = canvas.toDataURL('image/jpeg', 0.65);
+          mostrarFotoEnPreview(fotoTemporalBase64);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function mostrarFotoEnPreview(src) {
+      const img = document.getElementById('item-preview-img');
+      const placeholder = document.getElementById('preview-placeholder');
+      const btnRemove = document.getElementById('btn-remove-photo');
+      if (src) {
+        img.src = src;
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+        btnRemove.style.display = 'flex';
+      } else {
+        img.src = '';
+        img.style.display = 'none';
+        placeholder.style.display = 'block';
+        btnRemove.style.display = 'none';
+      }
+    }
+
+    function quitarFoto() {
+      fotoTemporalBase64 = null;
+      document.getElementById('input-foto').value = '';
+      mostrarFotoEnPreview(null);
+    }
+
+    function verFotoGrande(src, nombre) {
+      document.getElementById('viewer-img').src = src;
+      document.getElementById('viewer-title').textContent = nombre || 'Foto';
+      document.getElementById('modal-viewer').classList.add('active');
+    }
+
     function renderizar() {
       const cont = document.getElementById('contenedor-cajas');
       cont.innerHTML = '';
       if (db.length === 0) {
-        cont.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:40px 0;">No tienes cajas creadas.<br>Toca <b>+ Nueva Caja</b> para comenzar.</div>`;
+        cont.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:50px 0;font-size:0.9rem;">No tienes cajas creadas.<br>Toca <b>+ Nueva Caja</b> para comenzar.</div>`;
         return;
       }
       db.forEach(c => {
@@ -312,11 +668,14 @@
           c.items.forEach(it => {
             itemsHTML += `
               <div class="item-row">
-                <div style="flex:1;">
-                  <div class="item-name">${it.nombre}</div>
-                  <div class="item-meta">
-                    ${it.detalles ? `<div><span class="badge-detalle-verde">${it.detalles}</span></div>` : ''}
-                    <div>Editado: ${it.fecha}</div>
+                <div class="item-content-wrapper">
+                  ${it.foto ? `<img src="${it.foto}" class="item-thumb" onclick="verFotoGrande('${it.foto}', '${it.nombre}')" alt="Foto">` : ''}
+                  <div style="flex:1;">
+                    <div class="item-name">${it.nombre}</div>
+                    <div class="item-meta">
+                      ${it.detalles ? `<div><span class="badge-detalle-verde">${it.detalles}</span></div>` : ''}
+                      <div>Editado: ${it.fecha}</div>
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -326,7 +685,7 @@
               </div>`;
           });
         } else {
-          itemsHTML = `<div style="font-size:0.78rem;color:var(--text-muted);font-style:italic;padding:4px 0;">Vacío.</div>`;
+          itemsHTML = `<div style="font-size:0.8rem;color:var(--text-muted);font-style:italic;padding:4px 0;">Vacío.</div>`;
         }
 
         div.innerHTML = `
@@ -342,49 +701,54 @@
             </div>
           </div>
           <div style="${col ? 'display:none;' : ''}">
+            <button class="btn btn-add-item" onclick="nuevoItem('${c.id}')">+ Agregar objeto a ${c.nombre}</button>
             <div class="items-container">${itemsHTML}</div>
-            <button class="btn btn-secondary" style="width:100%;justify-content:center;" onclick="nuevoItem('${c.id}')">+ Agregar objeto a ${c.nombre}</button>
           </div>`;
         cont.appendChild(div);
       });
     }
 
     function toggleColapso(id) {
+      vibrar();
       colapso[id] = !colapso[id];
       localStorage.setItem('colapso_cajas', JSON.stringify(colapso));
       renderizar();
     }
 
     function abrirModalCaja() {
+      vibrar();
       activoId = null;
       document.getElementById('modal-caja-titulo').textContent = 'Nueva Caja';
       document.getElementById('caja-nombre').value = '';
       document.getElementById('modal-caja').classList.add('active');
+      setTimeout(() => document.getElementById('caja-nombre').focus(), 150);
     }
+
     function editarCaja(id) {
+      vibrar();
       activoId = id;
       const c = db.find(x => x.id === id);
       document.getElementById('modal-caja-titulo').textContent = 'Editar Nombre';
       document.getElementById('caja-nombre').value = c.nombre;
       document.getElementById('modal-caja').classList.add('active');
+      setTimeout(() => document.getElementById('caja-nombre').focus(), 150);
     }
+
     document.getElementById('btn-guardar-caja').onclick = () => {
       const val = document.getElementById('caja-nombre').value.trim();
       if (!val) return;
-      const esNueva = !activoId;
-      if (activoId) db.find(x => x.id === activoId).nombre = val;
-      else db.push({ id: 'c_' + Date.now(), nombre: val, items: [] });
+      vibrar();
+      if (activoId) {
+        db.find(x => x.id === activoId).nombre = val;
+      } else {
+        db.unshift({ id: 'c_' + Date.now(), nombre: val, items: [] });
+      }
       cerrarModales(); 
       guardar();
-
-      if (esNueva) {
-        setTimeout(() => {
-          const cards = document.querySelectorAll('#contenedor-cajas .group-card');
-          if (cards.length > 0) cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 150);
-      }
     };
+
     function eliminarCaja(id) {
+      vibrar();
       if (confirm('¿Eliminar esta caja y su contenido?')) {
         db = db.filter(x => x.id !== id);
         guardar();
@@ -392,47 +756,65 @@
     }
 
     function nuevoItem(cajaId) {
-      activoId = cajaId; itemActivoId = null;
+      vibrar();
+      activoId = cajaId; 
+      itemActivoId = null;
+      fotoTemporalBase64 = null;
       document.getElementById('modal-item-titulo').textContent = 'Agregar Objeto';
       document.getElementById('item-nombre').value = '';
       document.getElementById('item-detalles').value = '';
+      document.getElementById('input-foto').value = '';
+      mostrarFotoEnPreview(null);
       document.getElementById('modal-item').classList.add('active');
+      setTimeout(() => document.getElementById('item-nombre').focus(), 150);
     }
+
     function editarItem(cajaId, itemId) {
-      activoId = cajaId; itemActivoId = itemId;
+      vibrar();
+      activoId = cajaId; 
+      itemActivoId = itemId;
       const it = db.find(x => x.id === cajaId).items.find(x => x.id === itemId);
       document.getElementById('modal-item-titulo').textContent = 'Editar Objeto';
       document.getElementById('item-nombre').value = it.nombre;
       document.getElementById('item-detalles').value = it.detalles || '';
+      fotoTemporalBase64 = it.foto || null;
+      document.getElementById('input-foto').value = '';
+      mostrarFotoEnPreview(fotoTemporalBase64);
       document.getElementById('modal-item').classList.add('active');
+      setTimeout(() => document.getElementById('item-nombre').focus(), 150);
     }
+
     document.getElementById('btn-guardar-item').onclick = () => {
       const nom = document.getElementById('item-nombre').value.trim();
       const det = document.getElementById('item-detalles').value.trim();
       if (!nom) return;
+      vibrar();
       const c = db.find(x => x.id === activoId);
-      const contenedorActualId = activoId;
+
+      const nuevoObj = {
+        nombre: nom,
+        detalles: det,
+        fecha: fechaActual(),
+        foto: fotoTemporalBase64
+      };
 
       if (itemActivoId) {
         const it = c.items.find(x => x.id === itemActivoId);
-        it.nombre = nom; it.detalles = det; it.fecha = fechaActual();
+        Object.assign(it, nuevoObj);
       } else {
         if (!c.items) c.items = [];
-        c.items.push({ id: 'it_' + Date.now(), nombre: nom, detalles: det, fecha: fechaActual() });
+        c.items.unshift({ id: 'it_' + Date.now(), ...nuevoObj });
       }
       cerrarModales(); 
       guardar();
-
-      setTimeout(() => {
-        const cajaEl = document.querySelector(`.group-card[data-id="${contenedorActualId}"]`);
-        if (cajaEl) cajaEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 150);
 
       if (document.getElementById('busqueda').value.trim()) {
         document.getElementById('busqueda').dispatchEvent(new Event('input'));
       }
     };
+
     function eliminarItem(cajaId, itemId) {
+      vibrar();
       if (confirm('¿Eliminar objeto?')) {
         const c = db.find(x => x.id === cajaId);
         c.items = c.items.filter(x => x.id !== itemId);
@@ -458,14 +840,17 @@
             match++;
             resIt.innerHTML += `
               <div class="item-row" style="background:var(--accent); border-color:var(--border); margin-bottom:6px;">
-                <div style="flex:1;">
-                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                    <span class="item-name" style="margin-bottom:0;">${it.nombre}</span>
-                    <span class="badge-categoria">${c.nombre}</span>
-                  </div>
-                  <div class="item-meta">
-                    ${it.detalles ? `<div><span class="badge-detalle-verde">${it.detalles}</span></div>` : ''}
-                    <div>Editado: ${it.fecha}</div>
+                <div class="item-content-wrapper">
+                  ${it.foto ? `<img src="${it.foto}" class="item-thumb" onclick="verFotoGrande('${it.foto}', '${it.nombre}')" alt="Foto">` : ''}
+                  <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                      <span class="item-name" style="margin-bottom:0;">${it.nombre}</span>
+                      <span class="badge-categoria">${c.nombre}</span>
+                    </div>
+                    <div class="item-meta">
+                      ${it.detalles ? `<div><span class="badge-detalle-verde">${it.detalles}</span></div>` : ''}
+                      <div>Editado: ${it.fecha}</div>
+                    </div>
                   </div>
                 </div>
               </div>`;
@@ -475,22 +860,43 @@
       if (match === 0) resIt.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);padding:6px 0;">Sin coincidencias.</div>`;
       boxRes.style.display = 'block';
     });
-    btnClr.onclick = () => { inBusq.value = ''; btnClr.style.display = 'none'; boxRes.style.display = 'none'; };
+
+    btnClr.onclick = () => { 
+      inBusq.value = ''; 
+      btnClr.style.display = 'none'; 
+      boxRes.style.display = 'none'; 
+    };
 
     function cerrarModales() {
       document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-      activoId = null; itemActivoId = null;
+      activoId = null; 
+      itemActivoId = null;
+      fotoTemporalBase64 = null;
     }
+
+    function cerrarSiFondo(e) {
+      if (e.target.classList.contains('modal-overlay')) cerrarModales();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrarModales();
+    });
 
     // Respaldos
     document.getElementById('btn-exportar').onclick = () => {
+      vibrar();
       const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = `respaldo-cajas-${new Date().toISOString().slice(0,10)}.json`;
       a.click();
     };
-    document.getElementById('btn-importar').onclick = () => document.getElementById('file-input').click();
+
+    document.getElementById('btn-importar').onclick = () => {
+      vibrar();
+      document.getElementById('file-input').click();
+    };
+
     document.getElementById('file-input').onchange = (e) => {
       const file = e.target.files[0];
       if (!file) return;
