@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{color-scheme:light;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--green:#059669;--green-soft:#ecfdf5;--green-line:#a7f3d0;--red:#e11d48;--red-soft:#fff1f2;--red-line:#fecdd3;--badge:#f1f5f9;--soft:#f8fafc;--hover:#e2e8f0;--pill-ink:#475569}
-    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--green:#34d399;--green-soft:rgba(52,211,153,.14);--green-line:rgba(52,211,153,.35);--red:#fb7185;--red-soft:rgba(251,113,133,.14);--red-line:rgba(251,113,133,.35);--badge:#282434;--soft:#181521;--hover:#2d2939;--pill-ink:#bab2ca}
+    :root{color-scheme:light;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--green:#059669;--green-soft:#ecfdf5;--green-line:#a7f3d0;--red:#e11d48;--red-soft:#fff1f2;--red-line:#fecdd3;--badge:#f1f5f9;--soft:#f8fafc;--hover:#e2e8f0;--pill-ink:#475569;--info-soft:#fffbeb;--info-line:#fde68a;--info-ink:#92400e}
+    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--green:#34d399;--green-soft:rgba(52,211,153,.14);--green-line:rgba(52,211,153,.35);--red:#fb7185;--red-soft:rgba(251,113,133,.14);--red-line:rgba(251,113,133,.35);--badge:#282434;--soft:#181521;--hover:#2d2939;--pill-ink:#bab2ca;--info-soft:rgba(252,211,77,.1);--info-line:rgba(252,211,77,.3);--info-ink:#fcd34d}
     [data-theme=dark] .btn-green{color:#04281d}
     .btn-tema{justify-self:end;width:38px;height:38px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-size:1.05rem;cursor:pointer}
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
@@ -21,14 +21,11 @@
     .btn-back{text-decoration:none;font-size:1.1rem;font-weight:700;color:var(--green);display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);box-shadow:0 2px 5px rgba(0,0,0,.03)}
     h1{font-size:1.35rem;font-weight:800;text-align:center;letter-spacing:-.3px}
 
-    .summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-    .sum-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(15,23,42,.03)}
-    .sum-card.total{grid-column:1/-1;background:linear-gradient(135deg,#059669,#10b981);border:none;color:#fff;box-shadow:0 8px 22px rgba(5,150,105,.28)}
-    .sum-label{font-size:.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-    .total .sum-label{color:rgba(255,255,255,.85)}
-    .sum-value{font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-top:2px}
-    .total .sum-value{font-size:2rem}
-    .sum-card:not(.total) .sum-value{font-size:1.3rem}
+    .sum-card{background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:18px;padding:16px 18px;box-shadow:0 8px 22px rgba(5,150,105,.28);margin-bottom:16px}
+    [data-theme=dark] .sum-card{color:#04281d;background:linear-gradient(135deg,#34d399,#6ee7b7);box-shadow:0 8px 22px rgba(52,211,153,.2)}
+    .sum-label{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.85}
+    .sum-value{font-size:2rem;font-weight:800;letter-spacing:-.5px;margin-top:2px}
+    .sum-sub{font-size:.78rem;font-weight:600;opacity:.85;margin-top:2px}
 
     .actions-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px}
     .btn{border:none;border-radius:12px;padding:10px 16px;font-weight:700;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:all .15s cubic-bezier(.16,1,.3,1)}
@@ -41,20 +38,20 @@
     .card-list{display:flex;flex-direction:column;gap:12px}
     .group-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(15,23,42,.03)}
     .g-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-    .g-title{font-weight:700;font-size:1.02rem}
-    .g-saldo{font-weight:800;font-size:1.15rem;color:var(--green);margin-top:2px}
-    .g-break{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
-    .pill{background:var(--badge);color:var(--pill-ink);border-radius:99px;padding:4px 10px;font-size:.76rem;font-weight:600}
-    .g-btns{display:flex;gap:8px}
+    .g-title{font-weight:700;font-size:1.02rem;overflow-wrap:anywhere}
+    .g-saldo{font-weight:800;font-size:1.25rem;color:var(--green);margin-top:2px}
+    .g-info{margin:10px 0 12px;background:var(--info-soft);border:1px solid var(--info-line);color:var(--info-ink);border-radius:10px;padding:7px 10px;font-size:.78rem;font-weight:600;line-height:1.45;overflow-wrap:anywhere;white-space:pre-wrap}
+    .g-btns{display:flex;gap:8px;margin-top:12px}
     .g-btns .btn{flex:1}
     .btn-icon{background:none;border:none;cursor:pointer;padding:6px 8px;font-size:.88rem;color:var(--muted);border-radius:8px}
     .btn-icon:hover{background:var(--hover);color:var(--text)}
     .toggle-movs{width:100%;text-align:left;background:none;border:none;border-top:1px dashed var(--border);margin-top:12px;padding:10px 0 2px;font:700 .8rem inherit;font-family:inherit;color:var(--muted);cursor:pointer}
     .movs{display:flex;flex-direction:column;gap:6px;margin-top:8px}
     .mov{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:9px 11px}
-    .mov-main{font-weight:700;font-size:.86rem}
+    .mov-main{font-weight:700;font-size:.9rem}
     .mov.in .mov-main{color:var(--green)}.mov.out .mov-main{color:var(--red)}
-    .mov-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
+    .mov-det{font-size:.78rem;font-weight:600;margin-top:3px;overflow-wrap:anywhere}
+    .mov-sub{font-size:.74rem;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
     .vacio{text-align:center;color:var(--muted);padding:44px 0;font-size:.9rem;line-height:1.6}
     .vacio .btn{margin-top:14px}
 
@@ -63,11 +60,14 @@
     .modal{background:var(--card);border-radius:20px;width:100%;max-width:400px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.16);transform:translateY(16px) scale(.96);transition:transform .24s cubic-bezier(.16,1,.3,1);margin-top:24px}
     .modal-overlay.active .modal{transform:none}
     .modal h3{font-size:1.15rem;font-weight:800;margin-bottom:14px}
+    .sec{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:16px 0 8px;padding-top:12px;border-top:1px dashed var(--border)}
     .form-group{margin-bottom:12px}
     .form-label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin-bottom:5px}
     .form-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:.92rem;font-family:inherit;outline:none;color:var(--text);background:var(--card)}
     .form-input.big{font-size:1.5rem;font-weight:800;padding:12px 14px}
     .form-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(5,150,105,.15)}
+    .hint{font-size:.74rem;color:var(--muted);margin-top:5px;line-height:1.4}
+    .info-box{background:var(--info-soft);border:1px solid var(--info-line);color:var(--info-ink);border-radius:10px;padding:8px 11px;font-size:.78rem;font-weight:600;margin-bottom:12px;overflow-wrap:anywhere;white-space:pre-wrap}
     .chips{display:flex;gap:6px}
     .chip{flex:1;border:1.5px solid var(--border);background:var(--card);border-radius:12px;padding:10px 6px;font:700 .82rem inherit;font-family:inherit;color:var(--muted);cursor:pointer}
     .chip.on{background:var(--green-soft);border-color:var(--green);color:var(--green)}
@@ -84,10 +84,10 @@
       <button class="btn-tema" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
     </div>
 
-    <div class="summary">
-      <div class="sum-card total"><div class="sum-label">Total ahorrado</div><div class="sum-value" id="s-total">$0</div></div>
-      <div class="sum-card"><div class="sum-label">💵 Billetes</div><div class="sum-value" id="s-bill">$0</div></div>
-      <div class="sum-card"><div class="sum-label">🪙 Monedas</div><div class="sum-value" id="s-mon">$0</div></div>
+    <div class="sum-card">
+      <div class="sum-label">Total ahorrado</div>
+      <div class="sum-value" id="s-total">$0</div>
+      <div class="sum-sub" id="s-sub"></div>
     </div>
 
     <div class="actions-row">
@@ -102,7 +102,7 @@
     <div id="lista" class="card-list"></div>
   </div>
 
-  <!-- Modal Caja -->
+  <!-- Modal Caja (nueva / editar) -->
   <div class="modal-overlay" id="modal-caja">
     <div class="modal">
       <h3 id="caja-titulo">Nueva Caja</h3>
@@ -110,16 +110,32 @@
         <label class="form-label">Nombre del lugar</label>
         <input class="form-input" id="caja-nombre" placeholder="Ej: Alcancía gato, Sobre de emergencias..." autocomplete="off">
       </div>
-      <div id="caja-inicial">
+      <div class="form-group">
+        <label class="form-label">Detalle de la caja (solo informativo)</label>
+        <input class="form-input" id="caja-detalle" placeholder="Ej: monedas de 100 y 2 billetes de 10 mil" autocomplete="off">
+      </div>
+
+      <div class="sec" id="caja-sec">Saldo inicial (opcional)</div>
+      <div class="form-group">
+        <label class="form-label" id="caja-monto-label">Monto ($)</label>
+        <input class="form-input big" id="caja-monto" inputmode="numeric" placeholder="0" autocomplete="off">
+        <div class="hint" id="caja-hint" style="display:none">Si lo cambias, queda registrado como un "Ajuste de saldo" en el historial.</div>
+      </div>
+      <div id="caja-fmt-box">
         <div class="form-group">
-          <label class="form-label">Billetes que ya tiene (opcional)</label>
-          <input class="form-input" id="caja-bill" inputmode="numeric" placeholder="Ej: 30000">
+          <label class="form-label">¿Es en billetes o monedas?</label>
+          <div class="chips" id="caja-fmt">
+            <button class="chip" data-v="b">💵 Billetes</button>
+            <button class="chip" data-v="m">🪙 Monedas</button>
+            <button class="chip" data-v="x">Mixto</button>
+          </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Monedas que ya tiene (opcional)</label>
-          <input class="form-input" id="caja-mon" inputmode="numeric" placeholder="Ej: 15000">
+          <label class="form-label">Detalle del dinero (solo informativo)</label>
+          <input class="form-input" id="caja-mdet" placeholder="Ej: dos de 10 mil, o 100 en monedas" autocomplete="off">
         </div>
       </div>
+      <div class="error" id="caja-error"></div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-close>Cancelar</button>
         <button class="btn btn-green" id="btn-guardar-caja">Guardar</button>
@@ -131,6 +147,7 @@
   <div class="modal-overlay" id="modal-mov">
     <div class="modal">
       <h3 id="mov-titulo">Movimiento</h3>
+      <div class="info-box" id="mov-info" style="display:none"></div>
       <div class="form-group">
         <label class="form-label">Operación</label>
         <div class="chips" id="mov-tipo">
@@ -139,20 +156,20 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Formato del dinero</label>
+        <label class="form-label">Monto ($)</label>
+        <input class="form-input big" id="mov-monto" inputmode="numeric" placeholder="5000" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Fue en billetes o monedas?</label>
         <div class="chips" id="mov-fmt">
           <button class="chip" data-v="b">💵 Billetes</button>
           <button class="chip" data-v="m">🪙 Monedas</button>
           <button class="chip" data-v="x">Mixto</button>
         </div>
       </div>
-      <div class="form-group" id="g-simple">
-        <label class="form-label">Monto ($)</label>
-        <input class="form-input big" id="mov-monto" inputmode="numeric" placeholder="5000" autocomplete="off">
-      </div>
-      <div id="g-mixto" style="display:none">
-        <div class="form-group"><label class="form-label">💵 Billetes ($)</label><input class="form-input" id="mov-mb" inputmode="numeric" placeholder="Ej: 5000"></div>
-        <div class="form-group"><label class="form-label">🪙 Monedas ($)</label><input class="form-input" id="mov-mm" inputmode="numeric" placeholder="Ej: 1500"></div>
+      <div class="form-group">
+        <label class="form-label">Detalle (solo informativo, no se suma)</label>
+        <input class="form-input" id="mov-det" placeholder="Ej: dos de 10 mil, o 100 en monedas" autocomplete="off">
       </div>
       <div class="form-group">
         <label class="form-label">Motivo / nota (opcional)</label>
@@ -168,10 +185,7 @@
 
   <script>
     const KEY = 'org_ahorros';
-    let db = [];
-    try { const v = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(v)) db = v; } catch (e) {}
-    const abiertos = new Set();
-    let cajaId = null, tipo = 'in', fmt = 'b';
+    const FMT = { b:'💵 Billetes', m:'🪙 Monedas', x:'💵🪙 Mixto' };
 
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
@@ -180,14 +194,40 @@
     const num = v => parseInt(String(v).replace(/\D/g, ''), 10) || 0;
     const vibrar = () => { if (navigator.vibrate) navigator.vibrate(10); };
     const fecha = () => new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
-    const guardar = () => { localStorage.setItem(KEY, JSON.stringify(db)); render(); };
+    const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+
+    /* Normaliza datos nuevos y también los antiguos (que separaban billetes y monedas) */
+    function normMov(m) {
+      const old = m.monto === undefined;
+      const b = +m.b || 0, mo = +m.m || 0;
+      return {
+        id: String(m.id || uid('m_')),
+        tipo: m.tipo === 'out' ? 'out' : 'in',
+        monto: old ? b + mo : Math.max(0, +m.monto || 0),
+        formato: FMT[m.formato] ? m.formato : (b && mo ? 'x' : b ? 'b' : mo ? 'm' : ''),
+        detalle: String(m.detalle || (old && b && mo ? `Billetes ${money(b)} + Monedas ${money(mo)}` : '')).trim(),
+        nota: String(m.nota || '').trim(),
+        fecha: String(m.fecha || '')
+      };
+    }
+    function normCaja(c) {
+      const saldo = c.saldo !== undefined ? Math.max(0, +c.saldo || 0) : (+c.b || 0) + (+c.m || 0);
+      return {
+        id: String(c.id || uid('a_')), nombre: String(c.nombre || 'Caja').trim() || 'Caja',
+        detalle: String(c.detalle || '').trim(), saldo,
+        movs: (Array.isArray(c.movs) ? c.movs : []).filter(m => m && typeof m === 'object').map(normMov)
+      };
+    }
+    let db = [];
+    try { const v = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(v)) db = v.filter(c => c && typeof c === 'object').map(normCaja); } catch (e) {}
+    const abiertos = new Set();
+    let cajaId = null, tipo = 'in', fmt = 'b', cajaFmt = 'b';
+    const guardar = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { alert('No pude guardar en este navegador. Haz un respaldo.'); } render(); };
 
     function render() {
-      let tb = 0, tm = 0;
-      db.forEach(c => { tb += c.b || 0; tm += c.m || 0; });
-      $('#s-total').textContent = money(tb + tm);
-      $('#s-bill').textContent = money(tb);
-      $('#s-mon').textContent = money(tm);
+      const total = db.reduce((s, c) => s + c.saldo, 0);
+      $('#s-total').textContent = money(total);
+      $('#s-sub').textContent = db.length ? `en ${db.length} caja${db.length === 1 ? '' : 's'}` : '';
 
       const cont = $('#lista');
       if (!db.length) {
@@ -196,19 +236,20 @@
       }
       cont.innerHTML = db.map(c => {
         const open = abiertos.has(c.id);
-        const movs = (c.movs || []).slice(0, 8).map(m => {
-          const det = m.b && m.m ? `Billetes ${money(m.b)} + Monedas ${money(m.m)}` : m.b ? 'Billetes' : 'Monedas';
+        const movs = c.movs.slice(0, 10).map(m => {
+          const det = [m.formato ? FMT[m.formato] : '', m.detalle].filter(Boolean).join(': ');
           return `<div class="mov ${m.tipo}">
-            <div><div class="mov-main">${m.tipo === 'in' ? '🟢 +' : '🔴 −'} ${money(m.b + m.m)}</div>
-            <div class="mov-sub">${det}${m.nota ? ' — ' + esc(m.nota) : ''} · ${esc(m.fecha)}</div></div>
+            <div><div class="mov-main">${m.tipo === 'in' ? '🟢 +' : '🔴 −'} ${money(m.monto)}</div>
+            ${det ? `<div class="mov-det">${esc(det)}</div>` : ''}
+            <div class="mov-sub">${m.nota ? esc(m.nota) + ' · ' : ''}${esc(m.fecha)}</div></div>
             <button class="btn-icon" data-act="delmov" data-id="${esc(c.id)}" data-mid="${esc(m.id)}" aria-label="Deshacer movimiento">🗑</button></div>`;
         }).join('') || '<div class="mov-sub" style="padding:6px 2px">Sin movimientos todavía.</div>';
         return `<div class="group-card">
           <div class="g-head">
-            <div><div class="g-title">🪙 ${esc(c.nombre)}</div><div class="g-saldo">${money((c.b||0) + (c.m||0))}</div></div>
-            <div><button class="btn-icon" data-act="edit" data-id="${esc(c.id)}">✎</button><button class="btn-icon" data-act="del" data-id="${esc(c.id)}">🗑</button></div>
+            <div><div class="g-title">🪙 ${esc(c.nombre)}</div><div class="g-saldo">${money(c.saldo)}</div></div>
+            <div><button class="btn-icon" data-act="edit" data-id="${esc(c.id)}" aria-label="Editar">✎</button><button class="btn-icon" data-act="del" data-id="${esc(c.id)}" aria-label="Eliminar">🗑</button></div>
           </div>
-          <div class="g-break"><span class="pill">💵 Billetes: ${money(c.b)}</span><span class="pill">🪙 Monedas: ${money(c.m)}</span></div>
+          ${c.detalle ? `<div class="g-info">📝 ${esc(c.detalle)}</div>` : ''}
           <div class="g-btns">
             <button class="btn btn-in" data-act="in" data-id="${esc(c.id)}">+ Ingresar Plata</button>
             <button class="btn btn-red" data-act="out" data-id="${esc(c.id)}">− Sacar Plata</button>
@@ -227,45 +268,62 @@
       if (a === 'movs') { abiertos.has(id) ? abiertos.delete(id) : abiertos.add(id); return render(); }
       if (a === 'in' || a === 'out') return abrirMov(id, a);
       if (a === 'edit') return abrirCaja(id);
-      if (a === 'del') { if (confirm('¿Eliminar esta caja y su historial?')) { db = db.filter(c => c.id !== id); guardar(); } return; }
+      if (a === 'del') { const c = db.find(x => x.id === id); if (confirm(`¿Eliminar "${c.nombre}" y su historial?`)) { db = db.filter(x => x.id !== id); guardar(); } return; }
       if (a === 'delmov') return deshacerMov(id, b.dataset.mid);
     });
 
-    /* Cajas */
+    /* ── Cajas ── */
+    function setCajaFmt() { $$('#caja-fmt .chip').forEach(c => c.classList.toggle('on', c.dataset.v === cajaFmt)); }
+    $('#caja-fmt').onclick = e => { const c = e.target.closest('.chip'); if (c) { cajaFmt = c.dataset.v; setCajaFmt(); } };
     function abrirCaja(id) {
       cajaId = id || null;
       const c = id ? db.find(x => x.id === id) : null;
-      $('#caja-titulo').textContent = c ? 'Editar Nombre' : 'Nueva Caja';
+      $('#caja-titulo').textContent = c ? 'Editar caja' : 'Nueva Caja';
       $('#caja-nombre').value = c ? c.nombre : '';
-      $('#caja-bill').value = ''; $('#caja-mon').value = '';
-      $('#caja-inicial').style.display = c ? 'none' : 'block';
+      $('#caja-detalle').value = c ? c.detalle : '';
+      $('#caja-sec').textContent = c ? 'Saldo' : 'Saldo inicial (opcional)';
+      $('#caja-monto-label').textContent = c ? 'Saldo actual ($)' : 'Monto ($)';
+      $('#caja-monto').value = c ? c.saldo : '';
+      $('#caja-hint').style.display = c ? 'block' : 'none';
+      $('#caja-fmt-box').style.display = c ? 'none' : 'block';
+      $('#caja-mdet').value = ''; cajaFmt = 'b'; setCajaFmt();
+      $('#caja-error').style.display = 'none';
       abrir('#modal-caja'); setTimeout(() => $('#caja-nombre').focus(), 150);
     }
     $('#btn-nueva').onclick = () => { vibrar(); abrirCaja(); };
     $('#btn-guardar-caja').onclick = () => {
       const nombre = $('#caja-nombre').value.trim(); if (!nombre) return;
       vibrar();
-      if (cajaId) db.find(x => x.id === cajaId).nombre = nombre;
-      else {
-        const b = num($('#caja-bill').value), m = num($('#caja-mon').value);
-        const c = { id: 'a_' + Date.now(), nombre, b, m, movs: [] };
-        if (b || m) c.movs.push({ id: 'm_' + Date.now(), tipo: 'in', b, m, nota: 'Saldo inicial', fecha: fecha() });
+      const detalle = $('#caja-detalle').value.trim(), monto = num($('#caja-monto').value);
+      if (cajaId) {
+        const c = db.find(x => x.id === cajaId);
+        c.nombre = nombre; c.detalle = detalle;
+        if (monto !== c.saldo) {
+          const dif = monto - c.saldo;
+          c.movs.unshift({ id: uid('m_'), tipo: dif > 0 ? 'in' : 'out', monto: Math.abs(dif), formato: '', detalle: '', nota: 'Ajuste de saldo', fecha: fecha() });
+          c.saldo = monto;
+        }
+      } else {
+        const c = { id: uid('a_'), nombre, detalle, saldo: monto, movs: [] };
+        if (monto) c.movs.push({ id: uid('m_'), tipo: 'in', monto, formato: cajaFmt, detalle: $('#caja-mdet').value.trim(), nota: 'Saldo inicial', fecha: fecha() });
         db.unshift(c);
       }
       cerrar(); guardar();
     };
 
-    /* Movimientos */
+    /* ── Movimientos ── */
     function setChips() {
       $$('#mov-tipo .chip').forEach(c => { c.classList.toggle('on', c.dataset.v === tipo); c.classList.toggle('out', tipo === 'out'); });
       $$('#mov-fmt .chip').forEach(c => c.classList.toggle('on', c.dataset.v === fmt));
-      $('#g-simple').style.display = fmt === 'x' ? 'none' : 'block';
-      $('#g-mixto').style.display = fmt === 'x' ? 'block' : 'none';
-      $('#mov-titulo').textContent = (tipo === 'in' ? 'Ingresar plata' : 'Sacar plata') + ' · ' + (db.find(c => c.id === cajaId) || {}).nombre;
+      const c = db.find(x => x.id === cajaId) || {};
+      $('#mov-titulo').textContent = (tipo === 'in' ? 'Ingresar plata' : 'Sacar plata') + ' · ' + (c.nombre || '');
+      const info = $('#mov-info');   /* al retirar, se recuerda qué hay guardado en la caja */
+      info.style.display = tipo === 'out' && c.detalle ? 'block' : 'none';
+      info.textContent = c.detalle ? `En esta caja: ${c.detalle}` : '';
     }
     function abrirMov(id, t) {
       cajaId = id; tipo = t; fmt = 'b';
-      ['#mov-monto', '#mov-mb', '#mov-mm', '#mov-nota'].forEach(s => $(s).value = '');
+      ['#mov-monto', '#mov-det', '#mov-nota'].forEach(s => $(s).value = '');
       $('#mov-error').style.display = 'none';
       setChips(); abrir('#modal-mov'); setTimeout(() => $('#mov-monto').focus(), 150);
     }
@@ -275,37 +333,30 @@
 
     $('#btn-confirmar').onclick = () => {
       const c = db.find(x => x.id === cajaId); if (!c) return;
-      let b = 0, m = 0;
-      if (fmt === 'x') { b = num($('#mov-mb').value); m = num($('#mov-mm').value); }
-      else if (fmt === 'b') b = num($('#mov-monto').value); else m = num($('#mov-monto').value);
-      if (!b && !m) return error('Escribe un monto mayor a $0.');
-      if (tipo === 'out') {
-        if (b > c.b) return error(`No hay suficientes billetes: esta caja tiene ${money(c.b)}.`);
-        if (m > c.m) return error(`No hay suficientes monedas: esta caja tiene ${money(c.m)}.`);
-      }
+      const monto = num($('#mov-monto').value);
+      if (!monto) return error('Escribe un monto mayor a $0.');
+      if (tipo === 'out' && monto > c.saldo) return error(`No alcanza: esta caja tiene ${money(c.saldo)}.`);
       vibrar();
-      const s = tipo === 'in' ? 1 : -1;
-      c.b += s * b; c.m += s * m;
-      c.movs.unshift({ id: 'm_' + Date.now(), tipo, b, m, nota: $('#mov-nota').value.trim(), fecha: fecha() });
+      c.saldo += tipo === 'in' ? monto : -monto;
+      c.movs.unshift({ id: uid('m_'), tipo, monto, formato: fmt, detalle: $('#mov-det').value.trim(), nota: $('#mov-nota').value.trim(), fecha: fecha() });
       abiertos.add(c.id); cerrar(); guardar();
     };
 
     function deshacerMov(id, mid) {
       const c = db.find(x => x.id === id), m = c.movs.find(x => x.id === mid); if (!m) return;
-      const s = m.tipo === 'in' ? -1 : 1;
-      if (c.b + s * m.b < 0 || c.m + s * m.m < 0) return alert('No se puede deshacer: el saldo quedaría negativo.');
+      const nuevo = c.saldo + (m.tipo === 'in' ? -m.monto : m.monto);
+      if (nuevo < 0) return alert('No se puede deshacer: el saldo quedaría negativo.');
       if (!confirm('¿Deshacer este movimiento? El saldo se ajusta.')) return;
-      c.b += s * m.b; c.m += s * m.m;
-      c.movs = c.movs.filter(x => x.id !== mid); guardar();
+      c.saldo = nuevo; c.movs = c.movs.filter(x => x.id !== mid); guardar();
     }
 
-    /* Modales */
+    /* ── Modales ── */
     const abrir = s => $(s).classList.add('active');
     function cerrar() { $$('.modal-overlay').forEach(m => m.classList.remove('active')); }
     document.addEventListener('click', e => { if (e.target.closest('[data-close]') || e.target.classList.contains('modal-overlay')) cerrar(); });
     window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
 
-    /* Respaldo */
+    /* ── Respaldo (acepta también respaldos antiguos) ── */
     $('#btn-exportar').onclick = () => {
       vibrar();
       const a = document.createElement('a');
@@ -320,10 +371,9 @@
       r.onload = ev => {
         try {
           const d = JSON.parse(ev.target.result);
-          if (!Array.isArray(d)) throw 0;
+          if (!Array.isArray(d) || d.some(c => !c || typeof c !== 'object')) throw 0;
           if (!confirm('Esto reemplaza tus ahorros actuales por los del archivo. ¿Continuar?')) return;
-          db = d.map(c => ({ id: c.id || 'a_' + Math.random().toString(36).slice(2), nombre: String(c.nombre || 'Caja'), b: +c.b || 0, m: +c.m || 0, movs: Array.isArray(c.movs) ? c.movs : [] }));
-          guardar(); alert('¡Ahorros cargados con éxito!');
+          db = d.map(normCaja); guardar(); alert('¡Ahorros cargados con éxito!');
         } catch (err) { alert('Archivo no válido.'); }
         e.target.value = '';
       };
@@ -331,19 +381,17 @@
     };
 
     function cargarDemo() {
-      const mk = (id, nombre, b, m, movs) => ({ id, nombre, b, m, movs });
       db = [
-        mk('a_1', 'Alcancía Gato', 30000, 15000, [
-          { id:'m1', tipo:'in', b:5000, m:0, nota:'Vuelto de la feria', fecha:'14 oct' },
-          { id:'m2', tipo:'in', b:0, m:1500, nota:'Monedas sueltas', fecha:'12 oct' },
-          { id:'m3', tipo:'out', b:0, m:2000, nota:'Panadería', fecha:'10 oct' }]),
-        mk('a_2', 'Sobre de emergencias', 90000, 0, [{ id:'m4', tipo:'in', b:90000, m:0, nota:'Saldo inicial', fecha:'01 oct' }]),
-        mk('a_3', 'Billetera', 0, 10000, [])
+        { id:'a_1', nombre:'Alcancía Gato', detalle:'Monedas de 100 y 500, más 3 billetes de 10 mil', saldo:45000, movs:[
+          { id:'m1', tipo:'in', monto:5000, formato:'b', detalle:'un billete de 5 mil', nota:'Vuelto de la feria', fecha:'14 oct' },
+          { id:'m2', tipo:'in', monto:1500, formato:'m', detalle:'monedas de 100 y 500', nota:'Monedas sueltas', fecha:'12 oct' },
+          { id:'m3', tipo:'out', monto:2000, formato:'m', detalle:'20 monedas de 100', nota:'Panadería', fecha:'10 oct' }] },
+        { id:'a_2', nombre:'Sobre de emergencias', detalle:'', saldo:90000, movs:[{ id:'m4', tipo:'in', monto:90000, formato:'b', detalle:'9 billetes de 10 mil', nota:'Saldo inicial', fecha:'01 oct' }] }
       ];
       guardar();
     }
 
-    /* Tema claro / oscuro (la clave app_tema se puede compartir con tus otras páginas) */
+    /* ── Tema claro / oscuro (clave compartida app_tema) ── */
     const mq = matchMedia('(prefers-color-scheme: dark)');
     const temaPref = () => { try { return localStorage.getItem('app_tema') || 'auto'; } catch (e) { return 'auto'; } };
     const oscuro = () => temaPref() === 'oscuro' || (temaPref() === 'auto' && mq.matches);
