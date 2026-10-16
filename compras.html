@@ -5,1026 +5,455 @@
   <title>Reposición & Compras</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#f8fafc">
+  <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --pink: #ec4899;
-      --pink-hover: #db2777;
-      --accent: #f8fafc;
-      --badge-bg: #f1f5f9;
-      --badge-text: #475569;
-    }
+    :root{color-scheme:light;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--p:#ec4899;--on-p:#fff;--p-soft:#fdf2f8;--p-line:#fbcfe8;--p-glow:rgba(236,72,153,.25);--soft:#f8fafc;--hover:#e2e8f0;--badge:#f1f5f9;--badge-ink:#475569;--ok:#047857;--ok-soft:#ecfdf5;--ok-line:#a7f3d0;--bad:#e11d48;--bad-soft:#fff1f2;--bad-line:#fecdd3;--price:#15803d;--price-soft:#dcfce7}
+    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--p:#f472b6;--on-p:#14121a;--p-soft:#3a1d2e;--p-line:#5b2a45;--p-glow:rgba(244,114,182,.25);--soft:#181521;--hover:#2d2939;--badge:#282434;--badge-ink:#bab2ca;--ok:#6ee7b7;--ok-soft:rgba(110,231,183,.14);--ok-line:rgba(110,231,183,.35);--bad:#fb7185;--bad-soft:rgba(251,113,133,.14);--bad-line:rgba(251,113,133,.35);--price:#86efac;--price-soft:rgba(134,239,172,.14)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+    body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:16px 14px 80px;-webkit-font-smoothing:antialiased}
+    .container{max-width:720px;margin:0 auto}
+    .top-bar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:18px;min-height:40px}
+    .sq{width:38px;height:38px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);color:var(--p);font-size:1.1rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.03)}
+    .sq.r{justify-self:end;color:var(--text)}
+    h1{font-size:1.35rem;font-weight:800;text-align:center;letter-spacing:-.3px}
+    .search-box{position:sticky;top:10px;z-index:20;background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:11px 15px;box-shadow:0 4px 20px rgba(15,23,42,.05);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .search-box:focus-within{border-color:var(--p);box-shadow:0 0 0 3px var(--p-glow)}
+    .search-input{border:none;outline:none;width:100%;font-size:.95rem;font-family:inherit;color:var(--text);background:transparent}
+    .btn-clear{border:none;background:none;cursor:pointer;color:var(--muted);font-size:1rem;display:none;padding:2px 6px}
+    .actions-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+    .btn{border:none;border-radius:12px;padding:10px 16px;font-weight:700;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:transform .15s}
+    .btn:active{transform:scale(.94)}
+    .btn-pink{background:var(--p);color:var(--on-p);box-shadow:0 4px 12px var(--p-glow)}
+    .btn-secondary{background:var(--card);border:1.5px solid var(--border);color:var(--text)}
+    .btn-add-item{background:var(--p-soft);border:1.5px dashed var(--p-line);color:var(--p);width:100%;margin:10px 0 12px}
+    .btn-buy{background:var(--ok-soft);border:1.5px solid var(--ok-line);color:var(--ok);width:100%;padding:8px}
+    .seg{display:flex;background:var(--badge);border-radius:14px;padding:3px;gap:2px;margin-bottom:12px}
+    .seg button{flex:1;padding:8px;border-radius:11px;border:none;background:none;font-weight:600;font-size:.82rem;font-family:inherit;color:var(--muted);cursor:pointer}
+    .seg button.on{background:var(--card);color:var(--p);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+    .chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;scrollbar-width:none}
+    .chips::-webkit-scrollbar{display:none}
+    .chip{flex:none;border:1.5px solid var(--border);background:var(--card);border-radius:99px;padding:7px 12px;font-weight:700;font-size:.78rem;font-family:inherit;color:var(--muted);cursor:pointer}
+    .chip.on{background:var(--p-soft);border-color:var(--p);color:var(--p)}
+    .chip em{font-style:normal;opacity:.7;margin-left:4px}
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      margin: 0;
-      padding: 0;
-    }
+    .card-list{display:flex;flex-direction:column;gap:12px}
+    .group-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(15,23,42,.03)}
+    .group-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;padding-bottom:10px;border-bottom:1px dashed var(--border)}
+    .group-header.static{cursor:default}
+    .group-title-box{display:flex;align-items:center;gap:8px}
+    .group-title{font-weight:700;font-size:1.02rem}
+    .group-count{font-size:.72rem;font-weight:700;background:var(--badge);color:var(--badge-ink);padding:3px 8px;border-radius:99px}
+    .chevron{font-size:.75rem;color:var(--muted);display:inline-block;transition:transform .25s}
+    .chevron.rotated{transform:rotate(-180deg)}
+    .items-container{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+    .item-row{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+    .item-top{display:flex;gap:12px;align-items:flex-start}
+    .grow{flex:1;min-width:0}
+    .nowrap{white-space:nowrap}
+    .thumbs{display:flex;flex-direction:column;gap:6px;flex:none}
+    .item-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--hover);border:1px solid var(--border);cursor:pointer;display:block}
+    .item-thumb.tienda{border:1.5px dashed var(--p)}
+    .item-name{font-weight:600;font-size:.93rem;margin-bottom:4px;overflow-wrap:anywhere}
+    .item-meta{font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+    .meta-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .ok-t{color:var(--ok)}
+    .badge{padding:2px 8px;border-radius:6px;font-weight:600;font-size:.72rem;display:inline-block;border:1px solid transparent}
+    .badge.cat{background:var(--badge);color:var(--badge-ink);border-color:var(--border);border-radius:99px}
+    .badge.ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+    .badge.bad{background:var(--bad-soft);color:var(--bad);border-color:var(--bad-line)}
+    .badge.price{background:var(--price-soft);color:var(--price)}
+    .badge.price.big{font-size:.82rem;padding:4px 10px}
+    .instr{background:var(--p-soft);color:var(--text);border-radius:8px;padding:6px 9px;font-size:.78rem;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+    .lnk{color:var(--p);font-weight:700;text-decoration:none;font-size:.78rem}
+    .btn-icon{background:none;border:none;cursor:pointer;padding:6px 8px;font-size:.88rem;color:var(--muted);border-radius:8px}
+    .btn-icon:hover{background:var(--hover);color:var(--text)}
+    .vacio{text-align:center;color:var(--muted);padding:50px 0;font-size:.9rem;line-height:1.6}
 
-    body {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 16px 14px 80px;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .top-bar {
-      display: grid;
-      grid-template-columns: 44px 1fr 44px;
-      align-items: center;
-      margin-bottom: 20px;
-      min-height: 40px;
-    }
-
-    .btn-back {
-      text-decoration: none;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--pink);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: #ffffff;
-      border: 1.5px solid var(--border);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-    }
-
-    h1 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      text-align: center;
-      color: var(--text);
-      letter-spacing: -0.3px;
-    }
-
-    .search-box {
-      position: sticky;
-      top: 10px;
-      z-index: 20;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 11px 15px;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .search-box:focus-within {
-      border-color: var(--pink);
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
-    }
-
-    .search-input {
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 0.95rem;
-      font-family: inherit;
-      color: var(--text);
-      background: transparent;
-    }
-
-    .btn-clear {
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 1rem;
-      display: none;
-      padding: 2px 6px;
-    }
-
-    .actions-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      gap: 8px;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 0.82rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: inherit;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn:active {
-      transform: scale(0.94);
-    }
-
-    .btn-pink {
-      background: var(--pink);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25);
-    }
-
-    .btn-secondary {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      color: var(--text);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-    }
-
-    .btn-add-item {
-      background: #fdf2f8;
-      border: 1.5px dashed #fbcfe8;
-      color: var(--pink);
-      width: 100%;
-      justify-content: center;
-      padding: 9px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 0.84rem;
-      margin: 10px 0 12px;
-    }
-
-    .card-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .group-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 14px 16px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-    }
-
-    .group-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      user-select: none;
-      padding-bottom: 10px;
-      border-bottom: 1px dashed var(--border);
-    }
-
-    .group-title-box {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .group-title {
-      font-weight: 700;
-      font-size: 1.02rem;
-      color: var(--text);
-    }
-
-    .group-count {
-      font-size: 0.72rem;
-      font-weight: 700;
-      background: var(--badge-bg);
-      color: var(--badge-text);
-      padding: 3px 8px;
-      border-radius: 99px;
-    }
-
-    .chevron {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      display: inline-block;
-    }
-
-    .chevron.rotated {
-      transform: rotate(-180deg);
-    }
-
-    .items-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .item-row {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .item-content-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-    }
-
-    .item-thumb {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      object-fit: cover;
-      background: #e2e8f0;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .item-name {
-      font-weight: 600;
-      font-size: 0.93rem;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-
-    .badge-categoria {
-      background: #f1f5f9;
-      color: #64748b;
-      border: 1px solid #e2e8f0;
-      padding: 2px 8px;
-      border-radius: 99px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .item-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .meta-line {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .badge-price {
-      background: #dcfce7;
-      color: #15803d;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 0.7rem;
-    }
-
-    .badge-repuesto-si {
-      background: #ecfdf5;
-      color: #047857;
-      border: 1px solid #a7f3d0;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.75rem;
-      display: inline-block;
-    }
-
-    .badge-repuesto-no {
-      background: #fff1f2;
-      color: #e11d48;
-      border: 1px solid #fecdd3;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.75rem;
-      display: inline-block;
-    }
-
-    .btn-icon {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px 8px;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      border-radius: 8px;
-    }
-
-    .btn-icon:hover {
-      background: #e2e8f0;
-      color: var(--text);
-    }
-
-    .search-results-box {
-      margin-bottom: 20px;
-      display: none;
-    }
-
-    .search-title {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 8px;
-    }
-
-    /* Modales */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      z-index: 100;
-      padding: 20px 14px 40px;
-      overflow-y: auto;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal {
-      background: #ffffff;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 420px;
-      padding: 22px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
-      transform: translateY(16px) scale(0.96);
-      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-      margin-top: 24px;
-    }
-
-    .modal-overlay.active .modal {
-      transform: translateY(0) scale(1);
-    }
-
-    .modal h3 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 14px;
-    }
-
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-    }
-
-    .form-input, .form-select {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 11px 13px;
-      font-size: 0.92rem;
-      font-family: inherit;
-      outline: none;
-      color: var(--text);
-      background: #fff;
-    }
-
-    .form-input:focus, .form-select:focus {
-      border-color: var(--pink);
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
-    }
-
-    /* Caja para capturar y mostrar vista previa de la foto */
-    .photo-upload-box {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    .preview-box {
-      width: 58px;
-      height: 58px;
-      border-radius: 12px;
-      border: 1.5px dashed var(--border);
-      background: #f8fafc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .preview-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .btn-remove-photo {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      border: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      font-size: 10px;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 18px;
-    }
-
-    /* Modal Visor de Imagen Completa */
-    #modal-viewer img {
-      width: 100%;
-      border-radius: 14px;
-      max-height: 70vh;
-      object-fit: contain;
-    }
+    .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;z-index:100;padding:20px 14px 40px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .22s}
+    .modal-overlay.active{opacity:1;pointer-events:auto}
+    .modal{background:var(--card);border-radius:20px;width:100%;max-width:420px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.16);transform:translateY(16px) scale(.96);transition:transform .24s cubic-bezier(.16,1,.3,1);margin-top:24px}
+    .modal-overlay.active .modal{transform:none}
+    .modal h3{font-size:1.15rem;font-weight:800;margin-bottom:14px}
+    .sec{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:16px 0 8px;padding-top:12px;border-top:1px dashed var(--border)}
+    .form-group{margin-bottom:12px}
+    .form-label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin-bottom:5px}
+    .form-input,.form-select,.form-area{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:.92rem;font-family:inherit;outline:none;color:var(--text);background:var(--card)}
+    .form-area{min-height:78px;resize:vertical;line-height:1.45}
+    .form-input:focus,.form-select:focus,.form-area:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--p-glow)}
+    .check{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.86rem;padding:10px 12px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer}
+    .check input{width:18px;height:18px;accent-color:var(--p)}
+    .photo-row{display:flex;align-items:center;gap:12px}
+    .pbox{width:58px;height:58px;border-radius:12px;border:1.5px dashed var(--border);background:var(--soft);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;flex-shrink:0}
+    .pbox .ph{font-size:1.2rem;color:var(--muted)}
+    .pbox img{width:100%;height:100%;object-fit:cover;display:none}
+    .pbox .rm{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;width:18px;height:18px;border-radius:50%;font-size:10px;cursor:pointer;display:none;align-items:center;justify-content:center}
+    .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+    #modal-viewer img{width:100%;border-radius:14px;max-height:70vh;object-fit:contain}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:.82rem;font-weight:600;z-index:200;transition:all .25s;max-width:calc(100% - 28px)}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
   </style>
 </head>
 <body>
-
   <div class="container">
     <div class="top-bar">
-      <a href="index.html" class="btn-back" title="Volver al menú">←</a>
+      <a href="index.html" class="sq" title="Volver al menú">←</a>
       <h1>Reposición & Compras</h1>
-      <div></div>
+      <button class="sq r" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
     </div>
 
     <div class="search-box">
       <span>🔍</span>
-      <input type="text" id="busqueda" class="search-input" placeholder="Buscar producto...">
+      <input type="text" id="busqueda" class="search-input" placeholder="Buscar producto, tienda, instrucción..." autocomplete="off">
       <button id="btn-limpiar" class="btn-clear">✕</button>
     </div>
 
     <div class="actions-row">
-      <button class="btn btn-pink" onclick="abrirModalCat()">+ Nueva Categoría</button>
-      <div style="display: flex; gap: 6px;">
+      <button class="btn btn-pink" id="btn-nueva-cat">+ Nueva Categoría</button>
+      <div style="display:flex;gap:6px">
         <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
         <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
-        <input type="file" id="file-input" style="display: none;" accept=".json">
+        <input type="file" id="file-input" style="display:none" accept=".json">
       </div>
     </div>
 
-    <div id="search-box-results" class="search-results-box">
-      <div class="search-title">Resultados</div>
-      <div id="search-items"></div>
+    <div class="seg" id="vista">
+      <button data-v="cat">📁 Por categoría</button>
+      <button data-v="tienda">🏪 Por tienda (lista de compras)</button>
+    </div>
+    <div class="chips" id="chips">
+      <button class="chip" data-f="todos">Todos<em></em></button>
+      <button class="chip" data-f="falta">Falta comprar<em></em></button>
+      <button class="chip" data-f="tengo">Tengo repuesto<em></em></button>
+      <button class="chip" data-f="urgente">⚡ Urgente<em></em></button>
     </div>
 
-    <div id="contenedor-compras" class="card-list"></div>
+    <div id="lista" class="card-list"></div>
   </div>
 
   <!-- Modal Categoría -->
-  <div class="modal-overlay" id="modal-cat" onclick="cerrarSiFondo(event)">
+  <div class="modal-overlay" id="modal-cat">
     <div class="modal">
-      <h3 id="modal-cat-titulo">Nueva Categoría</h3>
+      <h3 id="cat-titulo">Nueva Categoría</h3>
       <div class="form-group">
         <label class="form-label">Nombre de Categoría</label>
-        <input type="text" id="cat-nombre" class="form-input" placeholder="Ej: Skincare, Higiene, Limpieza...">
+        <input type="text" id="cat-nombre" class="form-input" placeholder="Ej: Skincare, Higiene, Limpieza..." autocomplete="off">
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
+        <button class="btn btn-secondary" data-close>Cancelar</button>
         <button class="btn btn-pink" id="btn-guardar-cat">Guardar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Producto con Cámara -->
-  <div class="modal-overlay" id="modal-item" onclick="cerrarSiFondo(event)">
+  <!-- Modal Producto -->
+  <div class="modal-overlay" id="modal-item">
     <div class="modal">
-      <h3 id="modal-item-titulo">Registrar Producto</h3>
+      <h3 id="item-titulo">Registrar Producto</h3>
       <div class="form-group">
         <label class="form-label">Nombre del Producto</label>
-        <input type="text" id="p-nombre" class="form-input" placeholder="Ej: Jabón Dove, Crema facial...">
+        <input type="text" id="p-nombre" class="form-input" placeholder="Ej: Jabón Dove, Crema facial..." autocomplete="off">
       </div>
-
       <div class="form-group">
         <label class="form-label">¿Tienes repuesto de este producto?</label>
-        <select id="p-tiene-repuesto" class="form-select" onchange="cambiarVistaFormulario()">
+        <select id="p-tiene" class="form-select">
           <option value="si">Sí, ya tengo un repuesto guardado</option>
           <option value="no">No tengo repuesto (tengo que comprar)</option>
         </select>
       </div>
 
-      <!-- CASO A: TIENE REPUESTO -->
-      <div id="bloque-lugar-repuesto">
-        <div class="form-group">
-          <label class="form-label">¿Dónde está guardado el repuesto?</label>
-          <input type="text" id="p-lugar-repuesto" class="form-input" placeholder="Ej: Caja con cordel, Cajón del medio...">
-        </div>
-        <div class="form-group">
-          <label class="form-label">¿Cuánto repuesto hay guardado?</label>
-          <input type="text" id="p-cantidad-repuesto" class="form-input" placeholder="Ej: 1 caja sellada, 3 bolsas...">
-        </div>
+      <div id="bloque-si">
+        <div class="form-group"><label class="form-label">¿Dónde está guardado el repuesto?</label><input id="p-lugar" class="form-input" placeholder="Ej: Caja con cordel, Cajón del medio..." autocomplete="off"></div>
+        <div class="form-group"><label class="form-label">¿Cuánto repuesto hay guardado?</label><input id="p-cantrep" class="form-input" placeholder="Ej: 1 caja sellada, 3 bolsas..." autocomplete="off"></div>
+      </div>
+      <div id="bloque-no" style="display:none">
+        <div class="form-group"><label class="form-label">¿Cuánto te queda actualmente?</label><input id="p-queda" class="form-input" placeholder="Ej: casi nada, último concho..." autocomplete="off"></div>
+        <div class="form-group"><label class="form-label">¿Cuándo comprarlo?</label><input id="p-cuando" class="form-input" placeholder="Ej: fin de mes, esta semana..." autocomplete="off"></div>
+        <div class="form-group"><label class="check"><input type="checkbox" id="p-urgente"> ⚡ Comprar pronto (urgente)</label></div>
       </div>
 
-      <!-- CASO B: NO TIENE REPUESTO -->
-      <div id="bloque-datos-compra" style="display: none;">
-        <div class="form-group">
-          <label class="form-label">¿Cuánto te queda actualmente?</label>
-          <input type="text" id="p-queda" class="form-input" placeholder="Ej: casi nada, último concho...">
-        </div>
-        <div class="form-group">
-          <label class="form-label">¿Cuándo comprarlo?</label>
-          <input type="text" id="p-cuando" class="form-input" placeholder="Ej: fin de mes, esta semana...">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Precio estimado ($)</label>
-          <input type="text" id="p-precio" class="form-input" placeholder="Ej: 4.000">
-        </div>
-        <div class="form-group">
-          <label class="form-label">¿Dónde comprarlo?</label>
-          <input type="text" id="p-donde" class="form-input" placeholder="Ej: DBS, Cruz Verde...">
-        </div>
-      </div>
-
-      <!-- Sección Foto -->
+      <div class="sec">Cómo / dónde comprarlo (opcional)</div>
+      <div class="form-group"><label class="form-label">¿Dónde comprarlo? (tienda)</label><input id="p-donde" class="form-input" placeholder="Ej: DBS, Cruz Verde..." autocomplete="off"></div>
+      <div class="form-group"><label class="form-label">Precio estimado ($)</label><input id="p-precio" class="form-input" inputmode="numeric" placeholder="Ej: 4.000" autocomplete="off"></div>
+      <div class="form-group"><label class="form-label">Instrucciones / qué recordar</label><textarea id="p-instr" class="form-area" placeholder="Ej: Local del segundo piso, pasillo 4. El de tapa azul, no el rosado. Pedir en mostrador."></textarea></div>
+      <div class="form-group"><label class="form-label">Enlace (tienda online o ubicación en Maps)</label><input id="p-enlace" class="form-input" inputmode="url" autocapitalize="off" placeholder="https://..." autocomplete="off"></div>
       <div class="form-group">
-        <label class="form-label">Foto del producto (Opcional)</label>
-        <div class="photo-upload-box">
-          <div class="preview-box" id="p-preview-box">
-            <span id="p-preview-placeholder" style="font-size: 1.2rem; color: #94a3b8;">📷</span>
-            <img id="p-preview-img" style="display: none;" alt="Foto">
-            <button class="btn-remove-photo" id="btn-remove-p-photo" onclick="quitarFoto()">✕</button>
-          </div>
-          <button type="button" class="btn btn-secondary" onclick="document.getElementById('input-p-foto').click()">
-            📸 Tomar / Elegir Foto
-          </button>
-          <input type="file" id="input-p-foto" style="display: none;" accept="image/*" onchange="procesarFoto(event)">
+        <label class="form-label">Foto de dónde comprarlo (estante, local, fachada)</label>
+        <div class="photo-row">
+          <div class="pbox" data-k="fotoTienda"><span class="ph">🏪</span><img alt=""><button type="button" class="rm" data-rm="fotoTienda">✕</button></div>
+          <button type="button" class="btn btn-secondary" data-pick="fotoTienda">📸 Tomar / Elegir</button>
+          <input type="file" class="pfile" data-k="fotoTienda" accept="image/*" hidden>
+        </div>
+      </div>
+
+      <div class="sec">Foto del producto</div>
+      <div class="form-group">
+        <div class="photo-row">
+          <div class="pbox" data-k="foto"><span class="ph">📷</span><img alt=""><button type="button" class="rm" data-rm="foto">✕</button></div>
+          <button type="button" class="btn btn-secondary" data-pick="foto">📸 Tomar / Elegir</button>
+          <input type="file" class="pfile" data-k="foto" accept="image/*" hidden>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
+        <button class="btn btn-secondary" data-close>Cancelar</button>
         <button class="btn btn-pink" id="btn-guardar-item">Guardar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Visor de Imagen -->
-  <div class="modal-overlay" id="modal-viewer" onclick="cerrarSiFondo(event)">
-    <div class="modal" style="text-align: center; max-width: 440px;">
-      <h3 id="viewer-title" style="margin-bottom: 10px;">Foto</h3>
-      <img id="viewer-img" src="" alt="Vista previa grande">
-      <div class="modal-footer" style="justify-content: center; margin-top: 14px;">
-        <button class="btn btn-secondary" onclick="cerrarModales()">Cerrar</button>
+  <!-- Modal "Ya lo compré" -->
+  <div class="modal-overlay" id="modal-bought">
+    <div class="modal">
+      <h3 id="bought-titulo">Ya lo compré</h3>
+      <div class="form-group"><label class="form-label">¿Cuánto compraste / queda de repuesto?</label><input id="b-cant" class="form-input" placeholder="Ej: 2 unidades, 1 caja sellada..." autocomplete="off"></div>
+      <div class="form-group"><label class="form-label">¿Dónde lo guardaste?</label><input id="b-lugar" class="form-input" placeholder="Ej: Cajón del medio..." autocomplete="off"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close>Cancelar</button>
+        <button class="btn btn-pink" id="btn-confirmar-compra">Confirmar</button>
       </div>
     </div>
   </div>
 
+  <!-- Visor de imagen -->
+  <div class="modal-overlay" id="modal-viewer">
+    <div class="modal" style="text-align:center;max-width:440px">
+      <h3 id="viewer-title" style="margin-bottom:10px">Foto</h3>
+      <img id="viewer-img" src="" alt="Vista previa grande">
+      <div class="modal-footer" style="justify-content:center;margin-top:14px"><button class="btn btn-secondary" data-close>Cerrar</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
   <script>
-    let db = JSON.parse(localStorage.getItem('org_compras') || '[]');
-    let colapso = JSON.parse(localStorage.getItem('colapso_compras') || '{}');
-    let activoId = null;
-    let itemActivoId = null;
-    let fotoTemporalBase64 = null;
+    const KEY = 'org_compras', CKEY = 'colapso_compras';
+    const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } };
+    let db = leer(KEY, []); if (!Array.isArray(db)) db = [];
+    let colapso = leer(CKEY, {});
+    let vista = 'cat', filtro = 'todos', catId = null, itemId = null;
+    const fotos = { foto: null, fotoTienda: null };
 
-    function vibrar() {
-      if (navigator.vibrate) navigator.vibrate(10);
-    }
-
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    const num = v => parseInt(String(v).replace(/\D/g, ''), 10) || 0;
+    const vibrar = () => { if (navigator.vibrate) navigator.vibrate(10); };
+    const urlOk = u => { u = (u || '').trim(); if (!u) return ''; if (!/^https?:\/\//i.test(u)) u = 'https://' + u; try { const x = new URL(u); return x.hostname.includes('.') ? x.href : ''; } catch (e) { return ''; } };
+    let tt; function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 2400); }
     function guardar() {
-      localStorage.setItem('org_compras', JSON.stringify(db));
-      renderizar();
+      try { localStorage.setItem(KEY, JSON.stringify(db)); }
+      catch (e) { alert('No hay más espacio en el navegador. Haz un respaldo y quita algunas fotos.'); }
+      render();
     }
 
-    function cambiarVistaFormulario() {
-      const tieneRep = document.getElementById('p-tiene-repuesto').value === 'si';
-      document.getElementById('bloque-lugar-repuesto').style.display = tieneRep ? 'block' : 'none';
-      document.getElementById('bloque-datos-compra').style.display = tieneRep ? 'none' : 'block';
-    }
-
-    // Comprime la imagen en un Canvas a máx 500px y baja el peso a ~30-50KB
-    function procesarFoto(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
+    /* ── Fotos ── */
+    function comprimir(file, max, cb) {
+      const r = new FileReader();
+      r.onload = e => {
         const img = new Image();
         img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxDim = 500;
-          let width = img.width;
-          let height = img.height;
-
-          if (width > height) {
-            if (width > maxDim) {
-              height = Math.round((height * maxDim) / width);
-              width = maxDim;
-            }
-          } else {
-            if (height > maxDim) {
-              width = Math.round((width * maxDim) / height);
-              height = maxDim;
-            }
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-
-          fotoTemporalBase64 = canvas.toDataURL('image/jpeg', 0.65);
-          mostrarFotoEnPreview(fotoTemporalBase64);
+          const k = Math.min(1, max / Math.max(img.width, img.height));
+          const w = Math.round(img.width * k), h = Math.round(img.height * k);
+          const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+          cv.getContext('2d').drawImage(img, 0, 0, w, h);
+          cb(cv.toDataURL('image/jpeg', .65));
         };
         img.src = e.target.result;
       };
-      reader.readAsDataURL(file);
+      r.readAsDataURL(file);
+    }
+    function setPrev(k) {
+      const b = $(`.pbox[data-k="${k}"]`), src = fotos[k], im = b.querySelector('img');
+      im.src = src || ''; im.style.display = src ? 'block' : 'none';
+      b.querySelector('.ph').style.display = src ? 'none' : 'block';
+      b.querySelector('.rm').style.display = src ? 'flex' : 'none';
+    }
+    document.addEventListener('click', e => {
+      const p = e.target.closest('[data-pick]'); if (p) $(`.pfile[data-k="${p.dataset.pick}"]`).click();
+      const r = e.target.closest('[data-rm]'); if (r) { fotos[r.dataset.rm] = null; $(`.pfile[data-k="${r.dataset.rm}"]`).value = ''; setPrev(r.dataset.rm); }
+    });
+    $$('.pfile').forEach(inp => inp.onchange = e => {
+      const f = e.target.files[0]; if (!f) return;
+      comprimir(f, inp.dataset.k === 'fotoTienda' ? 640 : 500, d => { fotos[inp.dataset.k] = d; setPrev(inp.dataset.k); });
+    });
+    function verFoto(src, titulo) { $('#viewer-img').src = src; $('#viewer-title').textContent = titulo || 'Foto'; abrir('#modal-viewer'); }
+
+    /* ── Render ── */
+    const pasa = it => { const si = it.tieneRepuesto === 'si'; return filtro === 'todos' || (filtro === 'falta' && !si) || (filtro === 'tengo' && si) || (filtro === 'urgente' && !si && it.urgente); };
+
+    function itemHTML(c, it, showCat) {
+      const si = it.tieneRepuesto === 'si', cant = it.cantidadRepuesto || (si ? it.queda : ''), link = urlOk(it.enlace);
+      const d = `data-c="${esc(c.id)}" data-i="${esc(it.id)}"`;
+      const th = (k, t) => it[k] ? `<img src="${it[k]}" class="item-thumb${k === 'fotoTienda' ? ' tienda' : ''}" data-act="foto" ${d} data-k="${k}" alt="${t}" title="${t}">` : '';
+      const meta = si
+        ? `<div class="meta-line"><span class="badge ok">Repuesto en: <b>${esc(it.lugarRepuesto || 'Guardado')}</b></span></div>${cant ? `<div class="meta-line ok-t">Hay de repuesto: <b>${esc(cant)}</b></div>` : ''}`
+        : `<div class="meta-line"><span class="badge bad">Falta comprar</span>${it.queda ? `<span>Queda: <b>${esc(it.queda)}</b></span>` : ''}</div>
+           <div class="meta-line">${it.cuando ? `<span>Comprar: <b>${esc(it.cuando)}</b></span>` : ''}${it.donde ? `<span>En: <b>${esc(it.donde)}</b></span>` : ''}${it.precio ? `<span class="badge price">$${esc(it.precio)}</span>` : ''}</div>`;
+      return `<div class="item-row"><div class="item-top">
+        <div class="thumbs">${th('foto', 'Producto')}${th('fotoTienda', 'Dónde comprarlo')}</div>
+        <div class="grow"><div class="item-name">${esc(it.nombre)}${!si && it.urgente ? ' <span class="badge bad">⚡ Urgente</span>' : ''}${showCat ? ` <span class="badge cat">${esc(c.nombre)}</span>` : ''}</div>
+          <div class="item-meta">${meta}${it.instrucciones ? `<div class="instr">📍 ${esc(it.instrucciones)}</div>` : ''}${link ? `<a class="lnk" href="${esc(link)}" target="_blank" rel="noopener noreferrer">🔗 Abrir enlace</a>` : ''}</div></div>
+        <div class="nowrap"><button class="btn-icon" data-act="edit" ${d}>✎</button><button class="btn-icon" data-act="del" ${d}>🗑</button></div></div>
+        ${!si ? `<button class="btn btn-buy" data-act="bought" ${d}>✓ Ya lo compré</button>` : ''}</div>`;
     }
 
-    function mostrarFotoEnPreview(src) {
-      const img = document.getElementById('p-preview-img');
-      const placeholder = document.getElementById('p-preview-placeholder');
-      const btnRemove = document.getElementById('btn-remove-p-photo');
-      if (src) {
-        img.src = src;
-        img.style.display = 'block';
-        placeholder.style.display = 'none';
-        btnRemove.style.display = 'flex';
-      } else {
-        img.src = '';
-        img.style.display = 'none';
-        placeholder.style.display = 'block';
-        btnRemove.style.display = 'none';
-      }
-    }
-
-    function quitarFoto() {
-      fotoTemporalBase64 = null;
-      document.getElementById('input-p-foto').value = '';
-      mostrarFotoEnPreview(null);
-    }
-
-    function verFotoGrande(src, nombre) {
-      document.getElementById('viewer-img').src = src;
-      document.getElementById('viewer-title').textContent = nombre || 'Foto';
-      document.getElementById('modal-viewer').classList.add('active');
-    }
-
-    function renderizar() {
-      const cont = document.getElementById('contenedor-compras');
-      cont.innerHTML = '';
-      if (db.length === 0) {
-        cont.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:50px 0;font-size:0.9rem;">No hay categorías creadas.<br>Toca <b>+ Nueva Categoría</b> para comenzar.</div>`;
-        return;
-      }
-      db.forEach(cat => {
-        const div = document.createElement('div');
-        div.className = 'group-card';
-        div.setAttribute('data-id', cat.id);
-        const cant = cat.items ? cat.items.length : 0;
-        const col = !!colapso[cat.id];
-
-        let itemsHTML = '';
-        if (cant > 0) {
-          cat.items.forEach(it => {
-            const tieneRep = it.tieneRepuesto === 'si';
-            const cantRep = it.cantidadRepuesto || (tieneRep ? it.queda : '');
-
-            itemsHTML += `
-              <div class="item-row">
-                <div class="item-content-wrapper">
-                  ${it.foto ? `<img src="${it.foto}" class="item-thumb" onclick="verFotoGrande('${it.foto}', '${it.nombre}')" alt="Foto">` : ''}
-                  <div style="flex:1;">
-                    <div class="item-name">${it.nombre}</div>
-                    <div class="item-meta">
-                      ${tieneRep 
-                        ? `<div class="meta-line">
-                             <span class="badge-repuesto-si">Repuesto en: <b>${it.lugarRepuesto || 'Guardado'}</b></span>
-                           </div>
-                           ${cantRep ? `<div class="meta-line" style="color:#047857;">Hay de repuesto: <b>${cantRep}</b></div>` : ''}`
-                        : `<div class="meta-line">
-                             <span class="badge-repuesto-no">Falta comprar</span>
-                             ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
-                           </div>
-                           <div class="meta-line">
-                             ${it.cuando ? `<span>Comprar: <b>${it.cuando}</b></span>` : ''}
-                             ${it.donde ? `<span>En: <b>${it.donde}</b></span>` : ''}
-                             ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
-                           </div>`}
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <button class="btn-icon" onclick="editarItem('${cat.id}', '${it.id}')">✎</button>
-                  <button class="btn-icon" onclick="eliminarItem('${cat.id}', '${it.id}')">🗑</button>
-                </div>
-              </div>`;
-          });
-        } else {
-          itemsHTML = `<div style="font-size:0.8rem;color:var(--text-muted);font-style:italic;padding:4px 0;">Sin productos registrados.</div>`;
-        }
-
-        div.innerHTML = `
-          <div class="group-header" onclick="toggleColapso('${cat.id}')">
-            <div class="group-title-box">
-              <span class="group-title">${cat.nombre}</span>
-              <span class="group-count">${cant}</span>
-            </div>
-            <div onclick="event.stopPropagation()">
-              <button class="btn-icon" onclick="editarCat('${cat.id}')">✎</button>
-              <button class="btn-icon" onclick="eliminarCat('${cat.id}')">🗑</button>
-              <span class="chevron ${col ? 'rotated' : ''}" onclick="toggleColapso('${cat.id}')">▼</span>
-            </div>
-          </div>
-          <div style="${col ? 'display:none;' : ''}">
-            <button class="btn btn-add-item" onclick="nuevoItem('${cat.id}')">+ Agregar producto a ${cat.nombre}</button>
-            <div class="items-container">${itemsHTML}</div>
-          </div>`;
-        cont.appendChild(div);
-      });
-    }
-
-    function toggleColapso(id) {
-      vibrar();
-      colapso[id] = !colapso[id];
-      localStorage.setItem('colapso_compras', JSON.stringify(colapso));
-      renderizar();
-    }
-
-    function abrirModalCat() {
-      vibrar();
-      activoId = null;
-      document.getElementById('modal-cat-titulo').textContent = 'Nueva Categoría';
-      document.getElementById('cat-nombre').value = '';
-      document.getElementById('modal-cat').classList.add('active');
-      setTimeout(() => document.getElementById('cat-nombre').focus(), 150);
-    }
-
-    function editarCat(id) {
-      vibrar();
-      activoId = id;
-      const c = db.find(x => x.id === id);
-      document.getElementById('modal-cat-titulo').textContent = 'Editar Categoría';
-      document.getElementById('cat-nombre').value = c.nombre;
-      document.getElementById('modal-cat').classList.add('active');
-      setTimeout(() => document.getElementById('cat-nombre').focus(), 150);
-    }
-
-    document.getElementById('btn-guardar-cat').onclick = () => {
-      const val = document.getElementById('cat-nombre').value.trim();
-      if (!val) return;
-      vibrar();
-      if (activoId) {
-        db.find(x => x.id === activoId).nombre = val;
-      } else {
-        db.unshift({ id: 'cat_' + Date.now(), nombre: val, items: [] });
-      }
-      cerrarModales(); 
-      guardar();
-    };
-
-    function eliminarCat(id) {
-      vibrar();
-      if (confirm('¿Eliminar esta categoría y sus productos?')) {
-        db = db.filter(x => x.id !== id);
-        guardar();
-      }
-    }
-
-    function nuevoItem(catId) {
-      vibrar();
-      activoId = catId; 
-      itemActivoId = null;
-      fotoTemporalBase64 = null;
-      document.getElementById('modal-item-titulo').textContent = 'Registrar Producto';
-      document.getElementById('p-nombre').value = '';
-      document.getElementById('p-tiene-repuesto').value = 'si';
-      document.getElementById('p-lugar-repuesto').value = '';
-      document.getElementById('p-cantidad-repuesto').value = '';
-      document.getElementById('p-queda').value = '';
-      document.getElementById('p-cuando').value = '';
-      document.getElementById('p-precio').value = '';
-      document.getElementById('p-donde').value = '';
-      document.getElementById('input-p-foto').value = '';
-      mostrarFotoEnPreview(null);
-      cambiarVistaFormulario();
-      document.getElementById('modal-item').classList.add('active');
-      setTimeout(() => document.getElementById('p-nombre').focus(), 150);
-    }
-
-    function editarItem(catId, itemId) {
-      vibrar();
-      activoId = catId; 
-      itemActivoId = itemId;
-      const it = db.find(x => x.id === catId).items.find(x => x.id === itemId);
-      document.getElementById('modal-item-titulo').textContent = 'Editar Producto';
-      document.getElementById('p-nombre').value = it.nombre;
-      document.getElementById('p-tiene-repuesto').value = it.tieneRepuesto || 'si';
-      document.getElementById('p-lugar-repuesto').value = it.lugarRepuesto || '';
-      document.getElementById('p-cantidad-repuesto').value = it.cantidadRepuesto || (it.tieneRepuesto === 'si' ? (it.queda || '') : '');
-      document.getElementById('p-queda').value = it.tieneRepuesto === 'no' ? (it.queda || '') : '';
-      document.getElementById('p-cuando').value = it.cuando || '';
-      document.getElementById('p-precio').value = it.precio || '';
-      document.getElementById('p-donde').value = it.donde || '';
-      fotoTemporalBase64 = it.foto || null;
-      document.getElementById('input-p-foto').value = '';
-      mostrarFotoEnPreview(fotoTemporalBase64);
-      cambiarVistaFormulario();
-      document.getElementById('modal-item').classList.add('active');
-      setTimeout(() => document.getElementById('p-nombre').focus(), 150);
-    }
-
-    document.getElementById('btn-guardar-item').onclick = () => {
-      const nom = document.getElementById('p-nombre').value.trim();
-      if (!nom) return alert('Ingresa el nombre del producto');
-      vibrar();
-      const cat = db.find(x => x.id === activoId);
-      const tieneRep = document.getElementById('p-tiene-repuesto').value;
-
-      const datos = {
-        nombre: nom,
-        tieneRepuesto: tieneRep,
-        lugarRepuesto: tieneRep === 'si' ? document.getElementById('p-lugar-repuesto').value.trim() : '',
-        cantidadRepuesto: tieneRep === 'si' ? document.getElementById('p-cantidad-repuesto').value.trim() : '',
-        queda: tieneRep === 'no' ? document.getElementById('p-queda').value.trim() : '',
-        cuando: tieneRep === 'no' ? document.getElementById('p-cuando').value.trim() : '',
-        precio: tieneRep === 'no' ? document.getElementById('p-precio').value.trim() : '',
-        donde: tieneRep === 'no' ? document.getElementById('p-donde').value.trim() : '',
-        foto: fotoTemporalBase64
-      };
-
-      if (itemActivoId) {
-        const it = cat.items.find(x => x.id === itemActivoId);
-        Object.assign(it, datos);
-      } else {
-        if (!cat.items) cat.items = [];
-        cat.items.unshift({ id: 'p_' + Date.now(), ...datos });
-      }
-      cerrarModales(); 
-      guardar();
-
-      if (document.getElementById('busqueda').value.trim()) {
-        document.getElementById('busqueda').dispatchEvent(new Event('input'));
-      }
-    };
-
-    function eliminarItem(catId, itemId) {
-      vibrar();
-      if (confirm('¿Eliminar este producto?')) {
-        const cat = db.find(x => x.id === catId);
-        cat.items = cat.items.filter(x => x.id !== itemId);
-        guardar();
-      }
-    }
-
-    // Buscador interactivo
-    const inBusq = document.getElementById('busqueda');
-    const boxRes = document.getElementById('search-box-results');
-    const resIt = document.getElementById('search-items');
-    const btnClr = document.getElementById('btn-limpiar');
-
-    inBusq.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      btnClr.style.display = q ? 'block' : 'none';
-      if (!q) { boxRes.style.display = 'none'; return; }
-      resIt.innerHTML = '';
-      let match = 0;
-      db.forEach(c => {
-        (c.items || []).forEach(it => {
-          const nom = it.nombre.toLowerCase();
-          const donde = (it.donde || '').toLowerCase();
-          const repLugar = (it.lugarRepuesto || '').toLowerCase();
-          if (nom.includes(q) || donde.includes(q) || repLugar.includes(q)) {
-            match++;
-            const tieneRep = it.tieneRepuesto === 'si';
-            const cantRep = it.cantidadRepuesto || (tieneRep ? it.queda : '');
-
-            resIt.innerHTML += `
-              <div class="item-row" style="background:var(--accent); border-color:var(--border); margin-bottom:6px;">
-                <div class="item-content-wrapper">
-                  ${it.foto ? `<img src="${it.foto}" class="item-thumb" onclick="verFotoGrande('${it.foto}', '${it.nombre}')" alt="Foto">` : ''}
-                  <div style="flex:1;">
-                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                      <span class="item-name" style="margin-bottom:0;">${it.nombre}</span>
-                      <span class="badge-categoria">${c.nombre}</span>
-                    </div>
-                    <div class="item-meta">
-                      ${tieneRep 
-                        ? `<div class="meta-line">
-                             <span class="badge-repuesto-si">Repuesto en: <b>${it.lugarRepuesto || 'Guardado'}</b></span>
-                           </div>
-                           ${cantRep ? `<div class="meta-line" style="color:#047857;">Hay de repuesto: <b>${cantRep}</b></div>` : ''}`
-                        : `<div class="meta-line">
-                             <span class="badge-repuesto-no">Falta comprar</span>
-                             ${it.queda ? `<span>Queda: <b>${it.queda}</b></span>` : ''}
-                           </div>
-                           <div class="meta-line">
-                             ${it.cuando ? `<span>Comprar: <b>${it.cuando}</b></span>` : ''}
-                             ${it.donde ? `<span>En: <b>${it.donde}</b></span>` : ''}
-                             ${it.precio ? `<span class="badge-price">$${it.precio}</span>` : ''}
-                           </div>`}
-                    </div>
-                  </div>
-                </div>
-              </div>`;
-          }
+    function render() {
+      const q = $('#busqueda').value, ws = norm(q).split(/\s+/).filter(Boolean);
+      $('#btn-limpiar').style.display = q ? 'block' : 'none';
+      const all = db.flatMap(c => (c.items || []).map(it => [c, it]));
+      const cnt = { todos: all.length, falta: 0, tengo: 0, urgente: 0 };
+      all.forEach(([, it]) => { if (it.tieneRepuesto === 'si') cnt.tengo++; else { cnt.falta++; if (it.urgente) cnt.urgente++; } });
+      $$('#chips .chip').forEach(b => { b.classList.toggle('on', b.dataset.f === filtro); b.querySelector('em').textContent = cnt[b.dataset.f]; });
+      $$('#vista button').forEach(b => b.classList.toggle('on', b.dataset.v === vista));
+      const ok = (c, it) => pasa(it) && (!ws.length || ws.every(w => norm([it.nombre, it.donde, it.lugarRepuesto, it.instrucciones, c.nombre].join(' ')).includes(w)));
+      const activo = ws.length > 0 || filtro !== 'todos';
+      let h = '';
+      if (vista === 'cat') {
+        db.forEach(c => {
+          const its = (c.items || []).filter(it => ok(c, it));
+          if (activo && !its.length) return;
+          const col = !!colapso[c.id] && !activo, d = `data-c="${esc(c.id)}"`;
+          h += `<div class="group-card"><div class="group-header" data-act="tog" ${d}>
+            <div class="group-title-box"><span class="group-title">${esc(c.nombre)}</span><span class="group-count">${activo ? its.length + '/' + (c.items || []).length : its.length}</span></div>
+            <div><button class="btn-icon" data-act="editcat" ${d}>✎</button><button class="btn-icon" data-act="delcat" ${d}>🗑</button><span class="chevron ${col ? 'rotated' : ''}">▼</span></div></div>
+            <div style="${col ? 'display:none' : ''}"><button class="btn btn-add-item" data-act="newitem" ${d}>+ Agregar producto a ${esc(c.nombre)}</button>
+            <div class="items-container">${its.length ? its.map(it => itemHTML(c, it, false)).join('') : '<div style="font-size:.8rem;color:var(--muted);font-style:italic">Sin productos registrados.</div>'}</div></div></div>`;
         });
-      });
-      if (match === 0) resIt.innerHTML = `<div style="font-size:0.85rem;color:var(--text-muted);">Sin coincidencias.</div>`;
-      boxRes.style.display = 'block';
+      } else {
+        const g = {};
+        all.forEach(([c, it]) => {
+          if (it.tieneRepuesto === 'si' || !ok(c, it)) return;
+          const n = (it.donde || '').trim() || 'Sin tienda definida';
+          (g[norm(n)] = g[norm(n)] || { n, l: [] }).l.push([c, it]);
+        });
+        Object.values(g).sort((a, b) => (a.n === 'Sin tienda definida') - (b.n === 'Sin tienda definida') || a.n.localeCompare(b.n, 'es')).forEach(x => {
+          const tot = x.l.reduce((s, [, it]) => s + num(it.precio), 0);
+          h += `<div class="group-card"><div class="group-header static"><div class="group-title-box"><span class="group-title">🏪 ${esc(x.n)}</span><span class="group-count">${x.l.length}</span></div>${tot ? `<span class="badge price big">≈ $${tot.toLocaleString('es-CL')}</span>` : ''}</div>
+            <div class="items-container">${x.l.map(([c, it]) => itemHTML(c, it, true)).join('')}</div></div>`;
+        });
+      }
+      if (!h) h = `<div class="vacio">${!db.length ? 'No hay categorías creadas.<br>Toca <b>+ Nueva Categoría</b> para comenzar.' : activo ? 'Sin coincidencias.' : vista === 'tienda' ? '🎉 No te falta nada por comprar.' : 'Sin productos todavía.'}</div>`;
+      $('#lista').innerHTML = h;
+    }
+
+    $('#lista').addEventListener('click', e => {
+      const b = e.target.closest('[data-act]'); if (!b) return;
+      const a = b.dataset.act, c = db.find(x => x.id === b.dataset.c);
+      const it = c && (c.items || []).find(x => x.id === b.dataset.i);
+      vibrar();
+      if (a === 'tog') { colapso[c.id] = !colapso[c.id]; try { localStorage.setItem(CKEY, JSON.stringify(colapso)); } catch (er) {} return render(); }
+      if (a === 'editcat') return abrirCat(c.id);
+      if (a === 'delcat') { if (confirm('¿Eliminar esta categoría y sus productos?')) { db = db.filter(x => x.id !== c.id); guardar(); } return; }
+      if (a === 'newitem') return abrirItem(c.id);
+      if (!it) return;
+      if (a === 'edit') return abrirItem(c.id, it.id);
+      if (a === 'del') { if (confirm('¿Eliminar este producto?')) { c.items = c.items.filter(x => x.id !== it.id); guardar(); } return; }
+      if (a === 'foto') return verFoto(it[b.dataset.k], it.nombre + (b.dataset.k === 'fotoTienda' ? ' · dónde comprarlo' : ''));
+      if (a === 'bought') { catId = c.id; itemId = it.id; $('#bought-titulo').textContent = '✓ ' + it.nombre; $('#b-cant').value = ''; $('#b-lugar').value = it.lugarRepuesto || ''; abrir('#modal-bought'); setTimeout(() => $('#b-cant').focus(), 150); }
     });
 
-    btnClr.onclick = () => { 
-      inBusq.value = ''; 
-      btnClr.style.display = 'none'; 
-      boxRes.style.display = 'none'; 
+    $('#busqueda').addEventListener('input', render);
+    $('#btn-limpiar').onclick = () => { $('#busqueda').value = ''; render(); };
+    $('#vista').onclick = e => { const b = e.target.closest('button'); if (b) { vista = b.dataset.v; render(); } };
+    $('#chips').onclick = e => { const b = e.target.closest('.chip'); if (b) { filtro = b.dataset.f; render(); } };
+
+    /* ── Categorías ── */
+    function abrirCat(id) {
+      catId = id || null;
+      $('#cat-titulo').textContent = id ? 'Editar Categoría' : 'Nueva Categoría';
+      $('#cat-nombre').value = id ? db.find(x => x.id === id).nombre : '';
+      abrir('#modal-cat'); setTimeout(() => $('#cat-nombre').focus(), 150);
+    }
+    $('#btn-nueva-cat').onclick = () => { vibrar(); abrirCat(); };
+    $('#btn-guardar-cat').onclick = () => {
+      const v = $('#cat-nombre').value.trim(); if (!v) return; vibrar();
+      if (catId) db.find(x => x.id === catId).nombre = v; else db.unshift({ id: 'cat_' + Date.now(), nombre: v, items: [] });
+      cerrar(); guardar();
     };
 
-    function cerrarModales() {
-      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-      activoId = null; 
-      itemActivoId = null;
-      fotoTemporalBase64 = null;
+    /* ── Productos ── */
+    function cambiarBloques() { const si = $('#p-tiene').value === 'si'; $('#bloque-si').style.display = si ? 'block' : 'none'; $('#bloque-no').style.display = si ? 'none' : 'block'; }
+    $('#p-tiene').onchange = cambiarBloques;
+    function abrirItem(cid, iid) {
+      catId = cid; itemId = iid || null;
+      const it = iid ? db.find(x => x.id === cid).items.find(x => x.id === iid) : null, g = k => (it && it[k]) || '';
+      $('#item-titulo').textContent = it ? 'Editar Producto' : 'Registrar Producto';
+      $('#p-nombre').value = g('nombre'); $('#p-tiene').value = it ? (it.tieneRepuesto || 'si') : 'si';
+      $('#p-lugar').value = g('lugarRepuesto');
+      $('#p-cantrep').value = it ? (it.cantidadRepuesto || (it.tieneRepuesto === 'si' ? it.queda || '' : '')) : '';
+      $('#p-queda').value = it && it.tieneRepuesto === 'no' ? g('queda') : '';
+      $('#p-cuando').value = g('cuando'); $('#p-urgente').checked = !!(it && it.urgente);
+      $('#p-donde').value = g('donde'); $('#p-precio').value = g('precio');
+      $('#p-instr').value = g('instrucciones'); $('#p-enlace').value = g('enlace');
+      fotos.foto = it ? it.foto || null : null; fotos.fotoTienda = it ? it.fotoTienda || null : null;
+      $$('.pfile').forEach(i => i.value = ''); setPrev('foto'); setPrev('fotoTienda');
+      cambiarBloques(); abrir('#modal-item'); setTimeout(() => $('#p-nombre').focus(), 150);
     }
-
-    function cerrarSiFondo(e) {
-      if (e.target.classList.contains('modal-overlay')) cerrarModales();
-    }
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') cerrarModales();
-    });
-
-    // Respaldos
-    document.getElementById('btn-exportar').onclick = () => {
+    $('#btn-guardar-item').onclick = () => {
+      const nombre = $('#p-nombre').value.trim(); if (!nombre) return alert('Ingresa el nombre del producto');
+      const enlace = $('#p-enlace').value.trim();
+      if (enlace && !urlOk(enlace)) return alert('El enlace no parece válido.');
       vibrar();
-      const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+      const t = s => $(s).value.trim();
+      const datos = { nombre, tieneRepuesto: $('#p-tiene').value, lugarRepuesto: t('#p-lugar'), cantidadRepuesto: t('#p-cantrep'), queda: t('#p-queda'), cuando: t('#p-cuando'), urgente: $('#p-urgente').checked, donde: t('#p-donde'), precio: t('#p-precio'), instrucciones: t('#p-instr'), enlace, foto: fotos.foto, fotoTienda: fotos.fotoTienda };
+      const c = db.find(x => x.id === catId);
+      if (itemId) Object.assign(c.items.find(x => x.id === itemId), datos);
+      else { c.items = c.items || []; c.items.unshift({ id: 'p_' + Date.now(), ...datos }); }
+      cerrar(); guardar();
+    };
+    $('#btn-confirmar-compra').onclick = () => {
+      const c = db.find(x => x.id === catId), it = c && c.items.find(x => x.id === itemId); if (!it) return;
+      vibrar();
+      Object.assign(it, { tieneRepuesto: 'si', cantidadRepuesto: $('#b-cant').value.trim(), lugarRepuesto: $('#b-lugar').value.trim(), queda: '', cuando: '', urgente: false });
+      cerrar(); guardar(); toast('Listo: ahora figura como "Tengo repuesto"');
+    };
+
+    /* ── Modales ── */
+    const abrir = s => $(s).classList.add('active');
+    function cerrar() { $$('.modal-overlay').forEach(m => m.classList.remove('active')); }
+    document.addEventListener('click', e => { if (e.target.closest('[data-close]') || e.target.classList.contains('modal-overlay')) cerrar(); });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+
+    /* ── Respaldo ── */
+    $('#btn-exportar').onclick = () => {
+      vibrar();
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `respaldo-compras-${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' }));
+      a.download = `respaldo-compras-${new Date().toISOString().slice(0, 10)}.json`; a.click();
     };
-
-    document.getElementById('btn-importar').onclick = () => {
-      vibrar();
-      document.getElementById('file-input').click();
-    };
-
-    document.getElementById('file-input').onchange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+    $('#btn-importar').onclick = () => { vibrar(); $('#file-input').click(); };
+    $('#file-input').onchange = e => {
+      const file = e.target.files[0]; if (!file) return;
       const r = new FileReader();
-      r.onload = (ev) => {
+      r.onload = ev => {
         try {
-          db = JSON.parse(ev.target.result);
-          guardar();
-          alert('¡Compras cargadas con éxito!');
+          const d = JSON.parse(ev.target.result);
+          if (!Array.isArray(d) || d.some(c => !c || typeof c !== 'object' || typeof c.nombre !== 'string')) throw 0;
+          if (!confirm('Esto reemplaza tus compras actuales por las del archivo. ¿Continuar?')) return;
+          db = d.map(c => ({ id: String(c.id || 'cat_' + Math.random().toString(36).slice(2)), nombre: c.nombre, items: (Array.isArray(c.items) ? c.items : []).filter(x => x && typeof x.nombre === 'string').map(x => ({ ...x, id: String(x.id || 'p_' + Math.random().toString(36).slice(2)) })) }));
+          guardar(); toast('¡Compras cargadas con éxito!');
         } catch (err) { alert('Archivo no válido.'); }
+        e.target.value = '';
       };
       r.readAsText(file);
     };
 
-    renderizar();
+    /* ── Tema claro / oscuro (clave compartida app_tema) ── */
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    const temaPref = () => { try { return localStorage.getItem('app_tema') || 'auto'; } catch (e) { return 'auto'; } };
+    const oscuro = () => temaPref() === 'oscuro' || (temaPref() === 'auto' && mq.matches);
+    function aplicarTema() {
+      document.documentElement.dataset.theme = oscuro() ? 'dark' : 'light';
+      $('#btn-tema').textContent = oscuro() ? '☀️' : '🌙';
+      const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    }
+    $('#btn-tema').onclick = () => { vibrar(); try { localStorage.setItem('app_tema', oscuro() ? 'claro' : 'oscuro'); } catch (e) {} aplicarTema(); };
+    if (mq.addEventListener) mq.addEventListener('change', aplicarTema);
+    aplicarTema(); render();
   </script>
 </body>
 </html>
