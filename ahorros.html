@@ -79,4 +79,284 @@
 <body>
   <div class="container">
     <div class="top-bar">
- 
+      <a href="index.html" class="btn-back" title="Volver al menú">←</a>
+      <h1>Ahorros</h1>
+      <button class="btn-tema" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+    </div>
+
+    <div class="summary">
+      <div class="sum-card total"><div class="sum-label">Total ahorrado</div><div class="sum-value" id="s-total">$0</div></div>
+      <div class="sum-card"><div class="sum-label">💵 Billetes</div><div class="sum-value" id="s-bill">$0</div></div>
+      <div class="sum-card"><div class="sum-label">🪙 Monedas</div><div class="sum-value" id="s-mon">$0</div></div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-green" id="btn-nueva">+ Nueva Caja</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
+        <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
+        <input type="file" id="file-input" style="display:none" accept=".json">
+      </div>
+    </div>
+
+    <div id="lista" class="card-list"></div>
+  </div>
+
+  <!-- Modal Caja -->
+  <div class="modal-overlay" id="modal-caja">
+    <div class="modal">
+      <h3 id="caja-titulo">Nueva Caja</h3>
+      <div class="form-group">
+        <label class="form-label">Nombre del lugar</label>
+        <input class="form-input" id="caja-nombre" placeholder="Ej: Alcancía gato, Sobre de emergencias..." autocomplete="off">
+      </div>
+      <div id="caja-inicial">
+        <div class="form-group">
+          <label class="form-label">Billetes que ya tiene (opcional)</label>
+          <input class="form-input" id="caja-bill" inputmode="numeric" placeholder="Ej: 30000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monedas que ya tiene (opcional)</label>
+          <input class="form-input" id="caja-mon" inputmode="numeric" placeholder="Ej: 15000">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close>Cancelar</button>
+        <button class="btn btn-green" id="btn-guardar-caja">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Movimiento -->
+  <div class="modal-overlay" id="modal-mov">
+    <div class="modal">
+      <h3 id="mov-titulo">Movimiento</h3>
+      <div class="form-group">
+        <label class="form-label">Operación</label>
+        <div class="chips" id="mov-tipo">
+          <button class="chip" data-v="in">+ Ingresar</button>
+          <button class="chip" data-v="out">− Retirar</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Formato del dinero</label>
+        <div class="chips" id="mov-fmt">
+          <button class="chip" data-v="b">💵 Billetes</button>
+          <button class="chip" data-v="m">🪙 Monedas</button>
+          <button class="chip" data-v="x">Mixto</button>
+        </div>
+      </div>
+      <div class="form-group" id="g-simple">
+        <label class="form-label">Monto ($)</label>
+        <input class="form-input big" id="mov-monto" inputmode="numeric" placeholder="5000" autocomplete="off">
+      </div>
+      <div id="g-mixto" style="display:none">
+        <div class="form-group"><label class="form-label">💵 Billetes ($)</label><input class="form-input" id="mov-mb" inputmode="numeric" placeholder="Ej: 5000"></div>
+        <div class="form-group"><label class="form-label">🪙 Monedas ($)</label><input class="form-input" id="mov-mm" inputmode="numeric" placeholder="Ej: 1500"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Motivo / nota (opcional)</label>
+        <input class="form-input" id="mov-nota" placeholder="Ej: Ahorro semanal, vuelto de la feria..." autocomplete="off">
+      </div>
+      <div class="error" id="mov-error"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close>Cancelar</button>
+        <button class="btn btn-green" id="btn-confirmar">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const KEY = 'org_ahorros';
+    let db = [];
+    try { const v = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(v)) db = v; } catch (e) {}
+    const abiertos = new Set();
+    let cajaId = null, tipo = 'in', fmt = 'b';
+
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const money = n => '$' + Math.round(n || 0).toLocaleString('es-CL');
+    const num = v => parseInt(String(v).replace(/\D/g, ''), 10) || 0;
+    const vibrar = () => { if (navigator.vibrate) navigator.vibrate(10); };
+    const fecha = () => new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+    const guardar = () => { localStorage.setItem(KEY, JSON.stringify(db)); render(); };
+
+    function render() {
+      let tb = 0, tm = 0;
+      db.forEach(c => { tb += c.b || 0; tm += c.m || 0; });
+      $('#s-total').textContent = money(tb + tm);
+      $('#s-bill').textContent = money(tb);
+      $('#s-mon').textContent = money(tm);
+
+      const cont = $('#lista');
+      if (!db.length) {
+        cont.innerHTML = `<div class="vacio">Aún no tienes cajas de ahorro.<br>Toca <b>+ Nueva Caja</b> para comenzar.<br><button class="btn btn-secondary" data-act="demo">Ver con datos de ejemplo</button></div>`;
+        return;
+      }
+      cont.innerHTML = db.map(c => {
+        const open = abiertos.has(c.id);
+        const movs = (c.movs || []).slice(0, 8).map(m => {
+          const det = m.b && m.m ? `Billetes ${money(m.b)} + Monedas ${money(m.m)}` : m.b ? 'Billetes' : 'Monedas';
+          return `<div class="mov ${m.tipo}">
+            <div><div class="mov-main">${m.tipo === 'in' ? '🟢 +' : '🔴 −'} ${money(m.b + m.m)}</div>
+            <div class="mov-sub">${det}${m.nota ? ' — ' + esc(m.nota) : ''} · ${esc(m.fecha)}</div></div>
+            <button class="btn-icon" data-act="delmov" data-id="${esc(c.id)}" data-mid="${esc(m.id)}" aria-label="Deshacer movimiento">🗑</button></div>`;
+        }).join('') || '<div class="mov-sub" style="padding:6px 2px">Sin movimientos todavía.</div>';
+        return `<div class="group-card">
+          <div class="g-head">
+            <div><div class="g-title">🪙 ${esc(c.nombre)}</div><div class="g-saldo">${money((c.b||0) + (c.m||0))}</div></div>
+            <div><button class="btn-icon" data-act="edit" data-id="${esc(c.id)}">✎</button><button class="btn-icon" data-act="del" data-id="${esc(c.id)}">🗑</button></div>
+          </div>
+          <div class="g-break"><span class="pill">💵 Billetes: ${money(c.b)}</span><span class="pill">🪙 Monedas: ${money(c.m)}</span></div>
+          <div class="g-btns">
+            <button class="btn btn-in" data-act="in" data-id="${esc(c.id)}">+ Ingresar Plata</button>
+            <button class="btn btn-red" data-act="out" data-id="${esc(c.id)}">− Sacar Plata</button>
+          </div>
+          <button class="toggle-movs" data-act="movs" data-id="${esc(c.id)}">${open ? '▲ Ocultar' : '▼ Ver últimos'} movimientos</button>
+          ${open ? `<div class="movs">${movs}</div>` : ''}
+        </div>`;
+      }).join('');
+    }
+
+    $('#lista').addEventListener('click', e => {
+      const b = e.target.closest('[data-act]'); if (!b) return;
+      const a = b.dataset.act, id = b.dataset.id;
+      vibrar();
+      if (a === 'demo') return cargarDemo();
+      if (a === 'movs') { abiertos.has(id) ? abiertos.delete(id) : abiertos.add(id); return render(); }
+      if (a === 'in' || a === 'out') return abrirMov(id, a);
+      if (a === 'edit') return abrirCaja(id);
+      if (a === 'del') { if (confirm('¿Eliminar esta caja y su historial?')) { db = db.filter(c => c.id !== id); guardar(); } return; }
+      if (a === 'delmov') return deshacerMov(id, b.dataset.mid);
+    });
+
+    /* Cajas */
+    function abrirCaja(id) {
+      cajaId = id || null;
+      const c = id ? db.find(x => x.id === id) : null;
+      $('#caja-titulo').textContent = c ? 'Editar Nombre' : 'Nueva Caja';
+      $('#caja-nombre').value = c ? c.nombre : '';
+      $('#caja-bill').value = ''; $('#caja-mon').value = '';
+      $('#caja-inicial').style.display = c ? 'none' : 'block';
+      abrir('#modal-caja'); setTimeout(() => $('#caja-nombre').focus(), 150);
+    }
+    $('#btn-nueva').onclick = () => { vibrar(); abrirCaja(); };
+    $('#btn-guardar-caja').onclick = () => {
+      const nombre = $('#caja-nombre').value.trim(); if (!nombre) return;
+      vibrar();
+      if (cajaId) db.find(x => x.id === cajaId).nombre = nombre;
+      else {
+        const b = num($('#caja-bill').value), m = num($('#caja-mon').value);
+        const c = { id: 'a_' + Date.now(), nombre, b, m, movs: [] };
+        if (b || m) c.movs.push({ id: 'm_' + Date.now(), tipo: 'in', b, m, nota: 'Saldo inicial', fecha: fecha() });
+        db.unshift(c);
+      }
+      cerrar(); guardar();
+    };
+
+    /* Movimientos */
+    function setChips() {
+      $$('#mov-tipo .chip').forEach(c => { c.classList.toggle('on', c.dataset.v === tipo); c.classList.toggle('out', tipo === 'out'); });
+      $$('#mov-fmt .chip').forEach(c => c.classList.toggle('on', c.dataset.v === fmt));
+      $('#g-simple').style.display = fmt === 'x' ? 'none' : 'block';
+      $('#g-mixto').style.display = fmt === 'x' ? 'block' : 'none';
+      $('#mov-titulo').textContent = (tipo === 'in' ? 'Ingresar plata' : 'Sacar plata') + ' · ' + (db.find(c => c.id === cajaId) || {}).nombre;
+    }
+    function abrirMov(id, t) {
+      cajaId = id; tipo = t; fmt = 'b';
+      ['#mov-monto', '#mov-mb', '#mov-mm', '#mov-nota'].forEach(s => $(s).value = '');
+      $('#mov-error').style.display = 'none';
+      setChips(); abrir('#modal-mov'); setTimeout(() => $('#mov-monto').focus(), 150);
+    }
+    $('#mov-tipo').onclick = e => { const c = e.target.closest('.chip'); if (c) { tipo = c.dataset.v; setChips(); } };
+    $('#mov-fmt').onclick = e => { const c = e.target.closest('.chip'); if (c) { fmt = c.dataset.v; setChips(); } };
+    const error = t => { const el = $('#mov-error'); el.textContent = t; el.style.display = 'block'; };
+
+    $('#btn-confirmar').onclick = () => {
+      const c = db.find(x => x.id === cajaId); if (!c) return;
+      let b = 0, m = 0;
+      if (fmt === 'x') { b = num($('#mov-mb').value); m = num($('#mov-mm').value); }
+      else if (fmt === 'b') b = num($('#mov-monto').value); else m = num($('#mov-monto').value);
+      if (!b && !m) return error('Escribe un monto mayor a $0.');
+      if (tipo === 'out') {
+        if (b > c.b) return error(`No hay suficientes billetes: esta caja tiene ${money(c.b)}.`);
+        if (m > c.m) return error(`No hay suficientes monedas: esta caja tiene ${money(c.m)}.`);
+      }
+      vibrar();
+      const s = tipo === 'in' ? 1 : -1;
+      c.b += s * b; c.m += s * m;
+      c.movs.unshift({ id: 'm_' + Date.now(), tipo, b, m, nota: $('#mov-nota').value.trim(), fecha: fecha() });
+      abiertos.add(c.id); cerrar(); guardar();
+    };
+
+    function deshacerMov(id, mid) {
+      const c = db.find(x => x.id === id), m = c.movs.find(x => x.id === mid); if (!m) return;
+      const s = m.tipo === 'in' ? -1 : 1;
+      if (c.b + s * m.b < 0 || c.m + s * m.m < 0) return alert('No se puede deshacer: el saldo quedaría negativo.');
+      if (!confirm('¿Deshacer este movimiento? El saldo se ajusta.')) return;
+      c.b += s * m.b; c.m += s * m.m;
+      c.movs = c.movs.filter(x => x.id !== mid); guardar();
+    }
+
+    /* Modales */
+    const abrir = s => $(s).classList.add('active');
+    function cerrar() { $$('.modal-overlay').forEach(m => m.classList.remove('active')); }
+    document.addEventListener('click', e => { if (e.target.closest('[data-close]') || e.target.classList.contains('modal-overlay')) cerrar(); });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+
+    /* Respaldo */
+    $('#btn-exportar').onclick = () => {
+      vibrar();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' }));
+      a.download = `respaldo-ahorros-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+    };
+    $('#btn-importar').onclick = () => { vibrar(); $('#file-input').click(); };
+    $('#file-input').onchange = e => {
+      const file = e.target.files[0]; if (!file) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        try {
+          const d = JSON.parse(ev.target.result);
+          if (!Array.isArray(d)) throw 0;
+          if (!confirm('Esto reemplaza tus ahorros actuales por los del archivo. ¿Continuar?')) return;
+          db = d.map(c => ({ id: c.id || 'a_' + Math.random().toString(36).slice(2), nombre: String(c.nombre || 'Caja'), b: +c.b || 0, m: +c.m || 0, movs: Array.isArray(c.movs) ? c.movs : [] }));
+          guardar(); alert('¡Ahorros cargados con éxito!');
+        } catch (err) { alert('Archivo no válido.'); }
+        e.target.value = '';
+      };
+      r.readAsText(file);
+    };
+
+    function cargarDemo() {
+      const mk = (id, nombre, b, m, movs) => ({ id, nombre, b, m, movs });
+      db = [
+        mk('a_1', 'Alcancía Gato', 30000, 15000, [
+          { id:'m1', tipo:'in', b:5000, m:0, nota:'Vuelto de la feria', fecha:'14 oct' },
+          { id:'m2', tipo:'in', b:0, m:1500, nota:'Monedas sueltas', fecha:'12 oct' },
+          { id:'m3', tipo:'out', b:0, m:2000, nota:'Panadería', fecha:'10 oct' }]),
+        mk('a_2', 'Sobre de emergencias', 90000, 0, [{ id:'m4', tipo:'in', b:90000, m:0, nota:'Saldo inicial', fecha:'01 oct' }]),
+        mk('a_3', 'Billetera', 0, 10000, [])
+      ];
+      guardar();
+    }
+
+    /* Tema claro / oscuro (la clave app_tema se puede compartir con tus otras páginas) */
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    const temaPref = () => { try { return localStorage.getItem('app_tema') || 'auto'; } catch (e) { return 'auto'; } };
+    const oscuro = () => temaPref() === 'oscuro' || (temaPref() === 'auto' && mq.matches);
+    function aplicarTema() {
+      document.documentElement.dataset.theme = oscuro() ? 'dark' : 'light';
+      $('#btn-tema').textContent = oscuro() ? '☀️' : '🌙';
+      const m = document.querySelector('meta[name=theme-color]');
+      if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    }
+    $('#btn-tema').onclick = () => { vibrar(); try { localStorage.setItem('app_tema', oscuro() ? 'claro' : 'oscuro'); } catch (e) {} aplicarTema(); };
+    if (mq.addEventListener) mq.addEventListener('change', aplicarTema);
+    aplicarTema();
+    render();
+  </script>
+</body>
+</html>
