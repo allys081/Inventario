@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ahorros</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f8fafc">
+  <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--green:#059669;--green-soft:#ecfdf5;--green-line:#a7f3d0;--red:#e11d48;--red-soft:#fff1f2;--red-line:#fecdd3;--badge:#f1f5f9;--soft:#f8fafc;--hover:#e2e8f0;--pill-ink:#475569}
+    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--green:#34d399;--green-soft:rgba(52,211,153,.14);--green-line:rgba(52,211,153,.35);--red:#fb7185;--red-soft:rgba(251,113,133,.14);--red-line:rgba(251,113,133,.35);--badge:#282434;--soft:#181521;--hover:#2d2939;--pill-ink:#bab2ca}
+    [data-theme=dark] .btn-green{color:#04281d}
+    .btn-tema{justify-self:end;width:38px;height:38px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);color:var(--text);font-size:1.05rem;cursor:pointer}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+    body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:16px 14px 80px;-webkit-font-smoothing:antialiased}
+    .container{max-width:720px;margin:0 auto}
+    .top-bar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:18px;min-height:40px}
+    .btn-back{text-decoration:none;font-size:1.1rem;font-weight:700;color:var(--green);display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);box-shadow:0 2px 5px rgba(0,0,0,.03)}
+    h1{font-size:1.35rem;font-weight:800;text-align:center;letter-spacing:-.3px}
+
+    .summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+    .sum-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(15,23,42,.03)}
+    .sum-card.total{grid-column:1/-1;background:linear-gradient(135deg,#059669,#10b981);border:none;color:#fff;box-shadow:0 8px 22px rgba(5,150,105,.28)}
+    .sum-label{font-size:.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+    .total .sum-label{color:rgba(255,255,255,.85)}
+    .sum-value{font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-top:2px}
+    .total .sum-value{font-size:2rem}
+    .sum-card:not(.total) .sum-value{font-size:1.3rem}
+
+    .actions-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px}
+    .btn{border:none;border-radius:12px;padding:10px 16px;font-weight:700;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:all .15s cubic-bezier(.16,1,.3,1)}
+    .btn:active{transform:scale(.94)}
+    .btn-green{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(5,150,105,.25)}
+    .btn-red{background:var(--red-soft);color:var(--red);border:1.5px solid var(--red-line)}
+    .btn-in{background:var(--green-soft);color:var(--green);border:1.5px solid var(--green-line)}
+    .btn-secondary{background:var(--card);border:1.5px solid var(--border);color:var(--text)}
+
+    .card-list{display:flex;flex-direction:column;gap:12px}
+    .group-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(15,23,42,.03)}
+    .g-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+    .g-title{font-weight:700;font-size:1.02rem}
+    .g-saldo{font-weight:800;font-size:1.15rem;color:var(--green);margin-top:2px}
+    .g-break{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+    .pill{background:var(--badge);color:var(--pill-ink);border-radius:99px;padding:4px 10px;font-size:.76rem;font-weight:600}
+    .g-btns{display:flex;gap:8px}
+    .g-btns .btn{flex:1}
+    .btn-icon{background:none;border:none;cursor:pointer;padding:6px 8px;font-size:.88rem;color:var(--muted);border-radius:8px}
+    .btn-icon:hover{background:var(--hover);color:var(--text)}
+    .toggle-movs{width:100%;text-align:left;background:none;border:none;border-top:1px dashed var(--border);margin-top:12px;padding:10px 0 2px;font:700 .8rem inherit;font-family:inherit;color:var(--muted);cursor:pointer}
+    .movs{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+    .mov{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:9px 11px}
+    .mov-main{font-weight:700;font-size:.86rem}
+    .mov.in .mov-main{color:var(--green)}.mov.out .mov-main{color:var(--red)}
+    .mov-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
+    .vacio{text-align:center;color:var(--muted);padding:44px 0;font-size:.9rem;line-height:1.6}
+    .vacio .btn{margin-top:14px}
+
+    .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;z-index:100;padding:20px 14px 40px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .22s}
+    .modal-overlay.active{opacity:1;pointer-events:auto}
+    .modal{background:var(--card);border-radius:20px;width:100%;max-width:400px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.16);transform:translateY(16px) scale(.96);transition:transform .24s cubic-bezier(.16,1,.3,1);margin-top:24px}
+    .modal-overlay.active .modal{transform:none}
+    .modal h3{font-size:1.15rem;font-weight:800;margin-bottom:14px}
+    .form-group{margin-bottom:12px}
+    .form-label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin-bottom:5px}
+    .form-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:.92rem;font-family:inherit;outline:none;color:var(--text);background:var(--card)}
+    .form-input.big{font-size:1.5rem;font-weight:800;padding:12px 14px}
+    .form-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(5,150,105,.15)}
+    .chips{display:flex;gap:6px}
+    .chip{flex:1;border:1.5px solid var(--border);background:var(--card);border-radius:12px;padding:10px 6px;font:700 .82rem inherit;font-family:inherit;color:var(--muted);cursor:pointer}
+    .chip.on{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+    .chip.on.out{background:var(--red-soft);border-color:var(--red);color:var(--red)}
+    .error{display:none;color:var(--red);font-size:.8rem;font-weight:600;margin-top:8px}
+    .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+ 
