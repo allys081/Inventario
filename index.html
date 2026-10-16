@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <title>Mi Organizador Personal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8fafc">
+  <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
+    :root{color-scheme:light;--bg1:#eef2ff;--bg2:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--title:#1e293b;--muted:#64748b;--arrow:#cbd5e1;--badge-bg:#e0e7ff;--badge-ink:#4338ca;--hover-line:#c7d2fe;--hover-glow:rgba(79,70,229,.1);--i-cajas:#eef2ff;--i-cajas-l:#c7d2fe;--i-compras:#fdf2fa;--i-compras-l:#fce7f3;--i-ahorros:#ecfdf5;--i-ahorros-l:#a7f3d0;--g1:#4f46e5;--g2:#ec4899}
+    [data-theme=dark]{color-scheme:dark;--bg1:#1d1930;--bg2:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--title:#efeaf7;--muted:#a39cb3;--arrow:#5b5470;--badge-bg:#2b2445;--badge-ink:#c4b5fd;--hover-line:#4c3f7a;--hover-glow:rgba(167,139,250,.14);--i-cajas:#2b2445;--i-cajas-l:#4c3f7a;--i-compras:#3a1d2e;--i-compras-l:#5b2a45;--i-ahorros:rgba(52,211,153,.14);--i-ahorros-l:rgba(52,211,153,.35);--g1:#a78bfa;--g2:#f472b6}
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -18,20 +22,34 @@
     html, body {
       width: 100%;
       height: 100%;
-      overflow: hidden; /* Elimina cualquier barra o desplazamiento */
-      overscroll-behavior: none; /* Desactiva el efecto rebote de Android */
-      position: fixed; /* Ancla la página a la pantalla completa */
+      overflow: hidden;
+      overscroll-behavior: none;
+      position: fixed;
     }
 
     body {
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #eef2ff 0%, #f8fafc 100%);
+      background: radial-gradient(circle at top, var(--bg1) 0%, var(--bg2) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      color: #0f172a;
+      color: var(--text);
+    }
+
+    .btn-tema {
+      position: fixed;
+      top: calc(14px + env(safe-area-inset-top));
+      right: 14px;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      font-size: 1.05rem;
+      cursor: pointer;
     }
 
     .menu-container {
@@ -49,8 +67,8 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      background: #e0e7ff;
-      color: #4338ca;
+      background: var(--badge-bg);
+      color: var(--badge-ink);
       padding: 5px 14px;
       border-radius: 99px;
       margin-bottom: 14px;
@@ -61,14 +79,15 @@
       font-weight: 800;
       line-height: 1.2;
       margin-bottom: 8px;
-      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+      background: linear-gradient(135deg, var(--g1) 0%, var(--g2) 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     p.subtitle {
       font-size: 0.92rem;
-      color: #64748b;
+      color: var(--muted);
       margin-bottom: 28px;
     }
 
@@ -76,12 +95,12 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .nav-card {
-      background: #ffffff;
-      border: 1.5px solid #e2e8f0;
+      background: var(--card);
+      border: 1.5px solid var(--border);
       border-radius: 18px;
       padding: 18px 20px;
       text-decoration: none;
@@ -99,8 +118,8 @@
     }
 
     .nav-card:hover {
-      border-color: #c7d2fe;
-      box-shadow: 0 10px 24px rgba(79, 70, 229, 0.1);
+      border-color: var(--hover-line);
+      box-shadow: 0 10px 24px var(--hover-glow);
     }
 
     .icon-box {
@@ -114,15 +133,9 @@
       flex-shrink: 0;
     }
 
-    .icon-cajas {
-      background: #eef2ff;
-      border: 1px solid #ffedd5;
-    }
-
-    .icon-compras {
-      background: #fdf2fa;
-      border: 1px solid #fce7f3;
-    }
+    .icon-cajas   { background: var(--i-cajas);   border: 1px solid var(--i-cajas-l); }
+    .icon-compras { background: var(--i-compras); border: 1px solid var(--i-compras-l); }
+    .icon-ahorros { background: var(--i-ahorros); border: 1px solid var(--i-ahorros-l); }
 
     .card-texts {
       flex: 1;
@@ -131,24 +144,26 @@
     .card-title {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #1e293b;
+      color: var(--title);
       margin-bottom: 3px;
     }
 
     .card-desc {
       font-size: 0.8rem;
-      color: #64748b;
+      color: var(--muted);
       line-height: 1.35;
     }
 
     .arrow {
       font-size: 1.2rem;
-      color: #cbd5e1;
+      color: var(--arrow);
       font-weight: 700;
     }
   </style>
 </head>
 <body>
+
+  <button class="btn-tema" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
 
   <div class="menu-container">
     <span class="badge-welcome">App Personal</span>
@@ -161,7 +176,7 @@
         <div class="icon-box icon-cajas">📦</div>
         <div class="card-texts">
           <div class="card-title">Mis Cajas y Espacios</div>
-          <div class="card-desc">Cajas, cajones y buscador de objetos con fecha de edición.</div>
+          <div class="card-desc">Cajas, cajones y buscador de objetos con fotos y cantidades.</div>
         </div>
         <div class="arrow">→</div>
       </a>
@@ -175,8 +190,33 @@
         </div>
         <div class="arrow">→</div>
       </a>
+
+      <!-- Botón 3 -->
+      <a href="ahorros.html" class="nav-card">
+        <div class="icon-box icon-ahorros">💰</div>
+        <div class="card-texts">
+          <div class="card-title">Mis Ahorros</div>
+          <div class="card-desc">Cuánto hay en cada caja, billetes y monedas, con historial.</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
     </div>
   </div>
 
+  <script>
+    const btn = document.getElementById('btn-tema');
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    const pref = () => { try { return localStorage.getItem('app_tema') || 'auto'; } catch (e) { return 'auto'; } };
+    const oscuro = () => pref() === 'oscuro' || (pref() === 'auto' && mq.matches);
+    function aplicar() {
+      document.documentElement.dataset.theme = oscuro() ? 'dark' : 'light';
+      btn.textContent = oscuro() ? '☀️' : '🌙';
+      const m = document.querySelector('meta[name=theme-color]');
+      if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim();
+    }
+    btn.onclick = () => { try { localStorage.setItem('app_tema', oscuro() ? 'claro' : 'oscuro'); } catch (e) {} aplicar(); };
+    if (mq.addEventListener) mq.addEventListener('change', aplicar);
+    aplicar();
+  </script>
 </body>
 </html>
