@@ -2,221 +2,530 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Mi Organizador Personal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cajas y Espacios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#f8fafc">
   <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{color-scheme:light;--bg1:#eef2ff;--bg2:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--title:#1e293b;--muted:#64748b;--arrow:#cbd5e1;--badge-bg:#e0e7ff;--badge-ink:#4338ca;--hover-line:#c7d2fe;--hover-glow:rgba(79,70,229,.1);--i-cajas:#eef2ff;--i-cajas-l:#c7d2fe;--i-compras:#fdf2fa;--i-compras-l:#fce7f3;--i-ahorros:#ecfdf5;--i-ahorros-l:#a7f3d0;--g1:#4f46e5;--g2:#ec4899}
-    [data-theme=dark]{color-scheme:dark;--bg1:#1d1930;--bg2:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--title:#efeaf7;--muted:#a39cb3;--arrow:#5b5470;--badge-bg:#2b2445;--badge-ink:#c4b5fd;--hover-line:#4c3f7a;--hover-glow:rgba(167,139,250,.14);--i-cajas:#2b2445;--i-cajas-l:#4c3f7a;--i-compras:#3a1d2e;--i-compras-l:#5b2a45;--i-ahorros:rgba(52,211,153,.14);--i-ahorros-l:rgba(52,211,153,.35);--g1:#a78bfa;--g2:#f472b6}
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      margin: 0;
-      padding: 0;
-    }
+    :root{color-scheme:light;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--p:#9333ea;--on-p:#fff;--p-soft:#faf5ff;--p-line:#d8b4fe;--p-glow:rgba(147,51,234,.25);--soft:#f8fafc;--hover:#e2e8f0;--badge:#f1f5f9;--badge-ink:#475569;--ok:#047857;--ok-soft:#ecfdf5;--ok-line:#a7f3d0;--warn:#b45309;--warn-soft:#fffbeb;--warn-line:#fde68a;--bad:#e11d48;--bad-soft:#fff1f2;--bad-line:#fecdd3}
+    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--p:#a78bfa;--on-p:#14121a;--p-soft:#2b2445;--p-line:#4c3f7a;--p-glow:rgba(167,139,250,.25);--soft:#181521;--hover:#2d2939;--badge:#282434;--badge-ink:#bab2ca;--ok:#6ee7b7;--ok-soft:rgba(110,231,183,.14);--ok-line:rgba(110,231,183,.35);--warn:#fcd34d;--warn-soft:rgba(252,211,77,.12);--warn-line:rgba(252,211,77,.35);--bad:#fb7185;--bad-soft:rgba(251,113,133,.14);--bad-line:rgba(251,113,133,.35)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+    body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:16px 14px 80px;-webkit-font-smoothing:antialiased}
+    .container{max-width:720px;margin:0 auto}
+    .top-bar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:18px;min-height:40px}
+    .sq{width:38px;height:38px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);color:var(--p);font-size:1.1rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.03)}
+    .sq.r{justify-self:end;color:var(--text)}
+    h1{font-size:1.35rem;font-weight:800;text-align:center;letter-spacing:-.3px}
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      overscroll-behavior: none;
-      position: fixed;
-    }
+    .search-box{position:sticky;top:10px;z-index:20;background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:11px 15px;box-shadow:0 4px 20px rgba(15,23,42,.05);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .search-box:focus-within{border-color:var(--p);box-shadow:0 0 0 3px var(--p-glow)}
+    .search-input{border:none;outline:none;width:100%;font-size:.95rem;font-family:inherit;color:var(--text);background:transparent}
+    .btn-clear{border:none;background:none;cursor:pointer;color:var(--muted);font-size:1rem;display:none;padding:2px 6px}
+    .actions-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+    .btn{border:none;border-radius:12px;padding:10px 16px;font-weight:700;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:transform .15s}
+    .btn:active{transform:scale(.94)}
+    .btn-primary{background:var(--p);color:var(--on-p);box-shadow:0 4px 12px var(--p-glow)}
+    .btn-secondary{background:var(--card);border:1.5px solid var(--border);color:var(--text)}
+    .btn-add-item{background:var(--p-soft);border:1.5px dashed var(--p-line);color:var(--p);width:100%;margin:10px 0 12px}
 
-    body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-      min-height: 100vh;
-      background: radial-gradient(circle at top, var(--bg1) 0%, var(--bg2) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      color: var(--text);
-    }
+    .aviso{display:none;background:var(--warn-soft);border:1.5px solid var(--warn-line);color:var(--warn);border-radius:14px;padding:10px 14px;font-size:.8rem;font-weight:600;line-height:1.45;margin-bottom:14px}
+    .search-results-box{display:none;margin-bottom:18px}
+    .search-title{font-size:.8rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
 
-    .btn-tema {
-      position: fixed;
-      top: calc(14px + env(safe-area-inset-top));
-      right: 14px;
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      color: var(--text);
-      font-size: 1.05rem;
-      cursor: pointer;
-    }
+    .card-list{display:flex;flex-direction:column;gap:12px}
+    .group-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(15,23,42,.03)}
+    .group-header{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;user-select:none;padding-bottom:10px;border-bottom:1px dashed var(--border)}
+    .group-left{display:flex;align-items:center;gap:10px;min-width:0}
+    .group-title{font-weight:700;font-size:1.02rem;overflow-wrap:anywhere}
+    .group-count{font-size:.72rem;font-weight:700;background:var(--badge);color:var(--badge-ink);padding:3px 8px;border-radius:99px}
+    .caja-thumb{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--hover);border:1px solid var(--border);cursor:pointer;flex:none}
+    .caja-ubi{font-size:.76rem;color:var(--muted);margin-top:2px;font-weight:600}
+    .chevron{font-size:.75rem;color:var(--muted);display:inline-block;transition:transform .25s}
+    .chevron.rotated{transform:rotate(-180deg)}
+    .nowrap{white-space:nowrap}
+    .items-container{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+    .item-row{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+    .item-top{display:flex;gap:12px;align-items:flex-start}
+    .grow{flex:1;min-width:0}
+    .item-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--hover);border:1px solid var(--border);cursor:pointer;flex:none}
+    .item-name{font-weight:600;font-size:.93rem;margin-bottom:4px;overflow-wrap:anywhere}
+    .item-meta{font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+    .badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .badge{padding:2px 8px;border-radius:6px;font-weight:600;font-size:.72rem;display:inline-block;border:1px solid transparent}
+    .badge.cat{background:var(--badge);color:var(--badge-ink);border-color:var(--border);border-radius:99px}
+    .badge.ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+    .badge.warn{background:var(--warn-soft);color:var(--warn);border-color:var(--warn-line)}
+    .badge.bad{background:var(--bad-soft);color:var(--bad);border-color:var(--bad-line)}
+    .item-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px dashed var(--border);padding-top:8px}
+    .stepper{display:inline-flex;align-items:center;background:var(--card);border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+    .stepper button{width:34px;height:32px;border:none;background:none;font-size:1.05rem;font-weight:800;color:var(--p);cursor:pointer;font-family:inherit}
+    .stepper button:active{background:var(--p-soft)}
+    .stepper b{min-width:34px;text-align:center;font-size:.9rem}
+    .mini{border:1.5px solid var(--border);background:var(--card);color:var(--muted);border-radius:10px;padding:6px 10px;font:700 .76rem inherit;font-family:inherit;cursor:pointer}
+    .mini.on{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn)}
+    .btn-icon{background:none;border:none;cursor:pointer;padding:6px 8px;font-size:.88rem;color:var(--muted);border-radius:8px}
+    .btn-icon:hover{background:var(--hover);color:var(--text)}
+    .vacio{text-align:center;color:var(--muted);padding:50px 0;font-size:.9rem;line-height:1.6}
 
-    .menu-container {
-      width: 100%;
-      max-width: 440px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .badge-welcome {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      background: var(--badge-bg);
-      color: var(--badge-ink);
-      padding: 5px 14px;
-      border-radius: 99px;
-      margin-bottom: 14px;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, var(--g1) 0%, var(--g2) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    p.subtitle {
-      font-size: 0.92rem;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-
-    .buttons-wrapper {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .nav-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 18px 20px;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-      transition: transform 0.15s ease;
-      text-align: left;
-    }
-
-    .nav-card:active {
-      transform: scale(0.97);
-    }
-
-    .nav-card:hover {
-      border-color: var(--hover-line);
-      box-shadow: 0 10px 24px var(--hover-glow);
-    }
-
-    .icon-box {
-      width: 54px;
-      height: 54px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      flex-shrink: 0;
-    }
-
-    .icon-cajas   { background: var(--i-cajas);   border: 1px solid var(--i-cajas-l); }
-    .icon-compras { background: var(--i-compras); border: 1px solid var(--i-compras-l); }
-    .icon-ahorros { background: var(--i-ahorros); border: 1px solid var(--i-ahorros-l); }
-
-    .card-texts {
-      flex: 1;
-    }
-
-    .card-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--title);
-      margin-bottom: 3px;
-    }
-
-    .card-desc {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.35;
-    }
-
-    .arrow {
-      font-size: 1.2rem;
-      color: var(--arrow);
-      font-weight: 700;
-    }
+    .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;z-index:100;padding:20px 14px 40px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .22s}
+    .modal-overlay.active{opacity:1;pointer-events:auto}
+    .modal{background:var(--card);border-radius:20px;width:100%;max-width:400px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.16);transform:translateY(16px) scale(.96);transition:transform .24s cubic-bezier(.16,1,.3,1);margin-top:24px}
+    .modal-overlay.active .modal{transform:none}
+    .modal h3{font-size:1.15rem;font-weight:800;margin-bottom:14px}
+    .form-group{margin-bottom:12px}
+    .form-label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin-bottom:5px}
+    .form-input,.form-select{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:.92rem;font-family:inherit;outline:none;color:var(--text);background:var(--card)}
+    .form-input:focus,.form-select:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--p-glow)}
+    .check{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.86rem;padding:10px 12px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer}
+    .check input{width:18px;height:18px;accent-color:var(--p)}
+    .photo-row{display:flex;align-items:center;gap:12px;margin-top:6px}
+    .pbox{width:58px;height:58px;border-radius:12px;border:1.5px dashed var(--border);background:var(--soft);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;flex-shrink:0}
+    .pbox .ph{font-size:1.2rem;color:var(--muted)}
+    .pbox img{width:100%;height:100%;object-fit:cover;display:none}
+    .pbox .rm{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;width:18px;height:18px;border-radius:50%;font-size:10px;cursor:pointer;display:none;align-items:center;justify-content:center}
+    .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+    #modal-viewer img{width:100%;border-radius:14px;max-height:70vh;object-fit:contain}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:.82rem;font-weight:600;z-index:200;transition:all .25s;max-width:calc(100% - 28px)}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="top-bar">
+      <a href="index.html" class="sq" title="Volver al menú">←</a>
+      <h1>Cajas y Espacios</h1>
+      <button class="sq r" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+    </div>
 
-  <button class="btn-tema" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="busqueda" class="search-input" placeholder="Buscar objeto, caja, ubicación o persona..." autocomplete="off">
+      <button id="btn-limpiar" class="btn-clear">✕</button>
+    </div>
 
-  <div class="menu-container">
-    <span class="badge-welcome">App Personal</span>
-    <h1>Mi Organizador</h1>
-    <p class="subtitle">¿Qué deseas revisar o gestionar hoy?</p>
+    <div class="aviso" id="aviso-espacio"></div>
 
-    <div class="buttons-wrapper">
-      <!-- Botón 1 -->
-      <a href="cajas.html" class="nav-card">
-        <div class="icon-box icon-cajas">📦</div>
-        <div class="card-texts">
-          <div class="card-title">Mis Cajas y Espacios</div>
-          <div class="card-desc">Cajas, cajones y buscador de objetos con fotos y cantidades.</div>
+    <div class="actions-row">
+      <button class="btn btn-primary" id="btn-nueva-caja">+ Nueva Caja</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
+        <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
+        <input type="file" id="file-input" style="display:none" accept=".json">
+      </div>
+    </div>
+
+    <div id="search-box-results" class="search-results-box">
+      <div class="search-title">Resultados</div>
+      <div id="search-items" class="items-container"></div>
+    </div>
+
+    <div id="contenedor-cajas" class="card-list"></div>
+  </div>
+
+  <!-- Modal Caja -->
+  <div class="modal-overlay" id="modal-caja">
+    <div class="modal">
+      <h3 id="caja-titulo">Nueva Caja</h3>
+      <div class="form-group">
+        <label class="form-label">Nombre del contenedor o lugar</label>
+        <input type="text" id="caja-nombre" class="form-input" placeholder="Ej: Caja negra, Cajón de escritorio..." autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Dónde está? (opcional)</label>
+        <input type="text" id="caja-ubi" class="form-input" placeholder="Ej: Closet, repisa 2" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Foto de la caja o del lugar (opcional)</label>
+        <div class="photo-row">
+          <div class="pbox" data-k="cajaFoto"><span class="ph">📦</span><img alt=""><button type="button" class="rm" data-rm="cajaFoto">✕</button></div>
+          <button type="button" class="btn btn-secondary" data-pick="cajaFoto">📸 Tomar / Elegir</button>
+          <input type="file" class="pfile" data-k="cajaFoto" accept="image/*" hidden>
         </div>
-        <div class="arrow">→</div>
-      </a>
-
-      <!-- Botón 2 -->
-      <a href="compras.html" class="nav-card">
-        <div class="icon-box icon-compras">🛍️</div>
-        <div class="card-texts">
-          <div class="card-title">Reposición y Compras</div>
-          <div class="card-desc">Higiene, skincare, precios estimados, stock y lugares.</div>
-        </div>
-        <div class="arrow">→</div>
-      </a>
-
-      <!-- Botón 3 -->
-      <a href="ahorros.html" class="nav-card">
-        <div class="icon-box icon-ahorros">💰</div>
-        <div class="card-texts">
-          <div class="card-title">Mis Ahorros</div>
-          <div class="card-desc">Cuánto hay en cada caja, billetes y monedas, con historial.</div>
-        </div>
-        <div class="arrow">→</div>
-      </a>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close>Cancelar</button>
+        <button class="btn btn-primary" id="btn-guardar-caja">Guardar</button>
+      </div>
     </div>
   </div>
 
+  <!-- Modal Objeto -->
+  <div class="modal-overlay" id="modal-item">
+    <div class="modal">
+      <h3 id="item-titulo">Agregar Objeto</h3>
+      <div class="form-group">
+        <label class="form-label">Nombre del objeto</label>
+        <input type="text" id="item-nombre" class="form-input" placeholder="Ej: Elásticos, Cargador, Libreta..." autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Detalle opcional (color, estado, etc.)</label>
+        <input type="text" id="item-detalles" class="form-input" placeholder="Ej: sellado, color negro" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cantidad (opcional: actívala si se gasta)</label>
+        <input type="text" id="item-cantidad" class="form-input" inputmode="numeric" placeholder="Ej: 12 (vacío = sin contador)" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Prestado a (opcional)</label>
+        <input type="text" id="item-prestado" class="form-input" placeholder="Ej: Dani, mi hermana..." autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="check"><input type="checkbox" id="item-reponer"> 🛒 Por reponer (lo manda a Compras)</label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Foto del objeto (opcional)</label>
+        <div class="photo-row">
+          <div class="pbox" data-k="itemFoto"><span class="ph">📷</span><img alt=""><button type="button" class="rm" data-rm="itemFoto">✕</button></div>
+          <button type="button" class="btn btn-secondary" data-pick="itemFoto">📸 Tomar / Elegir</button>
+          <input type="file" class="pfile" data-k="itemFoto" accept="image/*" hidden>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close>Cancelar</button>
+        <button class="btn btn-primary" id="btn-guardar-item">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Mover -->
+  <div class="modal-overlay" id="modal-mover">
+    <div class="modal">
+      <h3 id="mover-titulo">Mover objeto</h3>
+      <div class="form-group">
+        <label class="form-label">Mover a la caja</label>
+        <select id="mover-destino" class="form-select"></select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close>Cancelar</button>
+        <button class="btn btn-primary" id="btn-confirmar-mover">Mover</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visor de imagen -->
+  <div class="modal-overlay" id="modal-viewer">
+    <div class="modal" style="text-align:center;max-width:440px">
+      <h3 id="viewer-title" style="margin-bottom:10px">Foto</h3>
+      <img id="viewer-img" src="" alt="Vista previa grande">
+      <div class="modal-footer" style="justify-content:center;margin-top:14px"><button class="btn btn-secondary" data-close>Cerrar</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
   <script>
-    const btn = document.getElementById('btn-tema');
-    const mq = matchMedia('(prefers-color-scheme: dark)');
-    const pref = () => { try { return localStorage.getItem('app_tema') || 'auto'; } catch (e) { return 'auto'; } };
-    const oscuro = () => pref() === 'oscuro' || (pref() === 'auto' && mq.matches);
-    function aplicar() {
-      document.documentElement.dataset.theme = oscuro() ? 'dark' : 'light';
-      btn.textContent = oscuro() ? '☀️' : '🌙';
-      const m = document.querySelector('meta[name=theme-color]');
-      if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim();
+    const KEY = 'org_cajas', CKEY = 'colapso_cajas', COMPRAS = 'org_compras', CAT_COMPRAS = 'Desde Cajas';
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    const vibrar = () => { if (navigator.vibrate) navigator.vibrate(10); };
+    const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } };
+    const fechaActual = () => new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    let tt; function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 2600); }
+
+    /* ── Datos (normaliza lo antiguo: los respaldos y datos de antes siguen funcionando) ── */
+    const cantN = v => { const n = parseInt(String(v ?? '').replace(/\D/g, ''), 10); return Number.isFinite(n) ? Math.min(n, 99999) : null; };
+    function normItem(x) {
+      return {
+        id: String(x.id || uid('it_')), nombre: String(x.nombre || '').trim(), detalles: String(x.detalles || '').trim(),
+        fecha: String(x.fecha || fechaActual()), foto: typeof x.foto === 'string' && x.foto ? x.foto : null,
+        cantidad: x.cantidad === null || x.cantidad === undefined || x.cantidad === '' ? null : cantN(x.cantidad),
+        prestadoA: String(x.prestadoA || '').trim(), porReponer: !!x.porReponer
+      };
     }
-    btn.onclick = () => { try { localStorage.setItem('app_tema', oscuro() ? 'claro' : 'oscuro'); } catch (e) {} aplicar(); };
-    if (mq.addEventListener) mq.addEventListener('change', aplicar);
-    aplicar();
+    function normCaja(c) {
+      return {
+        id: String(c.id || uid('c_')), nombre: String(c.nombre || 'Caja').trim() || 'Caja',
+        ubicacion: String(c.ubicacion || '').trim(), foto: typeof c.foto === 'string' && c.foto ? c.foto : null,
+        items: (Array.isArray(c.items) ? c.items : []).filter(x => x && typeof x === 'object' && String(x.nombre || '').trim()).map(normItem)
+      };
+    }
+    let db = (Array.isArray(leer(KEY, [])) ? leer(KEY, []) : []).filter(c => c && typeof c === 'object').map(normCaja);
+    let colapso = leer(CKEY, {});
+    let cajaId = null, itemId = null;
+    const fotos = { cajaFoto: null, itemFoto: null };
+
+    function guardar() {
+      try { localStorage.setItem(KEY, JSON.stringify(db)); }
+      catch (e) { alert('No hay más espacio en el navegador. Haz un respaldo y quita algunas fotos.'); }
+      render();
+    }
+
+    /* ── Compras (misma carpeta de GitHub Pages: comparten el navegador) ── */
+    function leerCompras() { const d = leer(COMPRAS, []); return Array.isArray(d) ? d : []; }
+    function guardarCompras(d) { try { localStorage.setItem(COMPRAS, JSON.stringify(d)); return true; } catch (e) { return false; } }
+    function setReponer(c, it, on) {
+      const compras = leerCompras();
+      const hay = () => { for (const k of compras) for (const p of (k.items || [])) if (p && p.deCaja === it.id) return [k, p]; return null; };
+      const ya = hay();
+      if (on) {
+        it.porReponer = true;
+        if (ya && ya[1].tieneRepuesto === 'no') return;
+        if (ya) { Object.assign(ya[1], { tieneRepuesto:'no', lugarRepuesto:'', cantidadRepuesto:'' }); }
+        else {
+          let k = compras.find(x => x.nombre === CAT_COMPRAS);
+          if (!k) { k = { id: uid('cat_'), nombre: CAT_COMPRAS, items: [] }; compras.unshift(k); }
+          k.items = k.items || [];
+          k.items.unshift({ id: uid('p_'), nombre: it.nombre, tieneRepuesto:'no', lugarRepuesto:'', cantidadRepuesto:'', queda: it.cantidad !== null ? String(it.cantidad) : '', cuando:'', urgente:false, donde:'', precio:'', instrucciones:`Viene de la caja "${c.nombre}"${c.ubicacion ? ' (' + c.ubicacion + ')' : ''}`, enlace:'', foto: it.foto || null, fotoTienda:null, deCaja: it.id });
+        }
+        if (!guardarCompras(compras)) { it.porReponer = false; alert('No pude enviarlo a Compras: no hay espacio en el navegador.'); }
+      } else {
+        it.porReponer = false;
+        if (ya && ya[1].tieneRepuesto === 'no') { ya[0].items = ya[0].items.filter(p => p !== ya[1]); guardarCompras(compras); }
+      }
+    }
+    /* Si en Compras ya lo compraste (o lo borraste), se quita la marca aquí */
+    function sincronizar() {
+      const compras = leerCompras(); let cambio = false;
+      db.forEach(c => c.items.forEach(it => {
+        if (!it.porReponer) return;
+        let p = null; compras.forEach(k => (k.items || []).forEach(x => { if (x && x.deCaja === it.id) p = x; }));
+        if (!p || p.tieneRepuesto === 'si') { it.porReponer = false; cambio = true; }
+      }));
+      return cambio;
+    }
+
+    /* ── Fotos ── */
+    function comprimir(file, max, cb) {
+      const r = new FileReader();
+      r.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const k = Math.min(1, max / Math.max(img.width, img.height));
+          const w = Math.round(img.width * k), h = Math.round(img.height * k);
+          const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+          cv.getContext('2d').drawImage(img, 0, 0, w, h);
+          cb(cv.toDataURL('image/jpeg', .65));
+        };
+        img.src = e.target.result;
+      };
+      r.readAsDataURL(file);
+    }
+    function setPrev(k) {
+      const b = $(`.pbox[data-k="${k}"]`), src = fotos[k], im = b.querySelector('img');
+      im.src = src || ''; im.style.display = src ? 'block' : 'none';
+      b.querySelector('.ph').style.display = src ? 'none' : 'block';
+      b.querySelector('.rm').style.display = src ? 'flex' : 'none';
+    }
+    document.addEventListener('click', e => {
+      const p = e.target.closest('[data-pick]'); if (p) $(`.pfile[data-k="${p.dataset.pick}"]`).click();
+      const r = e.target.closest('[data-rm]'); if (r) { fotos[r.dataset.rm] = null; $(`.pfile[data-k="${r.dataset.rm}"]`).value = ''; setPrev(r.dataset.rm); }
+    });
+    $$('.pfile').forEach(inp => inp.onchange = e => {
+      const f = e.target.files[0]; if (!f) return;
+      comprimir(f, 500, d => { fotos[inp.dataset.k] = d; setPrev(inp.dataset.k); });
+    });
+    function verFoto(src, titulo) { $('#viewer-img').src = src; $('#viewer-title').textContent = titulo || 'Foto'; abrir('#modal-viewer'); }
+
+    /* ── Render ── */
+    function itemHTML(c, it, showCaja) {
+      const d = `data-c="${esc(c.id)}" data-i="${esc(it.id)}"`;
+      const sinStock = it.cantidad === 0;
+      return `<div class="item-row"><div class="item-top">
+        ${it.foto ? `<img src="${it.foto}" class="item-thumb" data-act="foto" ${d} alt="Foto de ${esc(it.nombre)}">` : ''}
+        <div class="grow">
+          <div class="item-name">${esc(it.nombre)}${showCaja ? ` <span class="badge cat">${esc(c.nombre)}${c.ubicacion ? ' · ' + esc(c.ubicacion) : ''}</span>` : ''}</div>
+          <div class="item-meta">
+            <div class="badges">
+              ${it.detalles ? `<span class="badge ok">${esc(it.detalles)}</span>` : ''}
+              ${it.prestadoA ? `<span class="badge warn">🤝 Prestado a ${esc(it.prestadoA)}</span>` : ''}
+              ${sinStock ? '<span class="badge bad">Agotado</span>' : ''}
+            </div>
+            <div>Editado: ${esc(it.fecha)}</div>
+          </div>
+        </div>
+        <div class="nowrap"><button class="btn-icon" data-act="edit" ${d} aria-label="Editar">✎</button><button class="btn-icon" data-act="del" ${d} aria-label="Eliminar">🗑</button></div></div>
+        <div class="item-actions">
+          ${it.cantidad !== null ? `<div class="stepper"><button data-act="menos" ${d} aria-label="Restar uno">−</button><b>${it.cantidad}</b><button data-act="mas" ${d} aria-label="Sumar uno">+</button></div>` : ''}
+          <button class="mini${it.porReponer ? ' on' : ''}" data-act="reponer" ${d}>🛒 ${it.porReponer ? 'En Compras' : 'Por reponer'}</button>
+          <button class="mini" data-act="mover" ${d}>⇄ Mover</button>
+        </div></div>`;
+    }
+
+    function render() {
+      const cont = $('#contenedor-cajas');
+      if (!db.length) {
+        cont.innerHTML = `<div class="vacio">No tienes cajas creadas.<br>Toca <b>+ Nueva Caja</b> para comenzar.</div>`;
+      } else {
+        cont.innerHTML = db.map(c => {
+          const col = !!colapso[c.id], d = `data-c="${esc(c.id)}"`;
+          return `<div class="group-card"><div class="group-header" data-act="tog" ${d}>
+            <div class="group-left">
+              ${c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : ''}
+              <div><div style="display:flex;align-items:center;gap:8px"><span class="group-title">${esc(c.nombre)}</span><span class="group-count">${c.items.length}</span></div>${c.ubicacion ? `<div class="caja-ubi">📍 ${esc(c.ubicacion)}</div>` : ''}</div>
+            </div>
+            <div class="nowrap"><button class="btn-icon" data-act="editcaja" ${d} aria-label="Editar caja">✎</button><button class="btn-icon" data-act="delcaja" ${d} aria-label="Eliminar caja">🗑</button><span class="chevron ${col ? 'rotated' : ''}">▼</span></div>
+          </div>
+          <div style="${col ? 'display:none' : ''}">
+            <button class="btn btn-add-item" data-act="newitem" ${d}>+ Agregar objeto a ${esc(c.nombre)}</button>
+            <div class="items-container">${c.items.length ? c.items.map(it => itemHTML(c, it, false)).join('') : '<div style="font-size:.8rem;color:var(--muted);font-style:italic;padding:4px 0">Vacío.</div>'}</div>
+          </div></div>`;
+        }).join('');
+      }
+      buscar(); espacio();
+    }
+
+    function buscar() {
+      const q = $('#busqueda').value, ws = norm(q).split(/\s+/).filter(Boolean);
+      $('#btn-limpiar').style.display = q ? 'block' : 'none';
+      const box = $('#search-box-results');
+      if (!ws.length) { box.style.display = 'none'; return; }
+      let h = '';
+      db.forEach(c => c.items.forEach(it => {
+        const hay = norm([it.nombre, it.detalles, it.prestadoA, c.nombre, c.ubicacion].join(' '));
+        if (ws.every(w => hay.includes(w))) h += itemHTML(c, it, true);
+      }));
+      $('#search-items').innerHTML = h || '<div style="font-size:.85rem;color:var(--muted);padding:6px 0">Sin coincidencias.</div>';
+      box.style.display = 'block';
+    }
+
+    /* Aviso de espacio (el navegador guarda unos 5 MB en total) */
+    function espacio() {
+      let n = 0; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); n += k.length + (localStorage.getItem(k) || '').length; } } catch (e) {}
+      const pct = Math.round(n / 5000000 * 100), el = $('#aviso-espacio');
+      el.style.display = pct >= 75 ? 'block' : 'none';
+      if (pct >= 75) el.textContent = `⚠️ El espacio del navegador va en un ${Math.min(pct, 100)}% (comparte lugar con tus otras páginas). Haz un respaldo y quita algunas fotos pronto.`;
+    }
+
+    /* ── Acciones (todo por data-atributos: los nombres con ' " < > ya no rompen nada) ── */
+    function acciones(e) {
+      const b = e.target.closest('[data-act]'); if (!b) return;
+      const a = b.dataset.act, c = db.find(x => x.id === b.dataset.c), it = c && c.items.find(x => x.id === b.dataset.i);
+      if (!c) return;
+      if (a === 'tog') { colapso[c.id] = !colapso[c.id]; try { localStorage.setItem(CKEY, JSON.stringify(colapso)); } catch (er) {} vibrar(); return render(); }
+      if (a === 'fotocaja') return verFoto(c.foto, c.nombre);
+      if (a === 'editcaja') { vibrar(); return abrirCaja(c.id); }
+      if (a === 'delcaja') { vibrar(); if (confirm(`¿Eliminar la caja "${c.nombre}" y su contenido?`)) { db = db.filter(x => x.id !== c.id); guardar(); } return; }
+      if (a === 'newitem') { vibrar(); return abrirItem(c.id); }
+      if (!it) return;
+      vibrar();
+      if (a === 'foto') return verFoto(it.foto, it.nombre);
+      if (a === 'edit') return abrirItem(c.id, it.id);
+      if (a === 'del') { if (confirm(`¿Eliminar "${it.nombre}"?`)) { if (it.porReponer) setReponer(c, it, false); c.items = c.items.filter(x => x.id !== it.id); guardar(); } return; }
+      if (a === 'mas') { it.cantidad = Math.min(99999, (it.cantidad || 0) + 1); return guardar(); }
+      if (a === 'menos') {
+        it.cantidad = Math.max(0, (it.cantidad || 0) - 1); guardar();
+        if (it.cantidad === 0 && !it.porReponer && confirm(`Se acabó "${it.nombre}". ¿Mandarlo a Compras?`)) { setReponer(c, it, true); guardar(); toast('Enviado a Compras'); }
+        return;
+      }
+      if (a === 'reponer') { const on = !it.porReponer; setReponer(c, it, on); guardar(); if (on && it.porReponer) toast('Enviado a Compras'); else if (!on) toast('Quitado de Compras'); return; }
+      if (a === 'mover') return abrirMover(c.id, it.id);
+    }
+    $('#contenedor-cajas').addEventListener('click', acciones);
+    $('#search-items').addEventListener('click', acciones);
+    $('#busqueda').addEventListener('input', buscar);
+    $('#btn-limpiar').onclick = () => { $('#busqueda').value = ''; buscar(); };
+
+    /* ── Cajas ── */
+    function abrirCaja(id) {
+      cajaId = id || null;
+      const c = id ? db.find(x => x.id === id) : null;
+      $('#caja-titulo').textContent = c ? 'Editar caja' : 'Nueva Caja';
+      $('#caja-nombre').value = c ? c.nombre : ''; $('#caja-ubi').value = c ? c.ubicacion : '';
+      fotos.cajaFoto = c ? c.foto : null; $$('.pfile').forEach(i => i.value = ''); setPrev('cajaFoto');
+      abrir('#modal-caja'); setTimeout(() => $('#caja-nombre').focus(), 150);
+    }
+    $('#btn-nueva-caja').onclick = () => { vibrar(); abrirCaja(); };
+    $('#btn-guardar-caja').onclick = () => {
+      const nombre = $('#caja-nombre').value.trim(); if (!nombre) return; vibrar();
+      const ubicacion = $('#caja-ubi').value.trim();
+      if (cajaId) Object.assign(db.find(x => x.id === cajaId), { nombre, ubicacion, foto: fotos.cajaFoto });
+      else db.unshift({ id: uid('c_'), nombre, ubicacion, foto: fotos.cajaFoto, items: [] });
+      cerrar(); guardar();
+    };
+
+    /* ── Objetos ── */
+    function abrirItem(cid, iid) {
+      cajaId = cid; itemId = iid || null;
+      const it = iid ? db.find(x => x.id === cid).items.find(x => x.id === iid) : null;
+      $('#item-titulo').textContent = it ? 'Editar objeto' : 'Agregar objeto';
+      $('#item-nombre').value = it ? it.nombre : ''; $('#item-detalles').value = it ? it.detalles : '';
+      $('#item-cantidad').value = it && it.cantidad !== null ? it.cantidad : '';
+      $('#item-prestado').value = it ? it.prestadoA : ''; $('#item-reponer').checked = !!it && it.porReponer;
+      fotos.itemFoto = it ? it.foto : null; $$('.pfile').forEach(i => i.value = ''); setPrev('itemFoto');
+      abrir('#modal-item'); setTimeout(() => $('#item-nombre').focus(), 150);
+    }
+    $('#btn-guardar-item').onclick = () => {
+      const nombre = $('#item-nombre').value.trim(); if (!nombre) return; vibrar();
+      const c = db.find(x => x.id === cajaId); if (!c) return;
+      const datos = { nombre, detalles: $('#item-detalles').value.trim(), cantidad: cantN($('#item-cantidad').value), prestadoA: $('#item-prestado').value.trim(), foto: fotos.itemFoto, fecha: fechaActual() };
+      let it;
+      if (itemId) { it = c.items.find(x => x.id === itemId); Object.assign(it, datos); }
+      else { it = normItem({ id: uid('it_'), ...datos }); c.items.unshift(it); }
+      const quiere = $('#item-reponer').checked;
+      if (quiere !== it.porReponer) setReponer(c, it, quiere);
+      cerrar(); guardar();
+      if (quiere && it.porReponer) toast('Enviado a Compras');
+    };
+
+    /* ── Mover objeto a otra caja ── */
+    function abrirMover(cid, iid) {
+      cajaId = cid; itemId = iid;
+      const c = db.find(x => x.id === cid), it = c.items.find(x => x.id === iid);
+      const otras = db.filter(x => x.id !== cid);
+      if (!otras.length) return alert('Crea otra caja primero para poder mover objetos.');
+      $('#mover-titulo').textContent = `Mover "${it.nombre}"`;
+      $('#mover-destino').innerHTML = otras.map(x => `<option value="${esc(x.id)}">${esc(x.nombre)}${x.ubicacion ? ' — ' + esc(x.ubicacion) : ''}</option>`).join('');
+      abrir('#modal-mover');
+    }
+    $('#btn-confirmar-mover').onclick = () => {
+      const c = db.find(x => x.id === cajaId), dest = db.find(x => x.id === $('#mover-destino').value);
+      const it = c && c.items.find(x => x.id === itemId); if (!it || !dest) return; vibrar();
+      c.items = c.items.filter(x => x.id !== itemId); it.fecha = fechaActual(); dest.items.unshift(it);
+      cerrar(); guardar(); toast(`Movido a ${dest.nombre}`);
+    };
+
+    /* ── Modales ── */
+    const abrir = s => $(s).classList.add('active');
+    function cerrar() { $$('.modal-overlay').forEach(m => m.classList.remove('active')); cajaId = null; itemId = null; }
+    document.addEventListener('click', e => { if (e.target.closest('[data-close]') || e.target.classList.contains('modal-overlay')) cerrar(); });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+
+    /* ── Respaldo (ahora valida y pregunta antes de reemplazar) ── */
+    $('#btn-exportar').onclick = () => {
+      vibrar();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(db, null, 2)], { type:'application/json' }));
+      a.download = `respaldo-cajas-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+    };
+    $('#btn-importar').onclick = () => { vibrar(); $('#file-input').click(); };
+    $('#file-input').onchange = e => {
+      const file = e.target.files[0]; if (!file) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        try {
+          const d = JSON.parse(ev.target.result);
+          if (!Array.isArray(d) || !d.length || d.some(c => !c || typeof c !== 'object' || typeof c.nombre !== 'string')) throw 0;
+          const nuevo = d.map(normCaja), n = nuevo.reduce((s, c) => s + c.items.length, 0);
+          if (!confirm(`El archivo trae ${nuevo.length} caja${nuevo.length === 1 ? '' : 's'} con ${n} objeto${n === 1 ? '' : 's'}.\nEsto reemplaza las que tienes ahora (${db.length}). ¿Continuar?`)) return;
+          db = nuevo; guardar(); toast('¡Cajas cargadas con éxito!');
+        } catch (err) { alert('Archivo no válido: no parece un respaldo de Cajas.'); }
+        e.target.value = '';
+      };
+      r.readAsText(file);
+    };
+
+    /* ── Tema claro / oscuro (clave compartida app_tema) ── */
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    const temaPref = () => { try { return localStorage.getItem('app_tema') || 'auto'; } catch (e) { return 'auto'; } };
+    const oscuro = () => temaPref() === 'oscuro' || (temaPref() === 'auto' && mq.matches);
+    function aplicarTema() {
+      document.documentElement.dataset.theme = oscuro() ? 'dark' : 'light';
+      $('#btn-tema').textContent = oscuro() ? '☀️' : '🌙';
+      const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    }
+    $('#btn-tema').onclick = () => { vibrar(); try { localStorage.setItem('app_tema', oscuro() ? 'claro' : 'oscuro'); } catch (e) {} aplicarTema(); };
+    if (mq.addEventListener) mq.addEventListener('change', aplicarTema);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { aplicarTema(); if (sincronizar()) guardar(); else render(); } });
+
+    aplicarTema();
+    if (sincronizar()) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }
+    render();
   </script>
 </body>
 </html>
