@@ -7,10 +7,10 @@
   <meta name="theme-color" content="#f8fafc">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23059669'/%3E%3Cstop offset='1' stop-color='%2334d399'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle'%3E💰%3C/text%3E%3C/svg%3E">
   <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
-  <script>try{var F={fraunces:"'Fraunces',Georgia,serif",playfair:"'Playfair Display',Georgia,serif",lora:"'Lora',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",caveat:"'Caveat',cursive"},f=localStorage.getItem("app_fuente");if(F[f])document.documentElement.style.setProperty("--serif",F[f])}catch(e){}</script>
+  <script>try{var F={fraunces:"'Fraunces',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",fira:"'Fira Sans',system-ui,sans-serif",chivo:"'Chivo',system-ui,sans-serif",space:"'Space Grotesk',system-ui,sans-serif"},f=localStorage.getItem("app_fuente");if(F[f])document.documentElement.style.setProperty("--serif",F[f])}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Playfair+Display:wght@600;700&family=Lora:wght@600;700&family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Fira+Sans:wght@500;600;700&family=Chivo:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{color-scheme:light;--bg:#fbf5ee;--card:#fffdf9;--border:#eadfd2;--text:#3b2a22;--muted:#7a685d;--green:#2f8a76;--green-soft:#d9f0ea;--green-line:#a8d9cd;--red:#b4412f;--red-soft:#f8e1db;--red-line:#eab9ad;--badge:#f1e8dd;--soft:#f6efe6;--hover:#eadfd2;--pill-ink:#475569;--info-soft:#fffbeb;--info-line:#fde68a;--info-ink:#92400e;--badge-ink:#65534a;--f0:#c4623f;--f1:#5f8f7a;--f2:#8a6fb0;--f3:#b98524;--f4:#4f7fb5;--f5:#b9567a;--f6:#6f8f3d;--f7:#a0675a;--serif:'Fraunces','Lora',Georgia,serif;--shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06)}
     [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--green:#34d399;--green-soft:rgba(52,211,153,.14);--green-line:rgba(52,211,153,.35);--red:#fb7185;--red-soft:rgba(251,113,133,.14);--red-line:rgba(251,113,133,.35);--badge:#282434;--soft:#181521;--hover:#2d2939;--pill-ink:#bab2ca;--info-soft:rgba(252,211,77,.1);--info-line:rgba(252,211,77,.3);--info-ink:#fcd34d;--f0:#f0916d;--f1:#5eead4;--f2:#c4b5fd;--f3:#fcd34d;--f4:#7cb7ff;--f5:#f9a8d4;--f6:#bef264;--f7:#fdba74;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25)}
@@ -47,7 +47,7 @@
     .g-btns .btn{flex:1}
     .btn-icon{background:none;border:none;cursor:pointer;padding:6px 8px;font-size:.88rem;color:var(--muted);border-radius:8px}
     .btn-icon:hover{background:var(--hover);color:var(--text)}
-    .toggle-movs{width:100%;text-align:left;background:none;border:none;border-top:1px dashed var(--border);margin-top:12px;padding:10px 0 2px;font:700 .8rem inherit;font-family:inherit;color:var(--muted);cursor:pointer}
+    .toggle-movs{width:100%;text-align:left;background:none;border:none;border-top:1px dashed var(--border);margin-top:12px;padding:10px 0 2px;font-weight:700;font-size:.8rem;font-family:inherit;color:var(--muted);cursor:pointer}
     .movs{display:flex;flex-direction:column;gap:6px;margin-top:8px}
     .mov{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:9px 11px}
     .mov-main{font-weight:700;font-size:.9rem}
@@ -71,7 +71,7 @@
     .hint{font-size:.74rem;color:var(--muted);margin-top:5px;line-height:1.4}
     .info-box{background:var(--info-soft);border:1px solid var(--info-line);color:var(--info-ink);border-radius:10px;padding:8px 11px;font-size:.78rem;font-weight:600;margin-bottom:12px;overflow-wrap:anywhere;white-space:pre-wrap}
     .chips{display:flex;gap:6px}
-    .chip{flex:1;border:1.5px solid var(--border);background:var(--card);border-radius:12px;padding:10px 6px;font:700 .82rem inherit;font-family:inherit;color:var(--muted);cursor:pointer}
+    .chip{flex:1;border:1.5px solid var(--border);background:var(--card);border-radius:12px;padding:10px 6px;font-weight:700;font-size:.82rem;font-family:inherit;color:var(--muted);cursor:pointer}
     .chip.on{background:var(--green-soft);border-color:var(--green);color:var(--green)}
     .chip.on.out{background:var(--red-soft);border-color:var(--red);color:var(--red)}
     .error{display:none;color:var(--red);font-size:.8rem;font-weight:600;margin-top:8px}
@@ -80,8 +80,8 @@
     /* ===== Estilo Fanfics: serif, franja de color, etiquetas suaves ===== */
     h1,.group-title,.g-title,.modal h3,.card-title,.vacio .big{font-family:var(--serif)}
     h1{letter-spacing:-.4px}
-    .group-card,.nav-card{position:relative;overflow:hidden;border-width:1px;box-shadow:var(--shadow);padding-left:20px}
-    .group-card::before,.nav-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--muted))}
+    .group-card,.nav-card{position:relative;overflow:hidden;border-width:1px;box-shadow:var(--shadow);padding-left:16px}
+    /* sin franja lateral de color */
     .card-list>.group-card:nth-child(8n+1){--c:var(--f2)}
     .card-list>.group-card:nth-child(8n+2){--c:var(--f5)}
     .card-list>.group-card:nth-child(8n+3){--c:var(--f1)}
@@ -191,6 +191,27 @@
     .sum-card,[data-theme=dark] .sum-card{background:linear-gradient(135deg,#2f8a76,#5f8f7a);color:#fff;border:0}
     .sum-card .sum-label,.sum-card .sum-sub{color:#fff;opacity:1}
     .sum-card .sum-value{color:#000}
+
+    /* Total ahorrado: verde más claro */
+    .sum-card,[data-theme=dark] .sum-card{background:linear-gradient(135deg,#bfe6da,#e3f5ef);color:#14473a;border:1px solid #a8d9cd;box-shadow:var(--shadow)}
+    .sum-card .sum-label,.sum-card .sum-sub{color:#2c6a59;opacity:1}
+    .sum-card .sum-value{color:#0f3d31}
+    [data-theme=dark] .sum-card{background:linear-gradient(135deg,#2a6b5c,#3a8472);border-color:rgba(94,234,212,.25);color:#fff}
+    [data-theme=dark] .sum-card .sum-label,[data-theme=dark] .sum-card .sum-sub{color:#d9f0ea}
+    [data-theme=dark] .sum-card .sum-value{color:#fff}
+
+    /* Mixto, reglas de la caja */
+    .mix-box{border:1px solid var(--border);background:var(--soft);border-radius:14px;padding:12px;margin-bottom:12px}
+    .mix-t{font-weight:800;font-size:.85rem;margin-bottom:8px}
+    .mix-box .form-group:last-child{margin-bottom:0}
+    .chips.wrap{flex-wrap:wrap;margin-top:8px}
+    .chips.wrap .chip{flex:none;padding:8px 12px}
+    .c-sub.rule{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+    /* Títulos de contenedores: máx. 2 líneas; si no caben, se achican y al final se cortan con … */
+    .group-title,.c-name,#det-titulo{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;min-width:0}
+    .group-title-box{min-width:0;flex:1}
+    .group-count{flex:none}
   </style>
 </head>
 <body>
@@ -205,7 +226,7 @@
           <button id="btn-exportar">💾 Respaldar</button>
           <button id="btn-importar">📂 Cargar</button>
           <hr>
-          <div class="menu-sec"><div class="menu-t">Letra de los títulos</div><div id="fonts"><button data-f="fraunces" style="font-family:'Fraunces',Georgia,serif">Fraunces (la de ahora)</button><button data-f="playfair" style="font-family:'Playfair Display',Georgia,serif">Playfair Display</button><button data-f="lora" style="font-family:'Lora',Georgia,serif">Lora</button><button data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif">Plus Jakarta (sin serif)</button><button data-f="caveat" style="font-family:'Caveat',cursive">Caveat (manuscrita)</button></div></div>
+          <div class="menu-sec"><div class="menu-t">Letra de los títulos</div><div id="fonts"><button data-f="fraunces" style="font-family:'Fraunces',Georgia,serif">Fraunces (la de ahora)</button><button data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif">Plus Jakarta (sin serif)</button><button data-f="fira" style="font-family:'Fira Sans',system-ui,sans-serif">Fira Sans</button><button data-f="chivo" style="font-family:'Chivo',system-ui,sans-serif">Chivo</button><button data-f="space" style="font-family:'Space Grotesk',system-ui,sans-serif">Space Grotesk</button></div></div>
         </div>
       </div>
       <input type="file" id="file-input" style="display:none" accept=".json">
@@ -260,17 +281,22 @@
       </div>
       <div class="form-group">
         <label class="form-label">Meta (opcional)</label>
-        <input class="form-input" id="caja-meta" inputmode="numeric" placeholder="Ej: 120.000" autocomplete="off">
+        <input class="form-input money" id="caja-meta" inputmode="numeric" placeholder="Ej: 120.000" autocomplete="off">
       </div>
       <div class="form-group">
-        <label class="form-label">Detalle de la caja (solo informativo)</label>
-        <textarea class="form-input auto" id="caja-detalle" rows="1" placeholder="Ej: monedas de 100 y 2 billetes de 10 mil"></textarea>
+        <label class="form-label">Regla de uso de la caja (opcional)</label>
+        <textarea class="form-input auto" id="caja-detalle" rows="1" placeholder="Ej: Solo sacar cuando sea necesario"></textarea>
+        <div class="chips wrap" id="caja-reglas">
+          <button type="button" class="chip" data-p="No sacar">🔒 No sacar</button>
+          <button type="button" class="chip" data-p="Solo sacar si es necesario">⚠️ Solo si es necesario</button>
+          <button type="button" class="chip" data-p="Uso ocasional">🎈 Uso ocasional</button>
+        </div>
       </div>
 
       <div class="sec" id="caja-sec">Saldo inicial (opcional)</div>
-      <div class="form-group">
+      <div class="form-group" id="caja-monto-box">
         <label class="form-label" id="caja-monto-label">Monto ($)</label>
-        <input class="form-input big" id="caja-monto" inputmode="numeric" placeholder="0" autocomplete="off">
+        <input class="form-input big money" id="caja-monto" inputmode="numeric" placeholder="0" autocomplete="off">
         <div class="hint" id="caja-hint" style="display:none">Si lo cambias, queda registrado como un "Ajuste de saldo" en el historial.</div>
       </div>
       <div id="caja-fmt-box">
@@ -282,14 +308,23 @@
             <button class="chip" data-v="x">Mixto</button>
           </div>
         </div>
+        <div id="caja-mix" style="display:none">
+          <div class="mix-box">
+            <div class="mix-t">💵 Billetes</div>
+            <div class="form-group"><label class="form-label">Monto en billetes ($)</label><input class="form-input money" id="caja-mb" inputmode="numeric" placeholder="Ej: 5.000" autocomplete="off"></div>
+            <div class="form-group"><label class="form-label">¿Cuáles billetes? (especificar)</label><textarea class="form-input auto" id="caja-mbd" rows="1" placeholder="Ej: 3 de mil y 1 de 2 mil"></textarea></div>
+          </div>
+          <div class="mix-box">
+            <div class="mix-t">🪙 Monedas</div>
+            <div class="form-group"><label class="form-label">Monto en monedas ($)</label><input class="form-input money" id="caja-mm" inputmode="numeric" placeholder="Ej: 2.000" autocomplete="off"></div>
+            <div class="form-group"><label class="form-label">¿Cuáles monedas? (especificar)</label><textarea class="form-input auto" id="caja-mmd" rows="1" placeholder="Ej: monedas de 100 y 500"></textarea></div>
+          </div>
+          <div class="hint" id="caja-mix-tot" style="margin:-4px 0 12px;font-weight:700"></div>
+        </div>
         <div class="form-group" id="caja-den-box">
           <label class="form-label" id="caja-den-label">Billetes de ($)</label>
-          <input class="form-input" id="caja-den" inputmode="numeric" list="dl-b" placeholder="Ej: 10.000" autocomplete="off">
+          <input class="form-input money" id="caja-den" inputmode="numeric" list="dl-b" placeholder="Ej: 10.000" autocomplete="off">
           <div class="hint" id="caja-den-hint"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Detalle del dinero (solo informativo)</label>
-          <textarea class="form-input auto" id="caja-mdet" rows="1" placeholder="Ej: más 3 monedas de 100"></textarea>
         </div>
       </div>
       <div class="error" id="caja-error"></div>
@@ -312,9 +347,9 @@
           <button class="chip" data-v="out">− Retirar</button>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="mov-monto-box">
         <label class="form-label">Monto ($)</label>
-        <input class="form-input big" id="mov-monto" inputmode="numeric" placeholder="5000" autocomplete="off">
+        <input class="form-input big money" id="mov-monto" inputmode="numeric" placeholder="5.000" autocomplete="off">
       </div>
       <div class="form-group">
         <label class="form-label">¿Fue en billetes o monedas?</label>
@@ -324,12 +359,25 @@
           <button class="chip" data-v="x">Mixto</button>
         </div>
       </div>
-      <div class="form-group" id="mov-den-box">
+      <div id="mov-mix" style="display:none">
+          <div class="mix-box">
+            <div class="mix-t">💵 Billetes</div>
+            <div class="form-group"><label class="form-label">Monto en billetes ($)</label><input class="form-input money" id="mov-mb" inputmode="numeric" placeholder="Ej: 5.000" autocomplete="off"></div>
+            <div class="form-group"><label class="form-label">¿Cuáles billetes? (especificar)</label><textarea class="form-input auto" id="mov-mbd" rows="1" placeholder="Ej: 3 de mil y 1 de 2 mil"></textarea></div>
+          </div>
+          <div class="mix-box">
+            <div class="mix-t">🪙 Monedas</div>
+            <div class="form-group"><label class="form-label">Monto en monedas ($)</label><input class="form-input money" id="mov-mm" inputmode="numeric" placeholder="Ej: 2.000" autocomplete="off"></div>
+            <div class="form-group"><label class="form-label">¿Cuáles monedas? (especificar)</label><textarea class="form-input auto" id="mov-mmd" rows="1" placeholder="Ej: monedas de 100 y 500"></textarea></div>
+          </div>
+          <div class="hint" id="mov-mix-tot" style="margin:-4px 0 12px;font-weight:700"></div>
+        </div>
+        <div class="form-group" id="mov-den-box">
         <label class="form-label" id="mov-den-label">Billetes de ($)</label>
-        <input class="form-input" id="mov-den" inputmode="numeric" list="dl-b" placeholder="Ej: 10.000" autocomplete="off">
+        <input class="form-input money" id="mov-den" inputmode="numeric" list="dl-b" placeholder="Ej: 10.000" autocomplete="off">
         <div class="hint" id="mov-den-hint"></div>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="mov-det-box">
         <label class="form-label">Detalle (solo informativo, no se suma)</label>
         <textarea class="form-input auto" id="mov-det" rows="1" placeholder="Ej: más 3 monedas de 100"></textarea>
       </div>
@@ -392,9 +440,44 @@
     document.addEventListener('input', e => { if (e.target.matches('textarea.auto')) grow(e.target); });
     const setVal = (s, v) => { const el = $(s); el.value = v; if (el.matches('textarea.auto')) grow(el); };
 
+    /* Puntos de miles automáticos en los montos (5000 → 5.000) */
+    const fmtN = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    document.addEventListener('input', e => {
+      const el = e.target; if (!el.matches('input.money')) return;
+      const pos = el.selectionStart, antes = el.value.slice(0, pos).replace(/\D/g, '').length;
+      const d = el.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+      el.value = d ? fmtN(d) : '';
+      let n = 0, i = 0; while (i < el.value.length && n < antes) { if (/\d/.test(el.value[i])) n++; i++; }
+      try { el.setSelectionRange(i, i); } catch (er) {}
+    });
+
+    /* Mixto: monto + qué es, por separado para billetes y monedas */
+    function totMix(p) { const t = num($(`#${p}-mb`).value) + num($(`#${p}-mm`).value); $(`#${p}-mix-tot`).textContent = t ? `Total: ${money(t)}` : ''; }
+    ['caja', 'mov'].forEach(p => ['mb', 'mm'].forEach(k => $(`#${p}-${k}`).addEventListener('input', () => totMix(p))));
+    function textoMixto(mb, db, mm, dm) {
+      const p = [];
+      if (mb) p.push(`💵 ${money(mb)}${db ? ` (${db})` : ''}`);
+      if (mm) p.push(`🪙 ${money(mm)}${dm ? ` (${dm})` : ''}`);
+      return p.join(' + ');
+    }
+
+    /* Reglas rápidas de la caja */
+    const splitRegla = v => v.split(/\s*·\s*/).map(x => x.trim()).filter(Boolean);
+    function marcarReglas() { const p = splitRegla($('#caja-detalle').value); $$('#caja-reglas .chip').forEach(b => b.classList.toggle('on', p.includes(b.dataset.p))); }
+    $('#caja-reglas').onclick = e => {
+      const b = e.target.closest('.chip'); if (!b) return;
+      const p = splitRegla($('#caja-detalle').value), i = p.indexOf(b.dataset.p);
+      if (i >= 0) p.splice(i, 1); else p.push(b.dataset.p);
+      setVal('#caja-detalle', p.join(' · ')); marcarReglas();
+    };
+    $('#caja-detalle').addEventListener('input', marcarReglas);
+
     /* Billetes / monedas: monto + "de cuánto" → calcula cuántos son (solo informativo) */
     function actDen(p) {
-      const f = p === 'caja' ? cajaFmt : fmt, box = $(`#${p}-den-box`), vis = f === 'b' || f === 'm';
+      const f = p === 'caja' ? cajaFmt : fmt, box = $(`#${p}-den-box`), vis = f === 'b' || f === 'm', mx = f === 'x';
+      $(`#${p}-mix`).style.display = mx ? 'block' : 'none';
+      $(`#${p}-monto-box`).style.display = mx ? 'none' : 'block';
+      if (p === 'mov') $('#mov-det-box').style.display = mx ? 'none' : 'block';
       box.style.display = vis ? 'block' : 'none';
       if (!vis) return;
       $(`#${p}-den-label`).textContent = f === 'b' ? 'Billetes de ($)' : 'Monedas de ($)';
@@ -430,6 +513,7 @@
         <div class="c-line">Meta: <b>${meta ? money(meta) : 'sin meta'}</b>${meta ? ` · ${pct}%` : ''}</div>
         ${meta ? `<div class="bar"><i style="width:${pct}%"></i></div>` : ''}
         ${meta && c.saldo >= meta ? '<div><span class="badge ok">🎉 Meta cumplida</span></div>' : ''}
+        ${c.detalle ? `<div class="c-sub rule">📝 ${esc(c.detalle)}</div>` : ''}
         <div class="c-acts t3"><button class="btn btn-det" data-act="detalles" ${d}>Detalles</button><button class="btn btn-in" data-act="in" ${d}>+ Ingresar</button><button class="btn btn-red" data-act="out" ${d}>− Sacar</button></div></div>`;
     }
 
@@ -451,7 +535,7 @@
     }
 
     function movHTML(c, m) {
-      const det = m.formato ? (m.detalle ? EMO[m.formato] + ' ' + m.detalle : FMT[m.formato]) : m.detalle;
+      const det = m.formato ? (m.detalle ? (m.formato === 'x' ? '' : EMO[m.formato] + ' ') + m.detalle : FMT[m.formato]) : m.detalle;
       return `<div class="mov ${m.tipo}">
         <div><div class="mov-main">${m.tipo === 'in' ? '🟢 +' : '🔴 −'} ${money(m.monto)}</div>
         ${det ? `<div class="mov-det">${esc(det)}</div>` : ''}
@@ -505,11 +589,11 @@
       $('#caja-hint').style.display = c ? 'block' : 'none';
       $('#caja-fmt-box').style.display = c ? 'none' : 'block';
       $('#caja-nombre').value = c ? c.nombre : '';
-      $('#caja-meta').value = c && c.meta ? c.meta : '';
-      $('#caja-monto').value = c ? c.saldo : '';
-      $('#caja-den').value = ''; cajaFmt = 'b'; setCajaFmt();
+      $('#caja-meta').value = c && c.meta ? fmtN(c.meta) : '';
+      $('#caja-monto').value = c && c.saldo ? fmtN(c.saldo) : '';
+      $('#caja-den').value = ''; $('#caja-mb').value = ''; $('#caja-mm').value = ''; cajaFmt = 'b'; setCajaFmt();
       abrir('#modal-caja');
-      setVal('#caja-detalle', c ? c.detalle : ''); setVal('#caja-mdet', '');
+      setVal('#caja-detalle', c ? c.detalle : ''); setVal('#caja-mbd', ''); setVal('#caja-mmd', ''); marcarReglas(); totMix('caja');
       $('#caja-error').style.display = 'none';
       setTimeout(() => $('#caja-nombre').focus(), 150);
     }
@@ -517,7 +601,9 @@
     $('#btn-guardar-caja').onclick = () => {
       const nombre = $('#caja-nombre').value.trim(); if (!nombre) return;
       vibrar();
-      const detalle = $('#caja-detalle').value.trim(), monto = num($('#caja-monto').value), meta = num($('#caja-meta').value);
+      const detalle = $('#caja-detalle').value.trim(), meta = num($('#caja-meta').value);
+      let monto = num($('#caja-monto').value), mixDet = '';
+      if (!cajaId && cajaFmt === 'x') { const mb = num($('#caja-mb').value), mm = num($('#caja-mm').value); monto = mb + mm; mixDet = textoMixto(mb, $('#caja-mbd').value.trim(), mm, $('#caja-mmd').value.trim()); }
       if (cajaId) {
         const c = db.find(x => x.id === cajaId);
         c.nombre = nombre; c.detalle = detalle; c.meta = meta;
@@ -528,7 +614,7 @@
         }
       } else {
         const c = { id: uid('a_'), nombre, detalle, saldo: monto, meta, movs: [] };
-        if (monto) c.movs.push({ id: uid('m_'), tipo: 'in', monto, formato: cajaFmt, detalle: textoDinero(monto, cajaFmt, num($('#caja-den').value), $('#caja-mdet').value.trim()), nota: 'Saldo inicial', fecha: fecha() });
+        if (monto) c.movs.push({ id: uid('m_'), tipo: 'in', monto, formato: cajaFmt, detalle: cajaFmt === 'x' ? mixDet : textoDinero(monto, cajaFmt, num($('#caja-den').value), ''), nota: 'Saldo inicial', fecha: fecha() });
         db.unshift(c);
       }
       cerrar(); guardar();
@@ -542,15 +628,15 @@
       $('#mov-titulo').textContent = (tipo === 'in' ? 'Ingresar plata' : 'Sacar plata') + ' · ' + (c.nombre || '');
       const info = $('#mov-info');   /* al retirar, se recuerda qué hay guardado en la caja */
       info.style.display = tipo === 'out' && c.detalle ? 'block' : 'none';
-      info.textContent = c.detalle ? `En esta caja: ${c.detalle}` : '';
+      info.textContent = c.detalle ? `Recuerda: ${c.detalle}` : '';
       actDen('mov');
     }
     function abrirMov(id, t) {
       cajaId = id; tipo = t; fmt = 'b';
-      ['#mov-monto', '#mov-den'].forEach(s => $(s).value = '');
+      ['#mov-monto', '#mov-den', '#mov-mb', '#mov-mm'].forEach(s => $(s).value = '');
       $('#mov-error').style.display = 'none';
       setChips(); abrir('#modal-mov');
-      setVal('#mov-det', ''); setVal('#mov-nota', '');
+      setVal('#mov-det', ''); setVal('#mov-nota', ''); setVal('#mov-mbd', ''); setVal('#mov-mmd', ''); totMix('mov');
       setTimeout(() => $('#mov-monto').focus(), 150);
     }
     $('#mov-tipo').onclick = e => { const c = e.target.closest('.chip'); if (c) { tipo = c.dataset.v; setChips(); } };
@@ -559,12 +645,14 @@
 
     $('#btn-confirmar').onclick = () => {
       const c = db.find(x => x.id === cajaId); if (!c) return;
-      const monto = num($('#mov-monto').value);
+      let monto = num($('#mov-monto').value), detMov = '';
+      if (fmt === 'x') { const mb = num($('#mov-mb').value), mm = num($('#mov-mm').value); monto = mb + mm; detMov = textoMixto(mb, $('#mov-mbd').value.trim(), mm, $('#mov-mmd').value.trim()); }
+      else detMov = textoDinero(monto, fmt, num($('#mov-den').value), $('#mov-det').value.trim());
       if (!monto) return error('Escribe un monto mayor a $0.');
       if (tipo === 'out' && monto > c.saldo) return error(`No alcanza: esta caja tiene ${money(c.saldo)}.`);
       vibrar();
       c.saldo += tipo === 'in' ? monto : -monto;
-      c.movs.unshift({ id: uid('m_'), tipo, monto, formato: fmt, detalle: textoDinero(monto, fmt, num($('#mov-den').value), $('#mov-det').value.trim()), nota: $('#mov-nota').value.trim(), fecha: fecha() });
+      c.movs.unshift({ id: uid('m_'), tipo, monto, formato: fmt, detalle: detMov, nota: $('#mov-nota').value.trim(), fecha: fecha() });
       cerrar(); guardar();
     };
 
@@ -616,11 +704,11 @@
 
     function cargarDemo() {
       db = [
-        { id:'a_1', nombre:'Kindle o Kobo', detalle:'Monedas de 100 y 500, más 3 billetes de 10 mil', saldo:45000, meta:120000, movs:[
+        { id:'a_1', nombre:'Kindle o Kobo', detalle:'Solo sacar si es necesario', saldo:45000, meta:120000, movs:[
           { id:'m1', tipo:'in', monto:5000, formato:'b', detalle:'1 billete de $5.000', nota:'Vuelto de la feria', fecha:'14 oct' },
           { id:'m2', tipo:'in', monto:1500, formato:'m', detalle:'monedas de 100 y 500', nota:'Monedas sueltas', fecha:'12 oct' },
           { id:'m3', tipo:'out', monto:2000, formato:'m', detalle:'20 monedas de $100', nota:'Panadería', fecha:'10 oct' }] },
-        { id:'a_2', nombre:'Sobre de emergencias', detalle:'', saldo:90000, meta:0, movs:[{ id:'m4', tipo:'in', monto:90000, formato:'b', detalle:'9 billetes de $10.000', nota:'Saldo inicial', fecha:'01 oct' }] }
+        { id:'a_2', nombre:'Sobre de emergencias', detalle:'No sacar', saldo:90000, meta:0, movs:[{ id:'m4', tipo:'in', monto:90000, formato:'b', detalle:'9 billetes de $10.000', nota:'Saldo inicial', fecha:'01 oct' }] }
       ];
       guardar();
     }
@@ -642,7 +730,7 @@
   </script>
   <script>
     /* ── Letra de los títulos y color (se guardan en el navegador) ── */
-    const FUENTES = {fraunces:"'Fraunces',Georgia,serif",playfair:"'Playfair Display',Georgia,serif",lora:"'Lora',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",caveat:"'Caveat',cursive"};
+    const FUENTES = {fraunces:"'Fraunces',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",fira:"'Fira Sans',system-ui,sans-serif",chivo:"'Chivo',system-ui,sans-serif",space:"'Space Grotesk',system-ui,sans-serif"};
     function aplicarFuente() {
       let f = 'fraunces'; try { f = localStorage.getItem('app_fuente') || 'fraunces'; } catch (e) {}
       if (!FUENTES[f]) f = 'fraunces';
@@ -652,6 +740,28 @@
     $('#fonts').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem('app_fuente', b.dataset.f); } catch (er) {} aplicarFuente(); };
     aplicarFuente();
     $('#menu').addEventListener('click', e => { if (e.target.closest('.menu-sec')) e.stopPropagation(); });
+  </script>
+  <script>
+    /* Títulos largos: bajan de tamaño hasta caber en 2 líneas; si aun así no caben, se cortan con … */
+    (function () {
+      const SEL = '.group-title, .c-name, #det-titulo';
+      let raf = 0;
+      function ajustar() {
+        raf = 0;
+        document.querySelectorAll(SEL).forEach(el => {
+          el.style.fontSize = '';
+          const base = parseFloat(getComputedStyle(el).fontSize), min = Math.max(11, base * .62);
+          let fs = base;
+          while (el.scrollHeight > el.clientHeight + 1 && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
+        });
+      }
+      const pedir = () => { if (!raf) raf = requestAnimationFrame(ajustar); };
+      new MutationObserver(pedir).observe(document.body, { childList: true, subtree: true, characterData: true });
+      new MutationObserver(pedir).observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'data-theme'] });
+      addEventListener('resize', pedir);
+      if (document.fonts) { if (document.fonts.ready) document.fonts.ready.then(pedir); if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', pedir); }
+      pedir();
+    })();
   </script>
 </body>
 </html>
