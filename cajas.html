@@ -7,10 +7,10 @@
   <meta name="theme-color" content="#f8fafc">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%239333ea'/%3E%3Cstop offset='1' stop-color='%23c084fc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle'%3E📦%3C/text%3E%3C/svg%3E">
   <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
-  <script>try{var F={fraunces:"'Fraunces',Georgia,serif",playfair:"'Playfair Display',Georgia,serif",lora:"'Lora',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",caveat:"'Caveat',cursive"},f=localStorage.getItem("app_fuente");if(F[f])document.documentElement.style.setProperty("--serif",F[f])}catch(e){}</script><script>try{document.documentElement.dataset.acc=localStorage.getItem("color_cajas")||"violeta"}catch(e){}</script>
+  <script>try{var F={fraunces:"'Fraunces',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",fira:"'Fira Sans',system-ui,sans-serif",chivo:"'Chivo',system-ui,sans-serif",space:"'Space Grotesk',system-ui,sans-serif"},f=localStorage.getItem("app_fuente");if(F[f])document.documentElement.style.setProperty("--serif",F[f])}catch(e){}</script><script>try{document.documentElement.dataset.acc=localStorage.getItem("color_cajas")||"violeta"}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Playfair+Display:wght@600;700&family=Lora:wght@600;700&family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Fira+Sans:wght@500;600;700&family=Chivo:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{color-scheme:light;--bg:#fbf5ee;--card:#fffdf9;--border:#eadfd2;--text:#3b2a22;--muted:#7a685d;--p:#7c5cd6;--on-p:#fff;--p-soft:#ece6fb;--p-line:#cdbff2;--p-glow:rgba(124,92,214,.22);--soft:#f6efe6;--hover:#eadfd2;--badge:#f1e8dd;--badge-ink:#65534a;--ok:#047857;--ok-soft:#ecfdf5;--ok-line:#a7f3d0;--warn:#b45309;--warn-soft:#fffbeb;--warn-line:#fde68a;--bad:#e11d48;--bad-soft:#fff1f2;--bad-line:#fecdd3;--f0:#c4623f;--f1:#5f8f7a;--f2:#8a6fb0;--f3:#b98524;--f4:#4f7fb5;--f5:#b9567a;--f6:#6f8f3d;--f7:#a0675a;--serif:'Fraunces','Lora',Georgia,serif;--shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06)}
     [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--p:#a78bfa;--on-p:#14121a;--p-soft:#2b2445;--p-line:#4c3f7a;--p-glow:rgba(167,139,250,.25);--soft:#181521;--hover:#2d2939;--badge:#282434;--badge-ink:#bab2ca;--ok:#6ee7b7;--ok-soft:rgba(110,231,183,.14);--ok-line:rgba(110,231,183,.35);--warn:#fcd34d;--warn-soft:rgba(252,211,77,.12);--warn-line:rgba(252,211,77,.35);--bad:#fb7185;--bad-soft:rgba(251,113,133,.14);--bad-line:rgba(251,113,133,.35);--f0:#f0916d;--f1:#5eead4;--f2:#c4b5fd;--f3:#fcd34d;--f4:#7cb7ff;--f5:#f9a8d4;--f6:#bef264;--f7:#fdba74;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25)}
@@ -199,6 +199,11 @@
     .group-card::before{display:none}
     .group-card{padding-left:16px}
     .card-list.grid .group-card{padding-left:12px}
+
+    /* Títulos de contenedores: máx. 2 líneas; si no caben, se achican y al final se cortan con … */
+    .group-title,.c-name,#det-titulo{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;min-width:0}
+    .group-title-box{min-width:0;flex:1}
+    .group-count{flex:none}
   </style>
 </head>
 <body>
@@ -215,7 +220,7 @@
           <hr>
           <div class="menu-sec"><div class="menu-t">Color</div><div class="dots" id="dots"><button data-c="violeta" aria-label="Morado"></button><button data-c="rosa" aria-label="Rosa"></button><button data-c="celeste" aria-label="Celeste"></button><button data-c="agua" aria-label="Aguamarina"></button></div></div>
           <hr>
-          <div class="menu-sec"><div class="menu-t">Letra de los títulos</div><div id="fonts"><button data-f="fraunces" style="font-family:'Fraunces',Georgia,serif">Fraunces (la de ahora)</button><button data-f="playfair" style="font-family:'Playfair Display',Georgia,serif">Playfair Display</button><button data-f="lora" style="font-family:'Lora',Georgia,serif">Lora</button><button data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif">Plus Jakarta (sin serif)</button><button data-f="caveat" style="font-family:'Caveat',cursive">Caveat (manuscrita)</button></div></div>
+          <div class="menu-sec"><div class="menu-t">Letra de los títulos</div><div id="fonts"><button data-f="fraunces" style="font-family:'Fraunces',Georgia,serif">Fraunces (la de ahora)</button><button data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif">Plus Jakarta (sin serif)</button><button data-f="fira" style="font-family:'Fira Sans',system-ui,sans-serif">Fira Sans</button><button data-f="chivo" style="font-family:'Chivo',system-ui,sans-serif">Chivo</button><button data-f="space" style="font-family:'Space Grotesk',system-ui,sans-serif">Space Grotesk</button></div></div>
         </div>
       </div>
       <input type="file" id="file-input" style="display:none" accept=".json">
@@ -692,7 +697,7 @@
   </script>
   <script>
     /* ── Letra de los títulos y color (se guardan en el navegador) ── */
-    const FUENTES = {fraunces:"'Fraunces',Georgia,serif",playfair:"'Playfair Display',Georgia,serif",lora:"'Lora',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",caveat:"'Caveat',cursive"};
+    const FUENTES = {fraunces:"'Fraunces',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",fira:"'Fira Sans',system-ui,sans-serif",chivo:"'Chivo',system-ui,sans-serif",space:"'Space Grotesk',system-ui,sans-serif"};
     function aplicarFuente() {
       let f = 'fraunces'; try { f = localStorage.getItem('app_fuente') || 'fraunces'; } catch (e) {}
       if (!FUENTES[f]) f = 'fraunces';
@@ -711,6 +716,28 @@
     }
     $('#dots').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem(ACC_KEY, b.dataset.c); } catch (er) {} aplicarAcc(); };
     aplicarAcc();
+  </script>
+  <script>
+    /* Títulos largos: bajan de tamaño hasta caber en 2 líneas; si aun así no caben, se cortan con … */
+    (function () {
+      const SEL = '.group-title, .c-name, #det-titulo';
+      let raf = 0;
+      function ajustar() {
+        raf = 0;
+        document.querySelectorAll(SEL).forEach(el => {
+          el.style.fontSize = '';
+          const base = parseFloat(getComputedStyle(el).fontSize), min = Math.max(11, base * .62);
+          let fs = base;
+          while (el.scrollHeight > el.clientHeight + 1 && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
+        });
+      }
+      const pedir = () => { if (!raf) raf = requestAnimationFrame(ajustar); };
+      new MutationObserver(pedir).observe(document.body, { childList: true, subtree: true, characterData: true });
+      new MutationObserver(pedir).observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'data-theme'] });
+      addEventListener('resize', pedir);
+      if (document.fonts) { if (document.fonts.ready) document.fonts.ready.then(pedir); if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', pedir); }
+      pedir();
+    })();
   </script>
 </body>
 </html>
