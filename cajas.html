@@ -7,12 +7,13 @@
   <meta name="theme-color" content="#f8fafc">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%239333ea'/%3E%3Cstop offset='1' stop-color='%23c084fc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle'%3E📦%3C/text%3E%3C/svg%3E">
   <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
+  <script>try{var F={fraunces:"'Fraunces',Georgia,serif",playfair:"'Playfair Display',Georgia,serif",lora:"'Lora',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",caveat:"'Caveat',cursive"},f=localStorage.getItem("app_fuente");if(F[f])document.documentElement.style.setProperty("--serif",F[f])}catch(e){}</script><script>try{document.documentElement.dataset.acc=localStorage.getItem("color_cajas")||"violeta"}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Playfair+Display:wght@600;700&family=Lora:wght@600;700&family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{color-scheme:light;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--p:#9333ea;--on-p:#fff;--p-soft:#faf5ff;--p-line:#d8b4fe;--p-glow:rgba(147,51,234,.25);--soft:#f8fafc;--hover:#e2e8f0;--badge:#f1f5f9;--badge-ink:#475569;--ok:#047857;--ok-soft:#ecfdf5;--ok-line:#a7f3d0;--warn:#b45309;--warn-soft:#fffbeb;--warn-line:#fde68a;--bad:#e11d48;--bad-soft:#fff1f2;--bad-line:#fecdd3}
-    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--p:#a78bfa;--on-p:#14121a;--p-soft:#2b2445;--p-line:#4c3f7a;--p-glow:rgba(167,139,250,.25);--soft:#181521;--hover:#2d2939;--badge:#282434;--badge-ink:#bab2ca;--ok:#6ee7b7;--ok-soft:rgba(110,231,183,.14);--ok-line:rgba(110,231,183,.35);--warn:#fcd34d;--warn-soft:rgba(252,211,77,.12);--warn-line:rgba(252,211,77,.35);--bad:#fb7185;--bad-soft:rgba(251,113,133,.14);--bad-line:rgba(251,113,133,.35)}
+    :root{color-scheme:light;--bg:#fbf5ee;--card:#fffdf9;--border:#eadfd2;--text:#3b2a22;--muted:#7a685d;--p:#7c5cd6;--on-p:#fff;--p-soft:#ece6fb;--p-line:#cdbff2;--p-glow:rgba(124,92,214,.22);--soft:#f6efe6;--hover:#eadfd2;--badge:#f1e8dd;--badge-ink:#65534a;--ok:#047857;--ok-soft:#ecfdf5;--ok-line:#a7f3d0;--warn:#b45309;--warn-soft:#fffbeb;--warn-line:#fde68a;--bad:#e11d48;--bad-soft:#fff1f2;--bad-line:#fecdd3;--f0:#c4623f;--f1:#5f8f7a;--f2:#8a6fb0;--f3:#b98524;--f4:#4f7fb5;--f5:#b9567a;--f6:#6f8f3d;--f7:#a0675a;--serif:'Fraunces','Lora',Georgia,serif;--shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06)}
+    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--p:#a78bfa;--on-p:#14121a;--p-soft:#2b2445;--p-line:#4c3f7a;--p-glow:rgba(167,139,250,.25);--soft:#181521;--hover:#2d2939;--badge:#282434;--badge-ink:#bab2ca;--ok:#6ee7b7;--ok-soft:rgba(110,231,183,.14);--ok-line:rgba(110,231,183,.35);--warn:#fcd34d;--warn-soft:rgba(252,211,77,.12);--warn-line:rgba(252,211,77,.35);--bad:#fb7185;--bad-soft:rgba(251,113,133,.14);--bad-line:rgba(251,113,133,.35);--f0:#f0916d;--f1:#5eead4;--f2:#c4b5fd;--f3:#fcd34d;--f4:#7cb7ff;--f5:#f9a8d4;--f6:#bef264;--f7:#fdba74;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25)}
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
     body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:16px 14px 80px;-webkit-font-smoothing:antialiased}
     .container{max-width:720px;margin:0 auto}
@@ -91,6 +92,113 @@
     #modal-viewer img{width:100%;border-radius:14px;max-height:70vh;object-fit:contain}
     .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:.82rem;font-weight:600;z-index:200;transition:all .25s;max-width:calc(100% - 28px)}
     .toast.show{opacity:1;transform:translate(-50%,0)}
+  
+    /* ===== Estilo Fanfics: serif, franja de color, etiquetas suaves ===== */
+    h1,.group-title,.g-title,.modal h3,.card-title,.vacio .big{font-family:var(--serif)}
+    h1{letter-spacing:-.4px}
+    .group-card,.nav-card{position:relative;overflow:hidden;border-width:1px;box-shadow:var(--shadow);padding-left:20px}
+    .group-card::before,.nav-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--muted))}
+    .card-list>.group-card:nth-child(8n+1){--c:var(--f2)}
+    .card-list>.group-card:nth-child(8n+2){--c:var(--f5)}
+    .card-list>.group-card:nth-child(8n+3){--c:var(--f1)}
+    .card-list>.group-card:nth-child(8n+4){--c:var(--f3)}
+    .card-list>.group-card:nth-child(8n+5){--c:var(--f4)}
+    .card-list>.group-card:nth-child(8n+6){--c:var(--f0)}
+    .card-list>.group-card:nth-child(8n+7){--c:var(--f6)}
+    .card-list>.group-card:nth-child(8n+8){--c:var(--f7)}
+    .group-title{font-weight:700;font-size:1.05rem;letter-spacing:-.1px}
+    .group-count{background:var(--badge);color:var(--badge-ink);font-weight:700}
+    .badge{border-color:transparent!important;border-radius:8px;padding:3px 8px;font-size:.7rem}
+    .badge.cat{border-radius:8px}
+    .btn,.sq,.btn-back,.btn-tema,.mini,.chip{border-radius:13px}
+    .btn-add-item,.btn-clear{border-radius:13px}
+    .sq,.btn-back,.btn-tema{border-width:1px}
+    .search-box,.group-card,.item-row,.mov,.modal{border-width:1px}
+    .search-box{border-width:1.5px;border-radius:15px;box-shadow:none}
+    .seg{background:var(--badge)}
+    .modal-overlay,.overlay{background:rgba(30,18,10,.45)}
+    [data-theme=dark] .modal-overlay,[data-theme=dark] .overlay{background:rgba(0,0,0,.6)}
+    .item-row{border-radius:14px}
+
+    .btn-primary{background:var(--p);box-shadow:none}
+  
+    /* ===== Estructura nueva (boceto): barra, filtros, tarjetas compactas, flotante ===== */
+    :root{--pk:#c2417a;--pk-soft:#fbe1ec;--on-pk:#fff;--acc:var(--p)}
+    [data-theme=dark]{--pk:#f472b6;--pk-soft:#40202f;--on-pk:#14121a}
+    body{padding-bottom:110px}
+    .top-bar{grid-template-columns:84px 1fr 84px}
+    .sq{width:38px;height:38px;border-radius:12px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:1.05rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;font-family:inherit;box-shadow:none}
+    .top-bar>a.sq{color:var(--acc);justify-self:start}
+    .top-right{display:flex;gap:8px;justify-self:end;position:relative}
+    .top-right .sq{color:var(--text)}
+    .menu,.pop{position:absolute;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:6px;display:none;z-index:60}
+    .menu{right:0;top:46px;min-width:170px}
+    .pop{left:0;top:44px;min-width:240px;z-index:40}
+    .menu.open,.pop.open{display:block}
+    .menu button,.pop button{display:flex;width:100%;gap:8px;align-items:center;padding:11px 12px;border:0;background:none;border-radius:10px;font-weight:700;font-size:.86rem;font-family:inherit;color:var(--text);cursor:pointer;text-align:left}
+    .menu button:hover,.pop button:hover{background:var(--badge)}
+    .pop button.on{background:var(--pk-soft);color:var(--pk)}
+    .tools{display:flex;gap:8px;align-items:center;margin:2px 0 12px;position:relative;min-height:38px}
+    .fbtn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 13px;border-radius:12px;background:var(--card);border:1px solid var(--border);font-weight:700;font-size:.82rem;color:var(--text);cursor:pointer;font-family:inherit}
+    .fbtn svg,.view svg{width:19px;height:19px;flex:none}
+    .fbtn i{display:none;width:8px;height:8px;border-radius:50%;background:var(--pk)}
+    .fbtn.has i{display:inline-block}
+    .view{display:flex;margin-left:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .view button{width:38px;height:36px;display:grid;place-items:center;color:var(--muted);background:none;border:0;cursor:pointer}
+    .view button.on{background:var(--pk-soft);color:var(--pk)}
+    .tot{font-size:.82rem;color:var(--muted);font-weight:600}
+    .tot b{color:var(--text);font-family:var(--serif);font-size:1.05rem}
+    .card-list.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+    @media(max-width:330px){.card-list.grid{grid-template-columns:1fr}}
+    .card-list.grid .group-card{padding:12px 8px 12px 16px}
+    .card-list .vacio{grid-column:1/-1}
+    .group-card{display:flex;flex-direction:column;gap:6px}
+    .c-head{display:flex;justify-content:space-between;align-items:flex-start;gap:4px}
+    .c-name{font-family:var(--serif);font-weight:700;font-size:1rem;line-height:1.2;overflow-wrap:anywhere;min-width:0;padding-top:4px}
+    .c-ic{display:flex;flex:none;margin:-4px 0 0 0}
+    .c-ic .btn-icon{padding:6px 5px}
+    .c-sub{font-size:.76rem;color:var(--muted);font-weight:600;overflow-wrap:anywhere}
+    .c-line{font-size:.8rem;color:var(--muted);font-weight:600}
+    .c-line b{color:var(--text)}
+    .c-line b.v{font-family:var(--serif);font-size:1.1rem;color:var(--acc)}
+    .c-acts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto;padding-top:6px}
+    .c-acts .btn{padding:9px 4px;font-size:.78rem;border-radius:11px;width:100%}
+    .btn-det{background:var(--card);border:1.5px solid var(--border);color:var(--text)}
+    .btn-add{background:var(--pk-soft);color:var(--pk);border:1.5px solid transparent}
+    .caja-thumb{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--hover);border:1px solid var(--border);cursor:pointer;flex:none}
+    .card-list.grid .caja-thumb{width:32px;height:32px;border-radius:8px}
+    .badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:4px}
+    .fab{position:fixed;z-index:30;right:max(16px,calc(50% - 346px));bottom:calc(18px + env(safe-area-inset-bottom));height:52px;padding:0 20px 0 16px;border-radius:17px;background:var(--pk);color:var(--on-pk);border:0;font-weight:800;font-size:.92rem;display:flex;align-items:center;gap:8px;box-shadow:0 10px 24px rgba(0,0,0,.25);cursor:pointer;font-family:inherit}
+    .fab:active{transform:scale(.95)}
+    .modal.wide{max-width:560px}
+    .det-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+    .det-head .grow h3{margin:0;overflow-wrap:anywhere}
+    textarea.form-input{display:block;resize:none;overflow:hidden;min-height:44px;line-height:1.4}
+    .mov>div:first-child{min-width:0;flex:1}
+  
+    .menu{min-width:220px;max-height:75vh;overflow-y:auto}
+    .menu hr{border:0;border-top:1px dashed var(--border);margin:6px 4px}
+    .menu-t{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:8px 12px 4px}
+    .menu .dots{display:flex;gap:10px;padding:6px 12px 10px}
+    .menu .dots button{width:32px;height:32px;padding:0;border-radius:50%;border:2px solid transparent;display:grid;place-items:center;color:#fff;font-size:.85rem;background:var(--c)}
+    .menu .dots button[data-c=violeta]{--c:#7c5cd6}.menu .dots button[data-c=rosa]{--c:#c2417a}.menu .dots button[data-c=celeste]{--c:#3b82c4}.menu .dots button[data-c=agua]{--c:#2f8a76}
+    [data-theme=dark] .menu .dots button[data-c=violeta]{--c:#a78bfa}[data-theme=dark] .menu .dots button[data-c=rosa]{--c:#f472b6}[data-theme=dark] .menu .dots button[data-c=celeste]{--c:#7cb7ff}[data-theme=dark] .menu .dots button[data-c=agua]{--c:#5eead4}
+    [data-theme=dark] .menu .dots button{color:#14121a}
+    .menu .dots button.on{border-color:var(--text)}
+    .menu .dots button.on::after{content:"✓";font-weight:800}
+    .menu #fonts button.on{background:var(--badge);color:var(--acc)}
+    [data-acc=violeta]{--p:#7c5cd6;--p-soft:#ece6fb;--p-line:#cdbff2;--p-glow:rgba(124,92,214,.22);--pk:#7c5cd6;--pk-soft:#ece6fb;--on-p:#fff;--on-pk:#fff}
+    [data-theme=dark][data-acc=violeta]{--p:#a78bfa;--p-soft:#2b2445;--p-line:#4c3f7a;--p-glow:rgba(167,139,250,.25);--pk:#a78bfa;--pk-soft:#2b2445;--on-p:#14121a;--on-pk:#14121a}
+    [data-acc=rosa]{--p:#c2417a;--p-soft:#fbe1ec;--p-line:#f0b6cf;--p-glow:rgba(194,65,122,.2);--pk:#c2417a;--pk-soft:#fbe1ec;--on-p:#fff;--on-pk:#fff}
+    [data-theme=dark][data-acc=rosa]{--p:#f472b6;--p-soft:#40202f;--p-line:#5b2a45;--p-glow:rgba(244,114,182,.25);--pk:#f472b6;--pk-soft:#40202f;--on-p:#14121a;--on-pk:#14121a}
+    [data-acc=celeste]{--p:#3b82c4;--p-soft:#dcebf8;--p-line:#b3d3ee;--p-glow:rgba(59,130,196,.22);--pk:#3b82c4;--pk-soft:#dcebf8;--on-p:#fff;--on-pk:#fff}
+    [data-theme=dark][data-acc=celeste]{--p:#7cb7ff;--p-soft:#1b2c44;--p-line:#2f4b73;--p-glow:rgba(124,183,255,.25);--pk:#7cb7ff;--pk-soft:#1b2c44;--on-p:#14121a;--on-pk:#14121a}
+    [data-acc=agua]{--p:#2f8a76;--p-soft:#d9f0ea;--p-line:#a8d9cd;--p-glow:rgba(47,138,118,.22);--pk:#2f8a76;--pk-soft:#d9f0ea;--on-p:#fff;--on-pk:#fff}
+    [data-theme=dark][data-acc=agua]{--p:#5eead4;--p-soft:#173b36;--p-line:#2c6a60;--p-glow:rgba(94,234,212,.22);--pk:#5eead4;--pk-soft:#173b36;--on-p:#14121a;--on-pk:#14121a}
+
+    .group-card::before{display:none}
+    .group-card{padding-left:16px}
+    .card-list.grid .group-card{padding-left:12px}
   </style>
 </head>
 <body>
@@ -98,7 +206,19 @@
     <div class="top-bar">
       <a href="index.html" class="sq" title="Volver al menú">←</a>
       <h1>Cajas y Espacios</h1>
-      <button class="sq r" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+      <div class="top-right">
+        <button class="sq" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+        <button class="sq" id="btn-menu" aria-label="Más opciones">⋮</button>
+        <div class="menu" id="menu">
+          <button id="btn-exportar">💾 Respaldar</button>
+          <button id="btn-importar">📂 Cargar</button>
+          <hr>
+          <div class="menu-sec"><div class="menu-t">Color</div><div class="dots" id="dots"><button data-c="violeta" aria-label="Morado"></button><button data-c="rosa" aria-label="Rosa"></button><button data-c="celeste" aria-label="Celeste"></button><button data-c="agua" aria-label="Aguamarina"></button></div></div>
+          <hr>
+          <div class="menu-sec"><div class="menu-t">Letra de los títulos</div><div id="fonts"><button data-f="fraunces" style="font-family:'Fraunces',Georgia,serif">Fraunces (la de ahora)</button><button data-f="playfair" style="font-family:'Playfair Display',Georgia,serif">Playfair Display</button><button data-f="lora" style="font-family:'Lora',Georgia,serif">Lora</button><button data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif">Plus Jakarta (sin serif)</button><button data-f="caveat" style="font-family:'Caveat',cursive">Caveat (manuscrita)</button></div></div>
+        </div>
+      </div>
+      <input type="file" id="file-input" style="display:none" accept=".json">
     </div>
 
     <div class="search-box">
@@ -109,21 +229,34 @@
 
     <div class="aviso" id="aviso-espacio"></div>
 
-    <div class="actions-row">
-      <button class="btn btn-primary" id="btn-nueva-caja">+ Nueva Caja</button>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
-        <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
-        <input type="file" id="file-input" style="display:none" accept=".json">
-      </div>
-    </div>
-
     <div id="search-box-results" class="search-results-box">
       <div class="search-title">Resultados</div>
       <div id="search-items" class="items-container"></div>
     </div>
 
-    <div id="contenedor-cajas" class="card-list"></div>
+    <div class="tools">
+      <span class="tot">Total cajas: <b id="tot-cajas">0</b><span id="tot-objs"></span></span>
+      <div class="view" id="view">
+        <button data-v="list" aria-label="Vista de lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button data-v="grid" aria-label="Vista de cuadrícula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></button>
+      </div>
+    </div>
+
+    <div id="contenedor-cajas" class="card-list grid"></div>
+  </div>
+
+  <button class="fab" id="btn-nueva-caja"><span style="font-size:1.2rem;line-height:1">＋</span> Agregar</button>
+
+  <!-- Detalles de una caja (lista de todo lo que tiene) -->
+  <div class="modal-overlay" id="modal-det">
+    <div class="modal wide">
+      <div class="det-head">
+        <div id="det-foto"></div>
+        <div class="grow" style="flex:1;min-width:0"><h3 id="det-titulo"></h3><div class="c-sub" id="det-sub"></div></div>
+        <button class="sq" data-close aria-label="Cerrar">✕</button>
+      </div>
+      <div id="det-body"></div>
+    </div>
   </div>
 
   <!-- Modal Caja -->
@@ -218,11 +351,11 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const KEY = 'org_cajas', CKEY = 'colapso_cajas', COMPRAS = 'org_compras', CAT_COMPRAS = 'Desde Cajas';
+    const KEY = 'org_cajas', VKEY = 'vista_cajas', COMPRAS = 'org_compras', CAT_COMPRAS = 'Desde Cajas';
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
     const vibrar = () => { if (navigator.vibrate) navigator.vibrate(10); };
     const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } };
     const fechaActual = () => new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
@@ -247,8 +380,8 @@
       };
     }
     let db = (Array.isArray(leer(KEY, [])) ? leer(KEY, []) : []).filter(c => c && typeof c === 'object').map(normCaja);
-    let colapso = leer(CKEY, {});
-    let cajaId = null, itemId = null;
+    let cajaId = null, itemId = null, detId = null;
+    let vista = 'grid'; try { vista = localStorage.getItem(VKEY) === 'list' ? 'list' : 'grid'; } catch (e) {}
     const fotos = { cajaFoto: null, itemFoto: null };
 
     function guardar() {
@@ -348,27 +481,41 @@
         </div></div>`;
     }
 
+    function tarjeta(c) {
+      const d = `data-c="${esc(c.id)}"`, n = c.items.length;
+      return `<div class="group-card">
+        <div class="c-head">
+          <div style="display:flex;gap:8px;align-items:flex-start;min-width:0">${c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : ''}<div class="c-name">${esc(c.nombre)}</div></div>
+          <div class="c-ic"><button class="btn-icon" data-act="editcaja" ${d} aria-label="Editar caja">✎</button><button class="btn-icon" data-act="delcaja" ${d} aria-label="Eliminar caja">🗑</button></div>
+        </div>
+        <div class="c-sub">${n} objeto${n === 1 ? '' : 's'}</div>
+        ${c.ubicacion ? `<div class="c-sub">📍 ${esc(c.ubicacion)}</div>` : ''}
+        <div class="c-acts"><button class="btn btn-det" data-act="detalles" ${d}>Detalles</button><button class="btn btn-add" data-act="newitem" ${d}>+ Agregar</button></div>
+      </div>`;
+    }
+
     function render() {
       const cont = $('#contenedor-cajas');
-      if (!db.length) {
-        cont.innerHTML = `<div class="vacio">No tienes cajas creadas.<br>Toca <b>+ Nueva Caja</b> para comenzar.</div>`;
-      } else {
-        cont.innerHTML = db.map(c => {
-          const col = !!colapso[c.id], d = `data-c="${esc(c.id)}"`;
-          return `<div class="group-card"><div class="group-header" data-act="tog" ${d}>
-            <div class="group-left">
-              ${c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : ''}
-              <div><div style="display:flex;align-items:center;gap:8px"><span class="group-title">${esc(c.nombre)}</span><span class="group-count">${c.items.length}</span></div>${c.ubicacion ? `<div class="caja-ubi">📍 ${esc(c.ubicacion)}</div>` : ''}</div>
-            </div>
-            <div class="nowrap"><button class="btn-icon" data-act="editcaja" ${d} aria-label="Editar caja">✎</button><button class="btn-icon" data-act="delcaja" ${d} aria-label="Eliminar caja">🗑</button><span class="chevron ${col ? 'rotated' : ''}">▼</span></div>
-          </div>
-          <div style="${col ? 'display:none' : ''}">
-            <button class="btn btn-add-item" data-act="newitem" ${d}>+ Agregar objeto a ${esc(c.nombre)}</button>
-            <div class="items-container">${c.items.length ? c.items.map(it => itemHTML(c, it, false)).join('') : '<div style="font-size:.8rem;color:var(--muted);font-style:italic;padding:4px 0">Vacío.</div>'}</div>
-          </div></div>`;
-        }).join('');
-      }
-      buscar(); espacio();
+      cont.className = 'card-list ' + vista;
+      $$('#view button').forEach(b => b.classList.toggle('on', b.dataset.v === vista));
+      const nIt = db.reduce((s, c) => s + c.items.length, 0);
+      $('#tot-cajas').textContent = db.length;
+      $('#tot-objs').textContent = db.length ? ` · ${nIt} objeto${nIt === 1 ? '' : 's'}` : '';
+      cont.innerHTML = db.length ? db.map(tarjeta).join('') : `<div class="vacio">No tienes cajas creadas.<br>Toca <b>＋ Agregar</b> para comenzar.</div>`;
+      buscar(); espacio(); if (detId) renderDet();
+    }
+
+    /* Detalles: lista de todo lo que hay en la caja */
+    function abrirDet(id) { detId = id; renderDet(); abrir('#modal-det'); }
+    function renderDet() {
+      const c = db.find(x => x.id === detId);
+      if (!c) { detId = null; $('#modal-det').classList.remove('active'); return; }
+      const d = `data-c="${esc(c.id)}"`, n = c.items.length;
+      $('#det-titulo').textContent = c.nombre;
+      $('#det-sub').textContent = `${n} objeto${n === 1 ? '' : 's'}${c.ubicacion ? ' · 📍 ' + c.ubicacion : ''}`;
+      $('#det-foto').innerHTML = c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : '';
+      $('#det-body').innerHTML = `<button class="btn btn-add-item" style="margin-top:0" data-act="newitem" ${d}>+ Agregar objeto</button>
+        <div class="items-container">${n ? c.items.map(it => itemHTML(c, it, false)).join('') : '<div style="font-size:.85rem;color:var(--muted);font-style:italic;padding:4px 0">Esta caja está vacía.</div>'}</div>`;
     }
 
     function buscar() {
@@ -393,12 +540,12 @@
       if (pct >= 75) el.textContent = `⚠️ El espacio del navegador va en un ${Math.min(pct, 100)}% (comparte lugar con tus otras páginas). Haz un respaldo y quita algunas fotos pronto.`;
     }
 
-    /* ── Acciones (todo por data-atributos: los nombres con ' " < > ya no rompen nada) ── */
+    /* ── Acciones (todo por data-atributos: los nombres con ' " < > no rompen nada) ── */
     function acciones(e) {
       const b = e.target.closest('[data-act]'); if (!b) return;
       const a = b.dataset.act, c = db.find(x => x.id === b.dataset.c), it = c && c.items.find(x => x.id === b.dataset.i);
       if (!c) return;
-      if (a === 'tog') { colapso[c.id] = !colapso[c.id]; try { localStorage.setItem(CKEY, JSON.stringify(colapso)); } catch (er) {} vibrar(); return render(); }
+      if (a === 'detalles') { vibrar(); return abrirDet(c.id); }
       if (a === 'fotocaja') return verFoto(c.foto, c.nombre);
       if (a === 'editcaja') { vibrar(); return abrirCaja(c.id); }
       if (a === 'delcaja') { vibrar(); if (confirm(`¿Eliminar la caja "${c.nombre}" y su contenido?`)) { db = db.filter(x => x.id !== c.id); guardar(); } return; }
@@ -419,8 +566,11 @@
     }
     $('#contenedor-cajas').addEventListener('click', acciones);
     $('#search-items').addEventListener('click', acciones);
+    $('#det-body').addEventListener('click', acciones);
+    $('#det-foto').addEventListener('click', acciones);
     $('#busqueda').addEventListener('input', buscar);
     $('#btn-limpiar').onclick = () => { $('#busqueda').value = ''; buscar(); };
+    $('#view').onclick = e => { const b = e.target.closest('button'); if (!b) return; vista = b.dataset.v; try { localStorage.setItem(VKEY, vista); } catch (er) {} render(); };
 
     /* ── Cajas ── */
     function abrirCaja(id) {
@@ -481,13 +631,25 @@
       cerrar(); guardar(); toast(`Movido a ${dest.nombre}`);
     };
 
-    /* ── Modales ── */
+    /* ── Modales (el de Detalles queda abierto cuando se cierra uno que se abrió encima) ── */
     const abrir = s => $(s).classList.add('active');
-    function cerrar() { $$('.modal-overlay').forEach(m => m.classList.remove('active')); cajaId = null; itemId = null; }
-    document.addEventListener('click', e => { if (e.target.closest('[data-close]') || e.target.classList.contains('modal-overlay')) cerrar(); });
-    window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+    function cerrarUno(ov) {
+      ov.classList.remove('active');
+      if (ov.id === 'modal-det') detId = null;
+      else if (ov.id !== 'modal-viewer') { cajaId = null; itemId = null; }
+    }
+    function cerrar() { $$('.modal-overlay').forEach(m => { if (m.id !== 'modal-det' && m.classList.contains('active')) cerrarUno(m); }); }
+    document.addEventListener('click', e => {
+      const ov = e.target.classList.contains('modal-overlay') ? e.target : (e.target.closest('[data-close]') && e.target.closest('.modal-overlay'));
+      if (ov) cerrarUno(ov);
+    });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') { const a = $$('.modal-overlay.active'); if (a.length) cerrarUno(a[a.length - 1]); } });
 
-    /* ── Respaldo (ahora valida y pregunta antes de reemplazar) ── */
+    /* ── Menú ⋮ ── */
+    $('#btn-menu').onclick = e => { e.stopPropagation(); $('#menu').classList.toggle('open'); };
+    document.addEventListener('click', () => $('#menu').classList.remove('open'));
+
+    /* ── Respaldo (valida y pregunta antes de reemplazar) ── */
     $('#btn-exportar').onclick = () => {
       vibrar();
       const a = document.createElement('a');
@@ -527,6 +689,28 @@
     aplicarTema();
     if (sincronizar()) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }
     render();
+  </script>
+  <script>
+    /* ── Letra de los títulos y color (se guardan en el navegador) ── */
+    const FUENTES = {fraunces:"'Fraunces',Georgia,serif",playfair:"'Playfair Display',Georgia,serif",lora:"'Lora',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",caveat:"'Caveat',cursive"};
+    function aplicarFuente() {
+      let f = 'fraunces'; try { f = localStorage.getItem('app_fuente') || 'fraunces'; } catch (e) {}
+      if (!FUENTES[f]) f = 'fraunces';
+      document.documentElement.style.setProperty('--serif', FUENTES[f]);
+      $$('#fonts button').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+    }
+    $('#fonts').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem('app_fuente', b.dataset.f); } catch (er) {} aplicarFuente(); };
+    aplicarFuente();
+    $('#menu').addEventListener('click', e => { if (e.target.closest('.menu-sec')) e.stopPropagation(); });
+    const ACC_KEY = 'color_cajas', ACC_DEF = 'violeta';
+    function aplicarAcc() {
+      let a = ACC_DEF; try { a = localStorage.getItem(ACC_KEY) || ACC_DEF; } catch (e) {}
+      if (!['violeta', 'rosa', 'celeste', 'agua'].includes(a)) a = ACC_DEF;
+      document.documentElement.dataset.acc = a;
+      $$('#dots button').forEach(b => b.classList.toggle('on', b.dataset.c === a));
+    }
+    $('#dots').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem(ACC_KEY, b.dataset.c); } catch (er) {} aplicarAcc(); };
+    aplicarAcc();
   </script>
 </body>
 </html>
