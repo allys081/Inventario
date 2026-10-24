@@ -512,7 +512,7 @@
           <div class="c-ic"><button class="btn-icon" data-act="editcaja" ${d} aria-label="Editar caja">✎</button><button class="btn-icon" data-act="delcaja" ${d} aria-label="Eliminar caja">🗑</button></div>
         </div>
         <div class="c-sub">${n} objeto${n === 1 ? '' : 's'}</div>
-        ${c.ubicacion ? `<div class="c-sub">📍 ${esc(c.ubicacion)}</div>` : ''}
+        <div class="c-sub">📍 ${c.ubicacion ? esc(c.ubicacion) : '<span style="opacity:.6;font-style:italic">Sin ubicación</span>'}</div>
         <div class="c-acts"><button class="btn btn-det" data-act="detalles" ${d}>Detalles</button><button class="btn btn-add" data-act="newitem" ${d}>+ Agregar</button></div>
       </div>`;
     }
@@ -535,7 +535,7 @@
       if (!c) { detId = null; $('#modal-det').classList.remove('active'); return; }
       const d = `data-c="${esc(c.id)}"`, n = c.items.length;
       $('#det-titulo').textContent = c.nombre;
-      $('#det-sub').textContent = `${n} objeto${n === 1 ? '' : 's'}${c.ubicacion ? ' · 📍 ' + c.ubicacion : ''}`;
+      $('#det-sub').textContent = `${n} objeto${n === 1 ? '' : 's'} · 📍 ${c.ubicacion || 'Sin ubicación'}`;
       $('#det-foto').innerHTML = c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : '';
       $('#det-body').innerHTML = `<button class="btn btn-add-item" style="margin-top:0" data-act="newitem" ${d}>+ Agregar objeto</button>
         <div class="items-container">${n ? c.items.map(it => itemHTML(c, it, false)).join('') : '<div style="font-size:.85rem;color:var(--muted);font-style:italic;padding:4px 0">Esta caja está vacía.</div>'}</div>`;
@@ -741,19 +741,27 @@
     aplicarAcc();
   </script>
   <script>
-    /* Títulos largos: bajan de tamaño hasta caber en 2 líneas; si aun así no caben, se cortan con … */
+    /* Títulos largos: se achican hasta que la palabra más larga quepa y el título entre en 2 líneas */
     (function () {
       const SEL = '.group-title, .c-name, #det-titulo';
+      const ctx = document.createElement('canvas').getContext('2d');
       let raf = 0;
       function ajustar() {
         raf = 0;
         document.querySelectorAll(SEL).forEach(el => {
-          el.style.fontSize = ''; el.style.overflowWrap = 'normal';   /* se mide sin partir palabras */
-          const base = parseFloat(getComputedStyle(el).fontSize), min = Math.max(11, base * .62);
+          el.style.fontSize = '';
+          const w = el.clientWidth; if (!w) return;
+          const cs = getComputedStyle(el);
+          const base = parseFloat(cs.fontSize), min = Math.max(11, base * .62);
+          const palabras = el.textContent.split(/\s+/).filter(Boolean);
+          const cabe = fs => {
+            ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
+            return palabras.every(p => ctx.measureText(p).width <= w - 1);
+          };
           let fs = base;
-          const mal = () => el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
-          while (mal() && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
-          el.style.overflowWrap = '';   /* si una palabra no cabe ni en el mínimo, ahí sí se corta */
+          while (!cabe(fs) && fs > min) fs -= .5;
+          if (fs !== base) el.style.fontSize = fs + 'px';
+          while (el.scrollHeight > el.clientHeight + 1 && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
         });
       }
       const pedir = () => { if (!raf) raf = requestAnimationFrame(ajustar); };
