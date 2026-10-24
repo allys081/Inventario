@@ -303,19 +303,19 @@
         <div class="form-group">
           <label class="form-label">¿Es en billetes o monedas?</label>
           <div class="chips" id="caja-fmt">
-            <button class="chip" data-v="b">💵 Billetes</button>
-            <button class="chip" data-v="m">🪙 Monedas</button>
+            <button class="chip" data-v="b"> Billetes</button>
+            <button class="chip" data-v="m"> Monedas</button>
             <button class="chip" data-v="x">Mixto</button>
           </div>
         </div>
         <div id="caja-mix" style="display:none">
           <div class="mix-box">
-            <div class="mix-t">💵 Billetes</div>
+            <div class="mix-t"> Billetes</div>
             <div class="form-group"><label class="form-label">Monto en billetes ($)</label><input class="form-input money" id="caja-mb" inputmode="numeric" placeholder="Ej: 5.000" autocomplete="off"></div>
             <div class="form-group"><label class="form-label">¿Cuáles billetes? (especificar)</label><textarea class="form-input auto" id="caja-mbd" rows="1" placeholder="Ej: 3 de mil y 1 de 2 mil"></textarea></div>
           </div>
           <div class="mix-box">
-            <div class="mix-t">🪙 Monedas</div>
+            <div class="mix-t"> Monedas</div>
             <div class="form-group"><label class="form-label">Monto en monedas ($)</label><input class="form-input money" id="caja-mm" inputmode="numeric" placeholder="Ej: 2.000" autocomplete="off"></div>
             <div class="form-group"><label class="form-label">¿Cuáles monedas? (especificar)</label><textarea class="form-input auto" id="caja-mmd" rows="1" placeholder="Ej: monedas de 100 y 500"></textarea></div>
           </div>
@@ -354,19 +354,19 @@
       <div class="form-group">
         <label class="form-label">¿Fue en billetes o monedas?</label>
         <div class="chips" id="mov-fmt">
-          <button class="chip" data-v="b">💵 Billetes</button>
-          <button class="chip" data-v="m">🪙 Monedas</button>
+          <button class="chip" data-v="b"> Billetes</button>
+          <button class="chip" data-v="m"> Monedas</button>
           <button class="chip" data-v="x">Mixto</button>
         </div>
       </div>
       <div id="mov-mix" style="display:none">
           <div class="mix-box">
-            <div class="mix-t">💵 Billetes</div>
+            <div class="mix-t"> Billetes</div>
             <div class="form-group"><label class="form-label">Monto en billetes ($)</label><input class="form-input money" id="mov-mb" inputmode="numeric" placeholder="Ej: 5.000" autocomplete="off"></div>
             <div class="form-group"><label class="form-label">¿Cuáles billetes? (especificar)</label><textarea class="form-input auto" id="mov-mbd" rows="1" placeholder="Ej: 3 de mil y 1 de 2 mil"></textarea></div>
           </div>
           <div class="mix-box">
-            <div class="mix-t">🪙 Monedas</div>
+            <div class="mix-t"> Monedas</div>
             <div class="form-group"><label class="form-label">Monto en monedas ($)</label><input class="form-input money" id="mov-mm" inputmode="numeric" placeholder="Ej: 2.000" autocomplete="off"></div>
             <div class="form-group"><label class="form-label">¿Cuáles monedas? (especificar)</label><textarea class="form-input auto" id="mov-mmd" rows="1" placeholder="Ej: monedas de 100 y 500"></textarea></div>
           </div>
@@ -395,8 +395,8 @@
 
   <script>
     const KEY = 'org_ahorros', VKEY = 'vista_ahorros';
-    const FMT = { b:'💵 Billetes', m:'🪙 Monedas', x:'💵🪙 Mixto' };
-    const EMO = { b:'💵', m:'🪙', x:'💵🪙' };
+    const FMT = { b:' Billetes', m:' Monedas', x:' Mixto' };
+    const EMO = { b:'', m:'', x:'' };
 
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
@@ -456,8 +456,8 @@
     ['caja', 'mov'].forEach(p => ['mb', 'mm'].forEach(k => $(`#${p}-${k}`).addEventListener('input', () => totMix(p))));
     function textoMixto(mb, db, mm, dm) {
       const p = [];
-      if (mb) p.push(`💵 ${money(mb)}${db ? ` (${db})` : ''}`);
-      if (mm) p.push(`🪙 ${money(mm)}${dm ? ` (${dm})` : ''}`);
+      if (mb) p.push(` ${money(mb)}${db ? ` (${db})` : ''}`);
+      if (mm) p.push(` ${money(mm)}${dm ? ` (${dm})` : ''}`);
       return p.join(' + ');
     }
 
@@ -507,13 +507,13 @@
 
     function tarjeta(c) {
       const meta = c.meta || 0, pct = meta ? Math.min(100, Math.round(c.saldo / meta * 100)) : 0, d = `data-id="${esc(c.id)}"`;
-      return `<div class="group-card"><div class="c-head"><div class="c-name">🪙 ${esc(c.nombre)}</div>
+      return `<div class="group-card"><div class="c-head"><div class="c-name"> ${esc(c.nombre)}</div>
         <div class="c-ic"><button class="btn-icon" data-act="edit" ${d} aria-label="Editar">✎</button><button class="btn-icon" data-act="del" ${d} aria-label="Eliminar">🗑</button></div></div>
         <div class="c-line">Actual: <b class="v">${money(c.saldo)}</b></div>
         <div class="c-line">Meta: <b>${meta ? money(meta) : 'sin meta'}</b>${meta ? ` · ${pct}%` : ''}</div>
         ${meta ? `<div class="bar"><i style="width:${pct}%"></i></div>` : ''}
         ${meta && c.saldo >= meta ? '<div><span class="badge ok">🎉 Meta cumplida</span></div>' : ''}
-        ${c.detalle ? `<div class="c-sub rule">📝 ${esc(c.detalle)}</div>` : ''}
+        ${c.detalle ? `<div class="c-sub rule"> ${esc(c.detalle)}</div>` : ''}
         <div class="c-acts t3"><button class="btn btn-det" data-act="detalles" ${d}>Detalles</button><button class="btn btn-in" data-act="in" ${d}>+ Ingresar</button><button class="btn btn-red" data-act="out" ${d}>− Sacar</button></div></div>`;
     }
 
@@ -537,7 +537,7 @@
     function movHTML(c, m) {
       const det = m.formato ? (m.detalle ? (m.formato === 'x' ? '' : EMO[m.formato] + ' ') + m.detalle : FMT[m.formato]) : m.detalle;
       return `<div class="mov ${m.tipo}">
-        <div><div class="mov-main">${m.tipo === 'in' ? '🟢 +' : '🔴 −'} ${money(m.monto)}</div>
+        <div><div class="mov-main">${m.tipo === 'in' ? ' +' : ' −'} ${money(m.monto)}</div>
         ${det ? `<div class="mov-det">${esc(det)}</div>` : ''}
         <div class="mov-sub">${m.nota ? esc(m.nota) + ' · ' : ''}${esc(m.fecha)}</div></div>
         <button class="btn-icon" data-act="delmov" data-id="${esc(c.id)}" data-mid="${esc(m.id)}" aria-label="Deshacer movimiento">🗑</button></div>`;
@@ -549,12 +549,12 @@
       const c = db.find(x => x.id === detId);
       if (!c) { detId = null; $('#modal-det').classList.remove('active'); return; }
       const meta = c.meta || 0, pct = meta ? Math.min(100, Math.round(c.saldo / meta * 100)) : 0, d = `data-id="${esc(c.id)}"`;
-      $('#det-titulo').textContent = '🪙 ' + c.nombre;
+      $('#det-titulo').textContent = ' ' + c.nombre;
       $('#det-body').innerHTML = `
         <div class="c-line">Actual: <b class="v">${money(c.saldo)}</b></div>
         <div class="c-line" style="margin-bottom:6px">Meta: <b>${meta ? money(meta) : 'sin meta'}</b>${meta ? ` · ${pct}%` : ''}</div>
         ${meta ? `<div class="bar"><i style="width:${pct}%"></i></div><div class="c-sub" style="margin-top:6px">${c.saldo >= meta ? '🎉 ¡Meta cumplida!' : 'Faltan ' + money(meta - c.saldo)}</div>` : ''}
-        ${c.detalle ? `<div class="g-info">📝 ${esc(c.detalle)}</div>` : ''}
+        ${c.detalle ? `<div class="g-info"> ${esc(c.detalle)}</div>` : ''}
         <div class="g-btns"><button class="btn btn-in" data-act="in" ${d}>+ Ingresar</button><button class="btn btn-red" data-act="out" ${d}>− Sacar</button></div>
         <div class="sec">Movimientos (${c.movs.length})</div>
         <div class="movs">${c.movs.map(m => movHTML(c, m)).join('') || '<div class="mov-sub" style="padding:6px 2px">Sin movimientos todavía.</div>'}</div>`;
@@ -749,10 +749,12 @@
       function ajustar() {
         raf = 0;
         document.querySelectorAll(SEL).forEach(el => {
-          el.style.fontSize = '';
+          el.style.fontSize = ''; el.style.overflowWrap = 'normal';   /* se mide sin partir palabras */
           const base = parseFloat(getComputedStyle(el).fontSize), min = Math.max(11, base * .62);
           let fs = base;
-          while (el.scrollHeight > el.clientHeight + 1 && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
+          const mal = () => el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
+          while (mal() && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
+          el.style.overflowWrap = '';   /* si una palabra no cabe ni en el mínimo, ahí sí se corta */
         });
       }
       const pedir = () => { if (!raf) raf = requestAnimationFrame(ajustar); };
