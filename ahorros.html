@@ -212,6 +212,23 @@
     .group-title,.c-name,#det-titulo{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;min-width:0}
     .group-title-box{min-width:0;flex:1}
     .group-count{flex:none}
+
+    /* Hoja inferior para Detalles */
+    .group-card[data-id]{cursor:pointer}
+    #modal-det{align-items:flex-end;padding:0}
+    #modal-det .modal{
+      max-width:560px;width:100%;margin:0;
+      border-radius:24px 24px 0 0;
+      max-height:calc(100dvh - 56px);
+      display:flex;flex-direction:column;
+      padding:10px 20px calc(20px + env(safe-area-inset-bottom));
+      transform:translateY(100%);
+      transition:transform .32s cubic-bezier(.16,1,.3,1);
+    }
+    #modal-det.active .modal{transform:none}
+    #modal-det #det-body{overflow-y:auto;flex:1;min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    .sheet-handle{width:42px;height:5px;border-radius:99px;background:var(--border);margin:0 auto 14px;flex:none}
+    #modal-det .det-head{flex:none}
   </style>
 </head>
 <body>
@@ -263,6 +280,7 @@
   <!-- Detalles de una caja (resumen + todos los movimientos con fecha) -->
   <div class="modal-overlay" id="modal-det">
     <div class="modal wide">
+      <div class="sheet-handle"></div>
       <div class="det-head">
         <div class="grow" style="flex:1;min-width:0"><h3 id="det-titulo"></h3></div>
         <button class="sq" data-close aria-label="Cerrar">✕</button>
@@ -507,7 +525,7 @@
 
     function tarjeta(c) {
       const meta = c.meta || 0, pct = meta ? Math.min(100, Math.round(c.saldo / meta * 100)) : 0, d = `data-id="${esc(c.id)}"`;
-      return `<div class="group-card"><div class="c-head"><div class="c-name"> ${esc(c.nombre)}</div>
+      return `<div class="group-card" ${d}><div class="c-head"><div class="c-name"> ${esc(c.nombre)}</div>
         <div class="c-ic"><button class="btn-icon" data-act="edit" ${d} aria-label="Editar">✎</button><button class="btn-icon" data-act="del" ${d} aria-label="Eliminar">🗑</button></div></div>
         <div class="c-line">Actual: <b class="v">${money(c.saldo)}</b></div>
         <div class="c-line">Meta: <b>${meta ? money(meta) : 'sin meta'}</b>${meta ? ` · ${pct}%` : ''}</div>
@@ -561,7 +579,12 @@
     }
 
     function acc(e) {
-      const b = e.target.closest('[data-act]'); if (!b) return;
+      const b = e.target.closest('[data-act]');
+      if (!b) {
+        const k = e.target.closest('.group-card[data-id]');
+        if (k) { vibrar(); abrirDet(k.dataset.id); }
+        return;
+      }
       const a = b.dataset.act, id = b.dataset.id;
       vibrar();
       if (a === 'demo') return cargarDemo();
