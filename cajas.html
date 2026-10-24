@@ -204,6 +204,23 @@
     .group-title,.c-name,#det-titulo{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;min-width:0}
     .group-title-box{min-width:0;flex:1}
     .group-count{flex:none}
+
+    /* Hoja inferior para Detalles */
+    .group-card[data-c]{cursor:pointer}
+    #modal-det{align-items:flex-end;padding:0}
+    #modal-det .modal{
+      max-width:560px;width:100%;margin:0;
+      border-radius:24px 24px 0 0;
+      max-height:calc(100dvh - 56px);
+      display:flex;flex-direction:column;
+      padding:10px 20px calc(20px + env(safe-area-inset-bottom));
+      transform:translateY(100%);
+      transition:transform .32s cubic-bezier(.16,1,.3,1);
+    }
+    #modal-det.active .modal{transform:none}
+    #modal-det #det-body{overflow-y:auto;flex:1;min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    .sheet-handle{width:42px;height:5px;border-radius:99px;background:var(--border);margin:0 auto 14px;flex:none}
+    #modal-det .det-head{flex:none}
   </style>
 </head>
 <body>
@@ -255,6 +272,7 @@
   <!-- Detalles de una caja (lista de todo lo que tiene) -->
   <div class="modal-overlay" id="modal-det">
     <div class="modal wide">
+      <div class="sheet-handle"></div>
       <div class="det-head">
         <div id="det-foto"></div>
         <div class="grow" style="flex:1;min-width:0"><h3 id="det-titulo"></h3><div class="c-sub" id="det-sub"></div></div>
@@ -488,7 +506,7 @@
 
     function tarjeta(c) {
       const d = `data-c="${esc(c.id)}"`, n = c.items.length;
-      return `<div class="group-card">
+      return `<div class="group-card" ${d}>
         <div class="c-head">
           <div style="display:flex;gap:8px;align-items:flex-start;min-width:0">${c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : ''}<div class="c-name">${esc(c.nombre)}</div></div>
           <div class="c-ic"><button class="btn-icon" data-act="editcaja" ${d} aria-label="Editar caja">✎</button><button class="btn-icon" data-act="delcaja" ${d} aria-label="Eliminar caja">🗑</button></div>
@@ -547,7 +565,12 @@
 
     /* ── Acciones (todo por data-atributos: los nombres con ' " < > no rompen nada) ── */
     function acciones(e) {
-      const b = e.target.closest('[data-act]'); if (!b) return;
+      const b = e.target.closest('[data-act]');
+      if (!b) {
+        const k = e.target.closest('.group-card[data-c]');
+        if (k) { vibrar(); abrirDet(k.dataset.c); }
+        return;
+      }
       const a = b.dataset.act, c = db.find(x => x.id === b.dataset.c), it = c && c.items.find(x => x.id === b.dataset.i);
       if (!c) return;
       if (a === 'detalles') { vibrar(); return abrirDet(c.id); }
