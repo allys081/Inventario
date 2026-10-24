@@ -729,10 +729,12 @@
       function ajustar() {
         raf = 0;
         document.querySelectorAll(SEL).forEach(el => {
-          el.style.fontSize = '';
+          el.style.fontSize = ''; el.style.overflowWrap = 'normal';   /* se mide sin partir palabras */
           const base = parseFloat(getComputedStyle(el).fontSize), min = Math.max(11, base * .62);
           let fs = base;
-          while (el.scrollHeight > el.clientHeight + 1 && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
+          const mal = () => el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
+          while (mal() && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
+          el.style.overflowWrap = '';   /* si una palabra no cabe ni en el mínimo, ahí sí se corta */
         });
       }
       const pedir = () => { if (!raf) raf = requestAnimationFrame(ajustar); };
