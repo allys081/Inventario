@@ -220,6 +220,33 @@
     .group-title,.c-name,#det-titulo{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;min-width:0}
     .group-title-box{min-width:0;flex:1}
     .group-count{flex:none}
+
+    /* Hoja inferior para Detalles */
+    .group-card[data-c]{cursor:pointer}
+    #modal-det{align-items:flex-end;padding:0}
+    #modal-det .modal{
+      max-width:560px;width:100%;margin:0;
+      border-radius:24px 24px 0 0;
+      max-height:calc(100dvh - 56px);
+      display:flex;flex-direction:column;
+      padding:10px 20px calc(20px + env(safe-area-inset-bottom));
+      transform:translateY(100%);
+      transition:transform .32s cubic-bezier(.16,1,.3,1);
+    }
+    #modal-det.active .modal{transform:none}
+    #modal-det #det-body{overflow-y:auto;flex:1;min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    .sheet-handle{width:42px;height:5px;border-radius:99px;background:var(--border);margin:0 auto 14px;flex:none}
+    #modal-det .det-head{flex:none}
+
+    /* Categoría "Desde Cajas" en lila */
+    :root{--li:#8a6fb0;--li-soft:#ece6fb;--li-line:#cdbff2}
+    [data-theme=dark]{--li:#c4b5fd;--li-soft:#2b2445;--li-line:#4c3f7a}
+    .group-card.cajas{background:var(--li-soft);border-color:var(--li-line)}
+    .group-card.cajas .c-name,.group-card.cajas .c-sub{color:var(--li)}
+    .group-card.cajas .btn-icon{color:var(--li)}
+    .group-card.cajas .btn-det{background:var(--card);border:1.5px solid var(--li);color:var(--li)}
+    .group-card.cajas .btn-add{background:var(--li);border:1.5px solid var(--li);color:var(--card)}
+    .badge.caja{background:var(--li-soft);color:var(--li)}
   </style>
 </head>
 <body>
@@ -275,6 +302,7 @@
   <!-- Detalles de una categoría (lista de todos sus productos) -->
   <div class="modal-overlay" id="modal-det">
     <div class="modal wide">
+      <div class="sheet-handle"></div>
       <div class="det-head">
         <div class="grow" style="flex:1;min-width:0"><h3 id="det-titulo"></h3><div class="c-sub" id="det-sub"></div></div>
         <button class="sq" data-close aria-label="Cerrar">✕</button>
@@ -457,7 +485,7 @@
       const si = it.tieneRepuesto === 'si', cant = it.cantidadRepuesto || (si ? it.queda : ''), link = urlOk(it.enlace);
       const d = `data-c="${esc(c.id)}" data-i="${esc(it.id)}"`;
       const th = (k, t) => it[k] ? `<img src="${it[k]}" class="item-thumb${k === 'fotoTienda' ? ' tienda' : ''}" data-act="foto" ${d} data-k="${k}" alt="${t}" title="${t}">` : '';
-      const tags = `${!si && it.urgente ? '<span class="badge bad">⚡ Urgente</span>' : ''}${si ? '<span class="badge ok">Repuesto</span>' : '<span class="badge bad">Falta comprar</span>'}${showCat ? `<span class="badge cat">${esc(c.nombre)}</span>` : ''}`;
+      const tags = `${!si && it.urgente ? '<span class="badge bad">⚡ Urgente</span>' : ''}${si ? '<span class="badge ok">Repuesto</span>' : '<span class="badge bad">Falta comprar</span>'}${showCat ? `<span class="badge cat">${esc(c.nombre)}</span>` : ''}${it.deCaja ? '<span class="badge caja">Desde Cajas</span>' : ''}`;
       const meta = si
         ? `<div class="meta-line">Repuesto en: <b>${esc(it.lugarRepuesto || 'Guardado')}</b></div>${cant ? `<div class="meta-line ok-t">Hay de repuesto: <b>${esc(cant)}</b></div>` : ''}`
         : `${it.queda ? `<div class="meta-line">Queda: <b>${esc(it.queda)}</b></div>` : ''}
@@ -488,11 +516,11 @@
         db.forEach(c => {
           const todos = c.items || [], its = todos.filter(it => ok(c, it, ws));
           if (activo && !its.length) return;
-          const n = activo ? its.length : todos.length, falta = todos.filter(it => it.tieneRepuesto !== 'si').length, d = `data-c="${esc(c.id)}"`;
-          h += `<div class="group-card"><div class="c-head"><div class="c-name">${esc(c.nombre)}</div>
+          const n = activo ? its.length : todos.length, falta = todos.filter(it => it.tieneRepuesto !== 'si').length, d = `data-c="${esc(c.id)}"`, esCaja = c.nombre === 'Desde Cajas';
+          h += `<div class="group-card${esCaja ? ' cajas' : ''}" data-c="${esc(c.id)}"><div class="c-head"><div class="c-name">${esc(c.nombre)}</div>
             <div class="c-ic"><button class="btn-icon" data-act="editcat" ${d} aria-label="Editar categoría">✎</button><button class="btn-icon" data-act="delcat" ${d} aria-label="Eliminar categoría">🗑</button></div></div>
             <div class="c-sub">${n} producto${n === 1 ? '' : 's'}${activo ? ' (con el filtro)' : ''}</div>
-            ${falta ? `<div class="c-sub"><span class="badge bad">🛒 ${falta} por comprar</span></div>` : ''}
+            ${falta ? `<div class="c-sub"><span class="badge bad"> ${falta} por comprar</span></div>` : ''}
             <div class="c-acts"><button class="btn btn-det" data-act="detalles" ${d}>Detalles</button><button class="btn btn-add" data-act="newitem" ${d}>+ Agregar</button></div></div>`;
         });
       } else {
@@ -527,7 +555,12 @@
     }
 
     function acc(e) {
-      const b = e.target.closest('[data-act]'); if (!b) return;
+      const b = e.target.closest('[data-act]');
+      if (!b) {
+        const k = e.target.closest('.group-card[data-c]');
+        if (k) { vibrar(); abrirDet(k.dataset.c); }
+        return;
+      }
       const a = b.dataset.act, c = db.find(x => x.id === b.dataset.c);
       const it = c && (c.items || []).find(x => x.id === b.dataset.i);
       if (!c) return;
