@@ -1,301 +1,953 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark" data-acc="violeta">
 <head>
   <meta charset="UTF-8">
   <title>Cajas y Espacios</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#f8fafc">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%239333ea'/%3E%3Cstop offset='1' stop-color='%23c084fc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle'%3E📦%3C/text%3E%3C/svg%3E">
-  <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
-  <script>try{var F={fraunces:"'Fraunces',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",fira:"'Fira Sans',system-ui,sans-serif",chivo:"'Chivo',system-ui,sans-serif",space:"'Space Grotesk',system-ui,sans-serif"},f=localStorage.getItem("app_fuente");if(F[f])document.documentElement.style.setProperty("--serif",F[f])}catch(e){}</script><script>try{document.documentElement.dataset.acc=localStorage.getItem("color_cajas")||"violeta"}catch(e){}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#14121a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cd6'/%3E%3Cstop offset='1' stop-color='%23c2417a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle'%3E📦%3C/text%3E%3C/svg%3E">
+
+  <script>
+    /* Aplica tema y acento antes de pintar para evitar parpadeos */
+    try {
+      var t = localStorage.getItem('app_tema') || 'oscuro';
+      var d = t === 'oscuro' || (t === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.dataset.theme = d ? 'dark' : 'light';
+      var a = localStorage.getItem('color_cajas') || 'violeta';
+      document.documentElement.dataset.acc = ['violeta', 'rosa', 'celeste', 'agua'].indexOf(a) > -1 ? a : 'violeta';
+    } catch (e) {}
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Fira+Sans:wght@500;600;700&family=Chivo:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    :root{color-scheme:light;--bg:#fbf5ee;--card:#fffdf9;--border:#eadfd2;--text:#3b2a22;--muted:#7a685d;--p:#7c5cd6;--on-p:#fff;--p-soft:#ece6fb;--p-line:#cdbff2;--p-glow:rgba(124,92,214,.22);--soft:#f6efe6;--hover:#eadfd2;--badge:#f1e8dd;--badge-ink:#65534a;--ok:#047857;--ok-soft:#ecfdf5;--ok-line:#a7f3d0;--warn:#b45309;--warn-soft:#fffbeb;--warn-line:#fde68a;--bad:#e11d48;--bad-soft:#fff1f2;--bad-line:#fecdd3;--f0:#c4623f;--f1:#5f8f7a;--f2:#8a6fb0;--f3:#b98524;--f4:#4f7fb5;--f5:#b9567a;--f6:#6f8f3d;--f7:#a0675a;--serif:'Fraunces','Lora',Georgia,serif;--shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06)}
-    [data-theme=dark]{color-scheme:dark;--bg:#14121a;--card:#1e1b27;--border:#2d2939;--text:#efeaf7;--muted:#a39cb3;--p:#a78bfa;--on-p:#14121a;--p-soft:#2b2445;--p-line:#4c3f7a;--p-glow:rgba(167,139,250,.25);--soft:#181521;--hover:#2d2939;--badge:#282434;--badge-ink:#bab2ca;--ok:#6ee7b7;--ok-soft:rgba(110,231,183,.14);--ok-line:rgba(110,231,183,.35);--warn:#fcd34d;--warn-soft:rgba(252,211,77,.12);--warn-line:rgba(252,211,77,.35);--bad:#fb7185;--bad-soft:rgba(251,113,133,.14);--bad-line:rgba(251,113,133,.35);--f0:#f0916d;--f1:#5eead4;--f2:#c4b5fd;--f3:#fcd34d;--f4:#7cb7ff;--f5:#f9a8d4;--f6:#bef264;--f7:#fdba74;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25)}
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-    body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:16px 14px 80px;-webkit-font-smoothing:antialiased}
-    .container{max-width:720px;margin:0 auto}
-    .top-bar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:18px;min-height:40px}
-    .sq{width:38px;height:38px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);color:var(--p);font-size:1.1rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.03)}
-    .sq.r{justify-self:end;color:var(--text)}
-    h1{font-size:1.35rem;font-weight:800;text-align:center;letter-spacing:-.3px}
-
-    .search-box{position:sticky;top:10px;z-index:20;background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:11px 15px;box-shadow:0 4px 20px rgba(15,23,42,.05);display:flex;align-items:center;gap:10px;margin-bottom:14px}
-    .search-box:focus-within{border-color:var(--p);box-shadow:0 0 0 3px var(--p-glow)}
-    .search-input{border:none;outline:none;width:100%;font-size:.95rem;font-family:inherit;color:var(--text);background:transparent}
-    .btn-clear{border:none;background:none;cursor:pointer;color:var(--muted);font-size:1rem;display:none;padding:2px 6px}
-    .actions-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
-    .btn{border:none;border-radius:12px;padding:10px 16px;font-weight:700;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:transform .15s}
-    .btn:active{transform:scale(.94)}
-    .btn-primary{background:var(--p);color:var(--on-p);box-shadow:0 4px 12px var(--p-glow)}
-    .btn-secondary{background:var(--card);border:1.5px solid var(--border);color:var(--text)}
-    .btn-add-item{background:var(--p-soft);border:1.5px dashed var(--p-line);color:var(--p);width:100%;margin:10px 0 12px}
-
-    .aviso{display:none;background:var(--warn-soft);border:1.5px solid var(--warn-line);color:var(--warn);border-radius:14px;padding:10px 14px;font-size:.8rem;font-weight:600;line-height:1.45;margin-bottom:14px}
-    .search-results-box{display:none;margin-bottom:18px}
-    .search-title{font-size:.8rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
-
-    .card-list{display:flex;flex-direction:column;gap:12px}
-    .group-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:14px 16px;box-shadow:0 4px 12px rgba(15,23,42,.03)}
-    .group-header{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;user-select:none;padding-bottom:10px;border-bottom:1px dashed var(--border)}
-    .group-left{display:flex;align-items:center;gap:10px;min-width:0}
-    .group-title{font-weight:700;font-size:1.02rem;overflow-wrap:anywhere}
-    .group-count{font-size:.72rem;font-weight:700;background:var(--badge);color:var(--badge-ink);padding:3px 8px;border-radius:99px}
-    .caja-thumb{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--hover);border:1px solid var(--border);cursor:pointer;flex:none}
-    .caja-ubi{font-size:.76rem;color:var(--muted);margin-top:2px;font-weight:600}
-    .chevron{font-size:.75rem;color:var(--muted);display:inline-block;transition:transform .25s}
-    .chevron.rotated{transform:rotate(-180deg)}
-    .nowrap{white-space:nowrap}
-    .items-container{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-    .item-row{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
-    .item-top{display:flex;gap:12px;align-items:flex-start}
-    .grow{flex:1;min-width:0}
-    .item-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--hover);border:1px solid var(--border);cursor:pointer;flex:none}
-    .item-name{font-weight:600;font-size:.93rem;margin-bottom:4px;overflow-wrap:anywhere}
-    .item-meta{font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
-    .badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-    .badge{padding:2px 8px;border-radius:6px;font-weight:600;font-size:.72rem;display:inline-block;border:1px solid transparent}
-    .badge.cat{background:var(--badge);color:var(--badge-ink);border-color:var(--border);border-radius:99px}
-    .badge.ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
-    .badge.warn{background:var(--warn-soft);color:var(--warn);border-color:var(--warn-line)}
-    .badge.bad{background:var(--bad-soft);color:var(--bad);border-color:var(--bad-line)}
-    .item-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px dashed var(--border);padding-top:8px}
-    .stepper{display:inline-flex;align-items:center;background:var(--card);border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
-    .stepper button{width:34px;height:32px;border:none;background:none;font-size:1.05rem;font-weight:800;color:var(--p);cursor:pointer;font-family:inherit}
-    .stepper button:active{background:var(--p-soft)}
-    .stepper b{min-width:34px;text-align:center;font-size:.9rem}
-    .mini{border:1.5px solid var(--border);background:var(--card);color:var(--muted);border-radius:10px;padding:6px 10px;font:700 .76rem inherit;font-family:inherit;cursor:pointer}
-    .mini.on{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn)}
-    .btn-icon{background:none;border:none;cursor:pointer;padding:6px 8px;font-size:.88rem;color:var(--muted);border-radius:8px}
-    .btn-icon:hover{background:var(--hover);color:var(--text)}
-    .vacio{text-align:center;color:var(--muted);padding:50px 0;font-size:.9rem;line-height:1.6}
-
-    .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;z-index:100;padding:20px 14px 40px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .22s}
-    .modal-overlay.active{opacity:1;pointer-events:auto}
-    .modal{background:var(--card);border-radius:20px;width:100%;max-width:400px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.16);transform:translateY(16px) scale(.96);transition:transform .24s cubic-bezier(.16,1,.3,1);margin-top:24px}
-    .modal-overlay.active .modal{transform:none}
-    .modal h3{font-size:1.15rem;font-weight:800;margin-bottom:14px}
-    .form-group{margin-bottom:12px}
-    .form-label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin-bottom:5px}
-    .form-input,.form-select{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:.92rem;font-family:inherit;outline:none;color:var(--text);background:var(--card)}
-    .form-input:focus,.form-select:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--p-glow)}
-    .check{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.86rem;padding:10px 12px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer}
-    .check input{width:18px;height:18px;accent-color:var(--p)}
-    .photo-row{display:flex;align-items:center;gap:12px;margin-top:6px}
-    .pbox{width:58px;height:58px;border-radius:12px;border:1.5px dashed var(--border);background:var(--soft);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;flex-shrink:0}
-    .pbox .ph{font-size:1.2rem;color:var(--muted)}
-    .pbox img{width:100%;height:100%;object-fit:cover;display:none}
-    .pbox .rm{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;width:18px;height:18px;border-radius:50%;font-size:10px;cursor:pointer;display:none;align-items:center;justify-content:center}
-    .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-    #modal-viewer img{width:100%;border-radius:14px;max-height:70vh;object-fit:contain}
-    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:.82rem;font-weight:600;z-index:200;transition:all .25s;max-width:calc(100% - 28px)}
-    .toast.show{opacity:1;transform:translate(-50%,0)}
-  
-    /* ===== Estilo Fanfics: serif, franja de color, etiquetas suaves ===== */
-    h1,.group-title,.g-title,.modal h3,.card-title,.vacio .big{font-family:var(--serif)}
-    h1{letter-spacing:-.4px}
-    .group-card,.nav-card{position:relative;overflow:hidden;border-width:1px;box-shadow:var(--shadow);padding-left:20px}
-    .group-card::before,.nav-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--muted))}
-    .card-list>.group-card:nth-child(8n+1){--c:var(--f2)}
-    .card-list>.group-card:nth-child(8n+2){--c:var(--f5)}
-    .card-list>.group-card:nth-child(8n+3){--c:var(--f1)}
-    .card-list>.group-card:nth-child(8n+4){--c:var(--f3)}
-    .card-list>.group-card:nth-child(8n+5){--c:var(--f4)}
-    .card-list>.group-card:nth-child(8n+6){--c:var(--f0)}
-    .card-list>.group-card:nth-child(8n+7){--c:var(--f6)}
-    .card-list>.group-card:nth-child(8n+8){--c:var(--f7)}
-    .group-title{font-weight:700;font-size:1.05rem;letter-spacing:-.1px}
-    .group-count{background:var(--badge);color:var(--badge-ink);font-weight:700}
-    .badge{border-color:transparent!important;border-radius:8px;padding:3px 8px;font-size:.7rem}
-    .badge.cat{border-radius:8px}
-    .btn,.sq,.btn-back,.btn-tema,.mini,.chip{border-radius:13px}
-    .btn-add-item,.btn-clear{border-radius:13px}
-    .sq,.btn-back,.btn-tema{border-width:1px}
-    .search-box,.group-card,.item-row,.mov,.modal{border-width:1px}
-    .search-box{border-width:1.5px;border-radius:15px;box-shadow:none}
-    .seg{background:var(--badge)}
-    .modal-overlay,.overlay{background:rgba(30,18,10,.45)}
-    [data-theme=dark] .modal-overlay,[data-theme=dark] .overlay{background:rgba(0,0,0,.6)}
-    .item-row{border-radius:14px}
-
-    .btn-primary{background:var(--p);box-shadow:none}
-  
-    /* ===== Estructura nueva (boceto): barra, filtros, tarjetas compactas, flotante ===== */
-    :root{--pk:#c2417a;--pk-soft:#fbe1ec;--on-pk:#fff;--acc:var(--p)}
-    [data-theme=dark]{--pk:#f472b6;--pk-soft:#40202f;--on-pk:#14121a}
-    body{padding-bottom:110px}
-    .top-bar{grid-template-columns:84px 1fr 84px}
-    .sq{width:38px;height:38px;border-radius:12px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:1.05rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;font-family:inherit;box-shadow:none}
-    .top-bar>a.sq{color:var(--acc);justify-self:start}
-    .top-right{display:flex;gap:8px;justify-self:end;position:relative}
-    .top-right .sq{color:var(--text)}
-    .menu,.pop{position:absolute;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:6px;display:none;z-index:60}
-    .menu{right:0;top:46px;min-width:170px}
-    .pop{left:0;top:44px;min-width:240px;z-index:40}
-    .menu.open,.pop.open{display:block}
-    .menu button,.pop button{display:flex;width:100%;gap:8px;align-items:center;padding:11px 12px;border:0;background:none;border-radius:10px;font-weight:700;font-size:.86rem;font-family:inherit;color:var(--text);cursor:pointer;text-align:left}
-    .menu button:hover,.pop button:hover{background:var(--badge)}
-    .pop button.on{background:var(--pk-soft);color:var(--pk)}
-    .tools{display:flex;gap:8px;align-items:center;margin:2px 0 12px;position:relative;min-height:38px}
-    .fbtn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 13px;border-radius:12px;background:var(--card);border:1px solid var(--border);font-weight:700;font-size:.82rem;color:var(--text);cursor:pointer;font-family:inherit}
-    .fbtn svg,.view svg{width:19px;height:19px;flex:none}
-    .fbtn i{display:none;width:8px;height:8px;border-radius:50%;background:var(--pk)}
-    .fbtn.has i{display:inline-block}
-    .view{display:flex;margin-left:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-    .view button{width:38px;height:36px;display:grid;place-items:center;color:var(--muted);background:none;border:0;cursor:pointer}
-    .view button.on{background:var(--pk-soft);color:var(--pk)}
-    .tot{font-size:.82rem;color:var(--muted);font-weight:600}
-    .tot b{color:var(--text);font-family:var(--serif);font-size:1.05rem}
-    .card-list.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
-    @media(max-width:330px){.card-list.grid{grid-template-columns:1fr}}
-    .card-list.grid .group-card{padding:12px 8px 12px 16px}
-    .card-list .vacio{grid-column:1/-1}
-    .group-card{display:flex;flex-direction:column;gap:6px}
-    .c-head{display:flex;justify-content:space-between;align-items:flex-start;gap:4px}
-    .c-name{font-family:var(--serif);font-weight:700;font-size:1rem;line-height:1.2;overflow-wrap:anywhere;min-width:0;padding-top:4px}
-    .c-ic{display:flex;flex:none;margin:-4px 0 0 0}
-    .c-ic .btn-icon{padding:6px 5px}
-    .c-sub{font-size:.76rem;color:var(--muted);font-weight:600;overflow-wrap:anywhere}
-    .c-line{font-size:.8rem;color:var(--muted);font-weight:600}
-    .c-line b{color:var(--text)}
-    .c-line b.v{font-family:var(--serif);font-size:1.1rem;color:var(--acc)}
-    .c-acts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto;padding-top:6px}
-    .c-acts .btn{padding:9px 4px;font-size:.78rem;border-radius:11px;width:100%}
-    .btn-det{background:var(--card);border:1.5px solid var(--border);color:var(--text)}
-    .btn-add{background:var(--pk-soft);color:var(--pk);border:1.5px solid transparent}
-    .caja-thumb{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--hover);border:1px solid var(--border);cursor:pointer;flex:none}
-    .card-list.grid .caja-thumb{width:32px;height:32px;border-radius:8px}
-    .badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:4px}
-    .fab{position:fixed;z-index:30;right:max(16px,calc(50% - 346px));bottom:calc(18px + env(safe-area-inset-bottom));height:52px;padding:0 20px 0 16px;border-radius:17px;background:var(--pk);color:var(--on-pk);border:0;font-weight:800;font-size:.92rem;display:flex;align-items:center;gap:8px;box-shadow:0 10px 24px rgba(0,0,0,.25);cursor:pointer;font-family:inherit}
-    .fab:active{transform:scale(.95)}
-    .modal.wide{max-width:560px}
-    .det-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
-    .det-head .grow h3{margin:0;overflow-wrap:anywhere}
-    textarea.form-input{display:block;resize:none;overflow:hidden;min-height:44px;line-height:1.4}
-    .mov>div:first-child{min-width:0;flex:1}
-  
-    .menu{min-width:220px;max-height:75vh;overflow-y:auto}
-    .menu hr{border:0;border-top:1px dashed var(--border);margin:6px 4px}
-    .menu-t{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:8px 12px 4px}
-    .menu .dots{display:flex;gap:10px;padding:6px 12px 10px}
-    .menu .dots button{width:32px;height:32px;padding:0;border-radius:50%;border:2px solid transparent;display:grid;place-items:center;color:#fff;font-size:.85rem;background:var(--c)}
-    .menu .dots button[data-c=violeta]{--c:#7c5cd6}.menu .dots button[data-c=rosa]{--c:#c2417a}.menu .dots button[data-c=celeste]{--c:#3b82c4}.menu .dots button[data-c=agua]{--c:#2f8a76}
-    [data-theme=dark] .menu .dots button[data-c=violeta]{--c:#a78bfa}[data-theme=dark] .menu .dots button[data-c=rosa]{--c:#f472b6}[data-theme=dark] .menu .dots button[data-c=celeste]{--c:#7cb7ff}[data-theme=dark] .menu .dots button[data-c=agua]{--c:#5eead4}
-    [data-theme=dark] .menu .dots button{color:#14121a}
-    .menu .dots button.on{border-color:var(--text)}
-    .menu .dots button.on::after{content:"✓";font-weight:800}
-    .menu #fonts button.on{background:var(--badge);color:var(--acc)}
-    [data-acc=violeta]{--p:#7c5cd6;--p-soft:#ece6fb;--p-line:#cdbff2;--p-glow:rgba(124,92,214,.22);--pk:#7c5cd6;--pk-soft:#ece6fb;--on-p:#fff;--on-pk:#fff}
-    [data-theme=dark][data-acc=violeta]{--p:#a78bfa;--p-soft:#2b2445;--p-line:#4c3f7a;--p-glow:rgba(167,139,250,.25);--pk:#a78bfa;--pk-soft:#2b2445;--on-p:#14121a;--on-pk:#14121a}
-    [data-acc=rosa]{--p:#c2417a;--p-soft:#fbe1ec;--p-line:#f0b6cf;--p-glow:rgba(194,65,122,.2);--pk:#c2417a;--pk-soft:#fbe1ec;--on-p:#fff;--on-pk:#fff}
-    [data-theme=dark][data-acc=rosa]{--p:#f472b6;--p-soft:#40202f;--p-line:#5b2a45;--p-glow:rgba(244,114,182,.25);--pk:#f472b6;--pk-soft:#40202f;--on-p:#14121a;--on-pk:#14121a}
-    [data-acc=celeste]{--p:#3b82c4;--p-soft:#dcebf8;--p-line:#b3d3ee;--p-glow:rgba(59,130,196,.22);--pk:#3b82c4;--pk-soft:#dcebf8;--on-p:#fff;--on-pk:#fff}
-    [data-theme=dark][data-acc=celeste]{--p:#7cb7ff;--p-soft:#1b2c44;--p-line:#2f4b73;--p-glow:rgba(124,183,255,.25);--pk:#7cb7ff;--pk-soft:#1b2c44;--on-p:#14121a;--on-pk:#14121a}
-    [data-acc=agua]{--p:#2f8a76;--p-soft:#d9f0ea;--p-line:#a8d9cd;--p-glow:rgba(47,138,118,.22);--pk:#2f8a76;--pk-soft:#d9f0ea;--on-p:#fff;--on-pk:#fff}
-    [data-theme=dark][data-acc=agua]{--p:#5eead4;--p-soft:#173b36;--p-line:#2c6a60;--p-glow:rgba(94,234,212,.22);--pk:#5eead4;--pk-soft:#173b36;--on-p:#14121a;--on-pk:#14121a}
-
-    .group-card::before{display:none}
-    .group-card{padding-left:16px}
-    .card-list.grid .group-card{padding-left:12px}
-
-    /* Títulos de contenedores: máx. 2 líneas; si no caben, se achican y al final se cortan con … */
-    .group-title,.c-name,#det-titulo{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;min-width:0}
-    .group-title-box{min-width:0;flex:1}
-    .group-count{flex:none}
-
-    /* Hoja inferior para Detalles */
-    .group-card[data-c]{cursor:pointer}
-    #modal-det{align-items:flex-end;padding:0}
-    #modal-det .modal{
-      max-width:560px;width:100%;margin:0;
-      border-radius:24px 24px 0 0;
-      max-height:calc(100dvh - 56px);
-      display:flex;flex-direction:column;
-      padding:10px 20px calc(20px + env(safe-area-inset-bottom));
-      transform:translateY(100%);
-      transition:transform .32s cubic-bezier(.16,1,.3,1);
+    :root {
+      color-scheme: light;
+      --bg: #fbf5ee;
+      --card: #fffdf9;
+      --border: #eadfd2;
+      --text: #3b2a22;
+      --muted: #7a685d;
+      --p: #7c5cd6;
+      --on-p: #ffffff;
+      --p-soft: #ece6fb;
+      --p-line: #cdbff2;
+      --p-glow: rgba(124, 92, 214, 0.22);
+      --hover: #f3eae0;
+      --badge: #f1e8dd;
+      --badge-ink: #65534a;
+      --ok: #047857;
+      --ok-soft: #ecfdf5;
+      --warn: #b45309;
+      --warn-soft: #fffbeb;
+      --bad: #e11d48;
+      --bad-soft: #fff1f2;
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --shadow: 0 1px 3px rgba(80,50,30,.06), 0 8px 24px rgba(80,50,30,.08);
+      --scrim: rgba(30, 18, 10, 0.55);
     }
-    #modal-det.active .modal{transform:none}
-    #modal-det #det-body{overflow-y:auto;flex:1;min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-    .sheet-handle{width:42px;height:5px;border-radius:99px;background:var(--border);margin:0 auto 14px;flex:none}
-    #modal-det .det-head{flex:none}
+
+    [data-theme=dark] {
+      color-scheme: dark;
+      --bg: #14121a;
+      --card: #1e1b27;
+      --border: #2d2939;
+      --text: #efeaf7;
+      --muted: #a39cb3;
+      --p: #a78bfa;
+      --on-p: #14121a;
+      --p-soft: #2b2445;
+      --p-line: #4c3f7a;
+      --p-glow: rgba(167, 139, 250, 0.25);
+      --hover: #262232;
+      --badge: #282434;
+      --badge-ink: #bab2ca;
+      --ok: #6ee7b7;
+      --ok-soft: rgba(110, 231, 183, 0.14);
+      --warn: #fcd34d;
+      --warn-soft: rgba(252, 211, 77, 0.12);
+      --bad: #fb7185;
+      --bad-soft: rgba(251, 113, 133, 0.14);
+      --shadow: 0 1px 3px rgba(0,0,0,.3), 0 12px 30px rgba(0,0,0,.35);
+      --scrim: rgba(0, 0, 0, 0.72);
+    }
+
+    [data-acc=violeta] { --p:#7c5cd6; --p-soft:#ece6fb; --p-line:#cdbff2; --on-p:#fff; }
+    [data-theme=dark][data-acc=violeta] { --p:#a78bfa; --p-soft:#2b2445; --p-line:#4c3f7a; --on-p:#14121a; }
+    [data-acc=rosa] { --p:#c2417a; --p-soft:#fbe1ec; --p-line:#f0b6cf; --on-p:#fff; }
+    [data-theme=dark][data-acc=rosa] { --p:#f472b6; --p-soft:#40202f; --p-line:#5b2a45; --on-p:#14121a; }
+    [data-acc=celeste] { --p:#3b82c4; --p-soft:#dcebf8; --p-line:#b3d3ee; --on-p:#fff; }
+    [data-theme=dark][data-acc=celeste] { --p:#7cb7ff; --p-soft:#1b2c44; --p-line:#2f4b73; --on-p:#14121a; }
+    [data-acc=agua] { --p:#2f8a76; --p-soft:#d9f0ea; --p-line:#a8d9cd; --on-p:#fff; }
+    [data-theme=dark][data-acc=agua] { --p:#5eead4; --p-soft:#173b36; --p-line:#2c6a60; --on-p:#14121a; }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      padding: 14px 14px 100px;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* Barra superior */
+    .top-bar {
+      display: grid;
+      grid-template-columns: 42px 1fr 88px;
+      align-items: center;
+      margin-bottom: 16px;
+      min-height: 42px;
+    }
+    .sq {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,.04);
+      transition: transform .12s ease;
+    }
+    .sq:active { transform: scale(.93); }
+    .top-bar > a.sq { color: var(--p); }
+    h1 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: -.3px;
+    }
+    .top-right {
+      display: flex;
+      gap: 8px;
+      justify-self: end;
+      position: relative;
+    }
+
+    /* Menú desplegable ⋮ */
+    .menu {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 6px;
+      min-width: 200px;
+      display: none;
+      z-index: 80;
+    }
+    .menu.open { display: block; }
+    .menu button {
+      display: flex;
+      width: 100%;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border: 0;
+      background: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: .84rem;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+    }
+    .menu button:hover { background: var(--hover); }
+    .menu hr { border: 0; border-top: 1px dashed var(--border); margin: 6px 4px; }
+    .menu-t { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); padding: 6px 12px 4px; }
+    .menu .dots { display: flex; gap: 10px; padding: 4px 12px 8px; }
+    .menu .dots button {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: .8rem;
+      background: var(--c);
+    }
+    .menu .dots button[data-c=violeta] { --c:#7c5cd6; }
+    .menu .dots button[data-c=rosa] { --c:#c2417a; }
+    .menu .dots button[data-c=celeste] { --c:#3b82c4; }
+    .menu .dots button[data-c=agua] { --c:#2f8a76; }
+    .menu .dots button.on { border-color: var(--text); }
+    .menu .dots button.on::after { content: "✓"; font-weight: 800; }
+
+    /* Barra de búsqueda */
+    .search-box {
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.04);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .search-box:focus-within { border-color: var(--p); box-shadow: 0 0 0 3px var(--p-glow); }
+    .search-input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: .94rem;
+      font-family: inherit;
+      color: var(--text);
+      background: transparent;
+    }
+    .btn-clear { border: none; background: none; cursor: pointer; color: var(--muted); font-size: 1rem; display: none; padding: 2px 6px; }
+
+    /* Barra de herramientas */
+    .tools {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .tot { font-size: .82rem; color: var(--muted); font-weight: 600; }
+    .tot b { color: var(--text); font-family: var(--serif); font-size: 1.05rem; }
+    .view {
+      display: flex;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .view button {
+      width: 36px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+    .view button.on { background: var(--p-soft); color: var(--p); }
+
+    /* Cuadrícula de cajas principal */
+    .card-list { display: flex; flex-direction: column; gap: 10px; }
+    .card-list.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 360px) { .card-list.grid { grid-template-columns: 1fr; } }
+
+    .group-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 13px 12px 14px 14px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: transform .14s ease, border-color .14s ease;
+      position: relative;
+    }
+    .group-card:active { transform: scale(.98); }
+    .group-card:hover { border-color: var(--p-line); }
+
+    .c-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .c-title-box {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      min-width: 0;
+      flex: 1;
+    }
+    .caja-thumb {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--hover);
+      border: 1px solid var(--border);
+      flex: none;
+    }
+    .c-name {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 1.02rem;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+      color: var(--text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .c-actions-head {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex: none;
+      margin-top: -3px;
+    }
+    .c-actions-head .btn-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .88rem;
+    }
+    .c-actions-head .btn-icon:hover { background: var(--hover); color: var(--text); }
+    .c-actions-head .btn-icon.add-fast { color: var(--p); font-size: 1.05rem; font-weight: 800; }
+
+    .c-sub {
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 600;
+      overflow-wrap: anywhere;
+      margin-top: 2px;
+    }
+
+    /* Botón flotante ＋ Agregar caja */
+    .fab {
+      position: fixed;
+      z-index: 30;
+      right: max(16px, calc(50% - 330px));
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      height: 52px;
+      padding: 0 20px 0 16px;
+      border-radius: 17px;
+      background: var(--p);
+      color: var(--on-p);
+      border: 0;
+      font-weight: 800;
+      font-size: .92rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.28);
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform .14s ease;
+    }
+    .fab:active { transform: scale(.94); }
+
+    /* ═══════════════════════════════════════════════
+       HOJA DE LA CAJA (LISTA MINIMALISTA DE OBJETOS)
+       ═══════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--scrim);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    /* Hoja inferior para la Caja */
+    #modal-det .modal {
+      width: 100%;
+      max-width: 580px;
+      background: var(--card);
+      border-radius: 26px 26px 0 0;
+      max-height: calc(100dvh - 36px);
+      display: flex;
+      flex-direction: column;
+      padding: 12px 18px calc(24px + env(safe-area-inset-bottom));
+      transform: translateY(100%);
+      transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+      box-shadow: 0 -12px 40px rgba(0,0,0,.4);
+      margin: 0;
+    }
+    #modal-det.active .modal { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 40px;
+      height: 4.5px;
+      border-radius: 99px;
+      background: var(--border);
+      margin: 0 auto 12px;
+      flex: none;
+    }
+    .det-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      flex: none;
+    }
+    .det-head h3 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .btn-add-item-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      padding: 9px;
+      background: var(--p-soft);
+      border: 1px dashed var(--p-line);
+      color: var(--p);
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: .84rem;
+      cursor: pointer;
+      font-family: inherit;
+      margin-bottom: 10px;
+    }
+    .btn-add-item-bar:active { transform: scale(.98); }
+
+    /* Contenedor de la lista minimalista */
+    #det-body {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 140px;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 20px;
+    }
+
+    .minimal-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-row-simple {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      border-radius: 12px;
+      transition: background .12s ease;
+      gap: 10px;
+    }
+    .item-row-simple:hover, .item-row-simple:active { background: var(--hover); }
+    .item-row-simple:last-child { border-bottom: none; }
+
+    .item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+    .item-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--p);
+      opacity: .6;
+      flex-shrink: 0;
+    }
+    .item-title-wrap { min-width: 0; flex: 1; }
+    .item-name {
+      font-size: .94rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+    .item-badges-mini {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 3px;
+      flex-wrap: wrap;
+    }
+    .mini-tag {
+      font-size: .68rem;
+      padding: 1px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .mini-tag.qty { background: var(--badge); color: var(--p); border: 1px solid var(--border); }
+    .mini-tag.buy { background: var(--bad-soft); color: var(--bad); }
+    .mini-tag.detail { color: var(--muted); font-size: .74rem; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+
+    .item-quick-btns {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .item-quick-btns .btn-icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .88rem;
+    }
+    .item-quick-btns .btn-icon:hover { background: var(--badge); color: var(--text); }
+    .item-quick-btns .btn-icon.del:hover { color: var(--bad); }
+
+    /* ═══════════════════════════════════════════════
+       VENTANA EMERGENTE EN EL MEDIO (POPOVER DETALLE)
+       ═══════════════════════════════════════════════ */
+    #modal-popup-center {
+      align-items: center;
+      padding: 16px;
+      z-index: 120;
+    }
+    #modal-popup-center .modal {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px 20px 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      transform: scale(.93);
+      transition: transform .22s cubic-bezier(.16, 1, .3, 1);
+      margin: 0;
+    }
+    #modal-popup-center.active .modal { transform: scale(1); }
+
+    .pop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+    .pop-title {
+      font-family: var(--serif);
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+    .pop-subtitle {
+      font-size: .74rem;
+      color: var(--muted);
+      margin-top: 2px;
+      display: block;
+    }
+    .pop-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      flex: none;
+    }
+
+    .pop-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pop-field {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+    }
+    .pop-field label {
+      display: block;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: .5px;
+      margin-bottom: 3px;
+    }
+    .pop-field p { font-size: .92rem; color: var(--text); overflow-wrap: anywhere; line-height: 1.4; }
+
+    /* Control de cantidad en el popup */
+    .qty-control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 8px 14px;
+    }
+    .stepper {
+      display: inline-flex;
+      align-items: center;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .stepper button {
+      width: 34px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--p);
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .stepper span {
+      min-width: 36px;
+      text-align: center;
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .pop-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .btn-pop {
+      height: 42px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: .84rem;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+      transition: transform .12s ease;
+    }
+    .btn-pop:active { transform: scale(.95); }
+    .btn-pop.reponer.active {
+      background: var(--bad-soft);
+      border-color: var(--bad);
+      color: var(--bad);
+    }
+
+    /* Modales estándar (Caja, Objeto, Mover, Visor) */
+    .modal-center {
+      align-items: center;
+      padding: 16px;
+    }
+    .modal-center .modal {
+      background: var(--card);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+      border: 1px solid var(--border);
+      transform: scale(.95);
+      transition: transform .22s cubic-bezier(.16, 1, .3, 1);
+      margin: 0;
+    }
+    .modal-center.active .modal { transform: scale(1); }
+    .modal-center h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; margin-bottom: 14px; }
+    .form-group { margin-bottom: 12px; }
+    .form-label { display: block; font-size: .76rem; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
+    .form-input, .form-select {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 13px;
+      font-size: .92rem;
+      font-family: inherit;
+      outline: none;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--p); box-shadow: 0 0 0 3px var(--p-glow); }
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: .86rem;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      background: var(--bg);
+    }
+    .check input { width: 18px; height: 18px; accent-color: var(--p); }
+
+    .photo-row { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+    .pbox {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      border: 1.5px dashed var(--border);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .pbox img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .pbox .rm {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(0,0,0,.65);
+      color: #fff;
+      border: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: .84rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+      transition: transform .12s;
+    }
+    .btn:active { transform: scale(.95); }
+    .btn-primary { background: var(--p); color: var(--on-p); }
+    .btn-secondary { background: var(--bg); border: 1.5px solid var(--border); color: var(--text); }
+    .btn-danger { color: var(--bad); }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(24px + env(safe-area-inset-bottom));
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      background: var(--text);
+      color: var(--bg);
+      padding: 11px 18px;
+      border-radius: 14px;
+      font-size: .84rem;
+      font-weight: 600;
+      z-index: 200;
+      transition: all .25s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="top-bar">
+    <!-- Barra superior -->
+    <header class="top-bar">
       <a href="index.html" class="sq" title="Volver al menú">←</a>
       <h1>Cajas y Espacios</h1>
       <div class="top-right">
-        <button class="sq" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+        <button class="sq" id="btn-tema" aria-label="Cambiar modo de tema"></button>
         <button class="sq" id="btn-menu" aria-label="Más opciones">⋮</button>
         <div class="menu" id="menu">
           <button id="btn-exportar">💾 Respaldar</button>
           <button id="btn-importar">📂 Cargar</button>
           <hr>
-          <div class="menu-sec"><div class="menu-t">Color</div><div class="dots" id="dots"><button data-c="violeta" aria-label="Morado"></button><button data-c="rosa" aria-label="Rosa"></button><button data-c="celeste" aria-label="Celeste"></button><button data-c="agua" aria-label="Aguamarina"></button></div></div>
-          <hr>
-          <div class="menu-sec"><div class="menu-t">Letra de los títulos</div><div id="fonts"><button data-f="fraunces" style="font-family:'Fraunces',Georgia,serif">Fraunces (la de ahora)</button><button data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif">Plus Jakarta (sin serif)</button><button data-f="fira" style="font-family:'Fira Sans',system-ui,sans-serif">Fira Sans</button><button data-f="chivo" style="font-family:'Chivo',system-ui,sans-serif">Chivo</button><button data-f="space" style="font-family:'Space Grotesk',system-ui,sans-serif">Space Grotesk</button></div></div>
+          <div class="menu-sec">
+            <div class="menu-t">Color de acento</div>
+            <div class="dots" id="dots">
+              <button data-c="violeta" aria-label="Morado"></button>
+              <button data-c="rosa" aria-label="Rosa"></button>
+              <button data-c="celeste" aria-label="Celeste"></button>
+              <button data-c="agua" aria-label="Aguamarina"></button>
+            </div>
+          </div>
         </div>
       </div>
       <input type="file" id="file-input" style="display:none" accept=".json">
-    </div>
+    </header>
 
+    <!-- Búsqueda rápida -->
     <div class="search-box">
       <span>🔍</span>
       <input type="text" id="busqueda" class="search-input" placeholder="Buscar objeto, caja, ubicación o persona..." autocomplete="off">
       <button id="btn-limpiar" class="btn-clear">✕</button>
     </div>
 
-    <div class="aviso" id="aviso-espacio"></div>
-
-    <div id="search-box-results" class="search-results-box">
-      <div class="search-title">Resultados</div>
-      <div id="search-items" class="items-container"></div>
+    <!-- Resultados en vivo de búsqueda -->
+    <div id="search-box-results" style="display:none; margin-bottom: 18px;">
+      <div style="font-size: .75rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px;">Resultados encontrados</div>
+      <div id="search-items" class="minimal-list" style="background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 6px 12px;"></div>
     </div>
 
+    <!-- Barra de conteo y vista -->
     <div class="tools">
       <span class="tot">Total cajas: <b id="tot-cajas">0</b><span id="tot-objs"></span></span>
       <div class="view" id="view">
-        <button data-v="list" aria-label="Vista de lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        <button data-v="grid" aria-label="Vista de cuadrícula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></button>
+        <button data-v="list" aria-label="Vista de lista">☰</button>
+        <button data-v="grid" class="on" aria-label="Vista de cuadrícula">⊞</button>
       </div>
     </div>
 
-    <div id="contenedor-cajas" class="card-list grid"></div>
+    <!-- Cuadrícula principal de cajas -->
+    <main id="contenedor-cajas" class="card-list grid"></main>
   </div>
 
-  <button class="fab" id="btn-nueva-caja"><span style="font-size:1.2rem;line-height:1">＋</span> Agregar</button>
+  <!-- Botón flotante ＋ Agregar caja -->
+  <button class="fab" id="btn-nueva-caja">
+    <span style="font-size:1.15rem;line-height:1">＋</span> Agregar
+  </button>
 
-  <!-- Detalles de una caja (lista de todo lo que tiene) -->
+  <!-- ═══════════════════════════════════════════════════
+       HOJA DE DETALLE DE LA CAJA (LISTA MINIMALISTA)
+       ═══════════════════════════════════════════════════ -->
   <div class="modal-overlay" id="modal-det">
-    <div class="modal wide">
+    <div class="modal">
       <div class="sheet-handle"></div>
       <div class="det-head">
         <div id="det-foto"></div>
-        <div class="grow" style="flex:1;min-width:0"><h3 id="det-titulo"></h3><div class="c-sub" id="det-sub"></div></div>
+        <div style="flex:1; min-width:0">
+          <h3 id="det-titulo">Nombre Caja</h3>
+          <div class="c-sub" id="det-sub">0 objetos · 📍 Ubicación</div>
+        </div>
         <button class="sq" data-close aria-label="Cerrar">✕</button>
       </div>
-      <div id="det-body"></div>
+
+      <button class="btn-add-item-bar" id="btn-add-obj-inside">
+        <span>＋</span> Agregar objeto a esta caja
+      </button>
+
+      <div id="det-body">
+        <div class="minimal-list" id="det-items-list">
+          <!-- Filas de objetos sin recuadros pesados -->
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Modal Caja -->
-  <div class="modal-overlay" id="modal-caja">
+  <!-- ═══════════════════════════════════════════════════
+       VENTANA EMERGENTE EN EL MEDIO (POPOVER DETALLE)
+       ═══════════════════════════════════════════════════ -->
+  <div class="modal-overlay modal-center" id="modal-popup-center">
+    <div class="modal">
+      <div class="pop-header">
+        <div>
+          <h4 class="pop-title" id="pop-title">Conectores RJ-45</h4>
+          <span class="pop-subtitle" id="pop-subtitle">Guardado en Caja herramientas</span>
+        </div>
+        <button class="pop-close" data-close aria-label="Cerrar">✕</button>
+      </div>
+
+      <div class="pop-body">
+        <!-- Detalle o notas -->
+        <div class="pop-field" id="pop-det-box">
+          <label>Detalle / Nota</label>
+          <p id="pop-details">Sin detalles adicionales</p>
+        </div>
+
+        <!-- Cantidad con stepper -->
+        <div class="qty-control-row" id="pop-qty-box">
+          <div>
+            <span style="font-size: .86rem; font-weight: 700;">Cantidad disponible</span>
+            <p style="font-size: .74rem; color: var(--muted);">Unidades en la caja</p>
+          </div>
+          <div class="stepper">
+            <button id="pop-btn-minus" aria-label="Restar">−</button>
+            <span id="pop-qty-val">6</span>
+            <button id="pop-btn-plus" aria-label="Sumar">+</button>
+          </div>
+        </div>
+
+        <!-- Prestado a -->
+        <div class="pop-field" id="pop-loan-box" style="display: none;">
+          <label>🤝 Prestado a</label>
+          <p id="pop-loan-name">Dani</p>
+        </div>
+
+        <!-- Acciones: Enviar a Compras / Mover caja -->
+        <div class="pop-actions-grid">
+          <button class="btn-pop reponer" id="pop-btn-reponer">
+            🛒 <span id="pop-reponer-txt">Por reponer</span>
+          </button>
+          <button class="btn-pop" id="pop-btn-mover">
+            ⇄ Mover caja
+          </button>
+        </div>
+
+        <!-- Acciones secundarias: Editar todo / Eliminar -->
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <button class="btn-pop" style="flex: 1;" id="pop-btn-edit">✎ Editar</button>
+          <button class="btn-pop btn-danger" style="padding: 0 16px;" id="pop-btn-del">🗑 Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Crear / Editar Caja -->
+  <div class="modal-overlay modal-center" id="modal-caja">
     <div class="modal">
       <h3 id="caja-titulo">Nueva Caja</h3>
       <div class="form-group">
         <label class="form-label">Nombre del contenedor o lugar</label>
-        <input type="text" id="caja-nombre" class="form-input" placeholder="Ej: Caja negra, Cajón de escritorio..." autocomplete="off">
+        <input type="text" id="caja-nombre" class="form-input" placeholder="Ej: Caja negra, Cajón escritorio..." autocomplete="off">
       </div>
       <div class="form-group">
         <label class="form-label">¿Dónde está? (opcional)</label>
-        <input type="text" id="caja-ubi" class="form-input" placeholder="Ej: Closet, repisa 2" autocomplete="off">
+        <input type="text" id="caja-ubi" class="form-input" placeholder="Ej: Closet, repisa 2..." autocomplete="off">
       </div>
       <div class="form-group">
-        <label class="form-label">Foto de la caja o del lugar (opcional)</label>
+        <label class="form-label">Foto de la caja o lugar (opcional)</label>
         <div class="photo-row">
           <div class="pbox" data-k="cajaFoto"><span class="ph">📦</span><img alt=""><button type="button" class="rm" data-rm="cajaFoto">✕</button></div>
           <button type="button" class="btn btn-secondary" data-pick="cajaFoto">📸 Tomar / Elegir</button>
@@ -309,25 +961,25 @@
     </div>
   </div>
 
-  <!-- Modal Objeto -->
-  <div class="modal-overlay" id="modal-item">
+  <!-- Modal: Crear / Editar Objeto -->
+  <div class="modal-overlay modal-center" id="modal-item">
     <div class="modal">
       <h3 id="item-titulo">Agregar Objeto</h3>
       <div class="form-group">
-        <label class="form-label">Nombre del objeto</label>
+        <label class="form-label">Nombre del objeto *</label>
         <input type="text" id="item-nombre" class="form-input" placeholder="Ej: Elásticos, Cargador, Libreta..." autocomplete="off">
       </div>
       <div class="form-group">
         <label class="form-label">Detalle opcional (color, estado, etc.)</label>
-        <input type="text" id="item-detalles" class="form-input" placeholder="Ej: sellado, color negro" autocomplete="off">
+        <input type="text" id="item-detalles" class="form-input" placeholder="Ej: sellado, color negro..." autocomplete="off">
       </div>
       <div class="form-group">
-        <label class="form-label">Cantidad (opcional: actívala si se gasta)</label>
-        <input type="text" id="item-cantidad" class="form-input" inputmode="numeric" placeholder="Ej: 12 (vacío = sin contador)" autocomplete="off">
+        <label class="form-label">Cantidad (vacío = sin contador numérico)</label>
+        <input type="text" id="item-cantidad" class="form-input" inputmode="numeric" placeholder="Ej: 6 (o dejar vacío)" autocomplete="off">
       </div>
       <div class="form-group">
         <label class="form-label">Prestado a (opcional)</label>
-        <input type="text" id="item-prestado" class="form-input" placeholder="Ej: Dani, mi hermana..." autocomplete="off">
+        <input type="text" id="item-prestado" class="form-input" placeholder="Ej: Dani, hermana..." autocomplete="off">
       </div>
       <div class="form-group">
         <label class="check"><input type="checkbox" id="item-reponer"> 🛒 Por reponer (lo manda a Compras)</label>
@@ -347,12 +999,12 @@
     </div>
   </div>
 
-  <!-- Modal Mover -->
-  <div class="modal-overlay" id="modal-mover">
+  <!-- Modal: Mover Objeto a Otra Caja -->
+  <div class="modal-overlay modal-center" id="modal-mover">
     <div class="modal">
       <h3 id="mover-titulo">Mover objeto</h3>
       <div class="form-group">
-        <label class="form-label">Mover a la caja</label>
+        <label class="form-label">Selecciona la caja de destino</label>
         <select id="mover-destino" class="form-select"></select>
       </div>
       <div class="modal-footer">
@@ -362,63 +1014,202 @@
     </div>
   </div>
 
-  <!-- Visor de imagen -->
-  <div class="modal-overlay" id="modal-viewer">
-    <div class="modal" style="text-align:center;max-width:440px">
+  <!-- Visor de Fotos -->
+  <div class="modal-overlay modal-center" id="modal-viewer">
+    <div class="modal" style="text-align:center; max-width:440px">
       <h3 id="viewer-title" style="margin-bottom:10px">Foto</h3>
-      <img id="viewer-img" src="" alt="Vista previa grande">
-      <div class="modal-footer" style="justify-content:center;margin-top:14px"><button class="btn btn-secondary" data-close>Cerrar</button></div>
+      <img id="viewer-img" src="" alt="Vista previa" style="width:100%; border-radius:14px; max-height:70vh; object-fit:contain">
+      <div class="modal-footer" style="justify-content:center; margin-top:14px"><button class="btn btn-secondary" data-close>Cerrar</button></div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
+    /* ═══════════════════════════════════════════════════
+       LÓGICA, DATOS Y COMPATIBILIDAD CON TUS RESPALDOS
+       ═══════════════════════════════════════════════════ */
     const KEY = 'org_cajas', VKEY = 'vista_cajas', COMPRAS = 'org_compras', CAT_COMPRAS = 'Desde Cajas';
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
-    const vibrar = () => { if (navigator.vibrate) navigator.vibrate(10); };
+    const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    const vibrar = () => { if (navigator.vibrate) try { navigator.vibrate(8); } catch(e){} };
     const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } };
     const fechaActual = () => new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
     const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    let tt; function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 2600); }
 
-    /* ── Datos (normaliza lo antiguo: los respaldos y datos de antes siguen funcionando) ── */
-    const cantN = v => { const n = parseInt(String(v ?? '').replace(/\D/g, ''), 10); return Number.isFinite(n) ? Math.min(n, 99999) : null; };
+    let tt;
+    function toast(t) {
+      const el = $('#toast');
+      el.textContent = t;
+      el.classList.add('show');
+      clearTimeout(tt);
+      tt = setTimeout(() => el.classList.remove('show'), 2400);
+    }
+
+    const cantN = v => {
+      const n = parseInt(String(v ?? '').replace(/\D/g, ''), 10);
+      return Number.isFinite(n) ? Math.min(n, 99999) : null;
+    };
+
     function normItem(x) {
       return {
-        id: String(x.id || uid('it_')), nombre: String(x.nombre || '').trim(), detalles: String(x.detalles || '').trim(),
-        fecha: String(x.fecha || fechaActual()), foto: typeof x.foto === 'string' && x.foto ? x.foto : null,
+        id: String(x.id || uid('it_')),
+        nombre: String(x.nombre || '').trim(),
+        detalles: String(x.detalles || '').trim(),
+        fecha: String(x.fecha || fechaActual()),
+        foto: typeof x.foto === 'string' && x.foto ? x.foto : null,
         cantidad: x.cantidad === null || x.cantidad === undefined || x.cantidad === '' ? null : cantN(x.cantidad),
-        prestadoA: String(x.prestadoA || '').trim(), porReponer: !!x.porReponer
+        prestadoA: String(x.prestadoA || '').trim(),
+        porReponer: !!x.porReponer
       };
     }
+
     function normCaja(c) {
       return {
-        id: String(c.id || uid('c_')), nombre: String(c.nombre || 'Caja').trim() || 'Caja',
-        ubicacion: String(c.ubicacion || '').trim(), foto: typeof c.foto === 'string' && c.foto ? c.foto : null,
+        id: String(c.id || uid('c_')),
+        nombre: String(c.nombre || 'Caja').trim() || 'Caja',
+        ubicacion: String(c.ubicacion || '').trim(),
+        foto: typeof c.foto === 'string' && c.foto ? c.foto : null,
         items: (Array.isArray(c.items) ? c.items : []).filter(x => x && typeof x === 'object' && String(x.nombre || '').trim()).map(normItem)
       };
     }
-    let db = (Array.isArray(leer(KEY, [])) ? leer(KEY, []) : []).filter(c => c && typeof c === 'object').map(normCaja);
-    let cajaId = null, itemId = null, detId = null;
-    let vista = 'grid'; try { vista = localStorage.getItem(VKEY) === 'list' ? 'list' : 'grid'; } catch (e) {}
+
+    /* Datos reales cargados desde tu JSON de respaldo si localStorage está vacío */
+    let db = (Array.isArray(leer(KEY, null)) ? leer(KEY, null) : null);
+    if (!db) {
+      /* Si no hay datos previos en este navegador, dejamos precargado tu inventario real */
+      db = [
+        {
+          id: "c_mvlvbbsbj6qq",
+          nombre: "Caja herramientas",
+          ubicacion: "Piso",
+          foto: null,
+          items: [
+            { id: "it_mvlver1j6i8q", nombre: "Cosas para colgantes", detalles: "", fecha: "24 oct 2026, 01:00 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlve56i9ak0", nombre: "Corta carton", detalles: "Atado con pegote y genero", fecha: "24 oct 2026, 12:59 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvdpdecaes", nombre: "Conectores RJ-45", detalles: "Categoría 6 para red", fecha: "24 oct 2026, 12:59 a. m.", foto: null, cantidad: 6, prestadoA: "", porReponer: false },
+            { id: "it_mvlvde8nv9ld", nombre: "Adaptador micro SD", detalles: "", fecha: "24 oct 2026, 12:59 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvd9isnvzu", nombre: "Pernos", detalles: "", fecha: "24 oct 2026, 12:58 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvcqnnw9r2", nombre: "Alicate en punta", detalles: "", fecha: "24 oct 2026, 12:58 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvcbebkwad", nombre: "Destornillador de cruz", detalles: "", fecha: "24 oct 2026, 12:58 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvc6d0chau", nombre: "Cajita tachuelas", detalles: "", fecha: "24 oct 2026, 12:58 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvc0or06os", nombre: "Caja transparente circular", detalles: "", fecha: "24 oct 2026, 12:58 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvbusm5tum", nombre: "Gotero mediano azul", detalles: "", fecha: "24 oct 2026, 12:57 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlvbj4viq1z", nombre: "Alicate rojo grueso", detalles: "", fecha: "24 oct 2026, 12:58 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false }
+          ]
+        },
+        {
+          id: "c_mvlv8e4od342",
+          nombre: "Caja exagonal",
+          ubicacion: "Closet plastico, 3 fila",
+          foto: null,
+          items: [
+            { id: "it_mvlv9y6jm1ic", nombre: "Bolsas genero moradas", detalles: "", fecha: "24 oct 2026, 12:56 a. m.", foto: null, cantidad: 4, prestadoA: "", porReponer: false },
+            { id: "it_mvlv9jsqdxyv", nombre: "Cajita", detalles: "", fecha: "24 oct 2026, 12:56 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv9193imdu", nombre: "Bolsitas transparentes pequeñas", detalles: "", fecha: "24 oct 2026, 12:55 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv8vlnlqjy", nombre: "Bolsita genero blanca", detalles: "", fecha: "24 oct 2026, 12:55 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv8ptwzs3e", nombre: "Audifonos malos", detalles: "", fecha: "24 oct 2026, 12:55 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false }
+          ]
+        },
+        {
+          id: "c_mvlv5q8cm41k",
+          nombre: "Caja de rosas",
+          ubicacion: "Closet plastico, 4 fila",
+          foto: null,
+          items: [
+            { id: "it_mvlv7xbovahk", nombre: "Delineador lapiz negro", detalles: "", fecha: "24 oct 2026, 12:54 a. m.", foto: null, cantidad: 1, prestadoA: "", porReponer: false },
+            { id: "it_mvlv7pmch8yb", nombre: "Delineador ojos negro", detalles: "Sellado", fecha: "24 oct 2026, 12:54 a. m.", foto: null, cantidad: 1, prestadoA: "", porReponer: false },
+            { id: "it_mvlv7gqedd0f", nombre: "Petalos maquillaje", detalles: "Tapados y sueltos", fecha: "24 oct 2026, 12:54 a. m.", foto: null, cantidad: 10, prestadoA: "", porReponer: false },
+            { id: "it_mvlv6ojap01j", nombre: "Sheglam polvo", detalles: "Sellado", fecha: "24 oct 2026, 12:53 a. m.", foto: null, cantidad: 1, prestadoA: "", porReponer: false },
+            { id: "it_mvlv6i8rccqh", nombre: "Pintauñas rojo", detalles: "", fecha: "24 oct 2026, 12:53 a. m.", foto: null, cantidad: 1, prestadoA: "", porReponer: false },
+            { id: "it_mvlv69bim9a7", nombre: "Petalos desmaquillantes", detalles: "1 Sellado y 1 a la mitad", fecha: "24 oct 2026, 12:53 a. m.", foto: null, cantidad: 2, prestadoA: "", porReponer: false }
+          ]
+        },
+        {
+          id: "c_mvlv1hux3pg0",
+          nombre: "Caja estampillas",
+          ubicacion: "Closet plástico, 4 fila",
+          foto: null,
+          items: [
+            { id: "it_mvlv53g3qwzt", nombre: "\"Pon a volar tu imaginación \"", detalles: "", fecha: "24 oct 2026, 12:52 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv4lxzn3u2", nombre: "Sticker de nota", detalles: "Rollo amarillo", fecha: "24 oct 2026, 12:52 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv4b4364vm", nombre: "Diario 2026 de osito", detalles: "", fecha: "24 oct 2026, 12:52 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv45775y4y", nombre: "Lampara para leer libros", detalles: "Con su cable", fecha: "24 oct 2026, 12:51 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv3to6x3xt", nombre: "Bolsas transparentes grandes", detalles: "Sellados", fecha: "24 oct 2026, 12:51 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlv30iwijul", nombre: "Colgantes de michis", detalles: "Sellados", fecha: "24 oct 2026, 12:51 a. m.", foto: null, cantidad: 10, prestadoA: "", porReponer: false },
+            { id: "it_mvlv2inm36wx", nombre: "Corcho suelto", detalles: "Casi del tamaño de la caja", fecha: "24 oct 2026, 12:50 a. m.", foto: null, cantidad: 1, prestadoA: "", porReponer: false }
+          ]
+        },
+        {
+          id: "c_mvlunbygjclu",
+          nombre: "Caja material",
+          ubicacion: "Abajo carrito rosa",
+          foto: null,
+          items: [
+            { id: "it_mvlurmc23glp", nombre: "To do list, 50 hojas", detalles: "", fecha: "24 oct 2026, 12:42 a. m.", foto: null, cantidad: 1, prestadoA: "", porReponer: false },
+            { id: "it_mvluqvhi0ii7", nombre: "Gomas para abultar lapices", detalles: "Sellado", fecha: "24 oct 2026, 12:41 a. m.", foto: null, cantidad: 4, prestadoA: "", porReponer: false },
+            { id: "it_mvluqddgp1xx", nombre: "Paquete de notas cafés", detalles: "Sellado", fecha: "24 oct 2026, 12:41 a. m.", foto: null, cantidad: 1, prestadoA: "", porReponer: false },
+            { id: "it_mvlupxvwt8qk", nombre: "Sobres sellados de notas", detalles: "Verde, 2 naranja y 1 amarilla", fecha: "24 oct 2026, 12:41 a. m.", foto: null, cantidad: 4, prestadoA: "", porReponer: false },
+            { id: "it_mvluox7vbr58", nombre: "Etiquetas adhesivas", detalles: "Sellado", fecha: "24 oct 2026, 12:40 a. m.", foto: null, cantidad: 143, prestadoA: "", porReponer: false }
+          ]
+        },
+        {
+          id: "c_mvluds5be4np",
+          nombre: "Caja negra",
+          ubicacion: "Abajo carrito rosa",
+          foto: null,
+          items: [
+            { id: "it_mvlvgvr836qm", nombre: "Control prender luces silla", detalles: "Sellado", fecha: "24 oct 2026, 01:01 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlulwe0xk78", nombre: "La goma del reloj rota", detalles: "", fecha: "24 oct 2026, 12:37 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlulntd7730", nombre: "Manual redmi", detalles: "", fecha: "24 oct 2026, 12:37 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlulhd8z7js", nombre: "Etiquetas parka lippi", detalles: "", fecha: "24 oct 2026, 12:37 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlul68o0lz9", nombre: "Manual de la bateria portatil", detalles: "", fecha: "24 oct 2026, 12:37 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluku790ek1", nombre: "Manual instrucciones teclado", detalles: "", fecha: "24 oct 2026, 12:36 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlukgsm54vx", nombre: "Manual lamina al telefono", detalles: "", fecha: "24 oct 2026, 12:36 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluk7d4ihzm", nombre: "Boleta del monitor", detalles: "", fecha: "24 oct 2026, 12:36 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlujook61zc", nombre: "Manual y herramientas caminadora", detalles: "", fecha: "24 oct 2026, 12:35 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlujdnwn10t", nombre: "Adorno silencio para puerta", detalles: "", fecha: "24 oct 2026, 12:35 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluj1ityw1d", nombre: "Cable y pinchos pizarras pared", detalles: "", fecha: "24 oct 2026, 12:35 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluintmob7y", nombre: "Adhesivos weekly planning", detalles: "", fecha: "24 oct 2026, 12:35 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluiak4uoru", nombre: "Aceite caminadora eléctrica", detalles: "", fecha: "24 oct 2026, 12:34 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluhittat5o", nombre: "Cable vibrar respaldo silla", detalles: "", fecha: "24 oct 2026, 12:34 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluh128o0rf", nombre: "Bolsa soportes y herramienta carrito", detalles: "", fecha: "24 oct 2026, 12:33 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlufwe5j7gq", nombre: "Soporte pizarra mensual murano", detalles: "", fecha: "24 oct 2026, 12:33 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvlufh62zukl", nombre: "Caja manual calculadora", detalles: "", fecha: "24 oct 2026, 12:32 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluf7kajcp6", nombre: "Manual audifonos Sony", detalles: "", fecha: "24 oct 2026, 12:32 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false },
+            { id: "it_mvluerpk0xow", nombre: "Sobre sellado del pc", detalles: "", fecha: "24 oct 2026, 12:32 a. m.", foto: null, cantidad: null, prestadoA: "", porReponer: false }
+          ]
+        }
+      ];
+    }
+    db = db.filter(c => c && typeof c === 'object').map(normCaja);
+
+    let cajaId = null, itemId = null, detId = null, popObj = null;
+    let vista = 'grid';
+    try { vista = localStorage.getItem(VKEY) === 'list' ? 'list' : 'grid'; } catch (e) {}
     const fotos = { cajaFoto: null, itemFoto: null };
 
     function guardar() {
-      try { localStorage.setItem(KEY, JSON.stringify(db)); }
-      catch (e) { alert('No hay más espacio en el navegador. Haz un respaldo y quita algunas fotos.'); }
+      try {
+        localStorage.setItem(KEY, JSON.stringify(db));
+      } catch (e) {
+        alert('No hay más espacio en el navegador. Haz un respaldo pronto.');
+      }
       render();
     }
 
-    /* ── Compras (misma carpeta de GitHub Pages: comparten el navegador) ── */
+    /* Sincronización con Compras */
     function leerCompras() { const d = leer(COMPRAS, []); return Array.isArray(d) ? d : []; }
     function guardarCompras(d) { try { localStorage.setItem(COMPRAS, JSON.stringify(d)); return true; } catch (e) { return false; } }
+
     function setReponer(c, it, on) {
       const compras = leerCompras();
-      const hay = () => { for (const k of compras) for (const p of (k.items || [])) if (p && p.deCaja === it.id) return [k, p]; return null; };
+      const hay = () => {
+        for (const k of compras) for (const p of (k.items || [])) if (p && p.deCaja === it.id) return [k, p];
+        return null;
+      };
       const ya = hay();
       if (on) {
         it.porReponer = true;
@@ -428,26 +1219,36 @@
           let k = compras.find(x => x.nombre === CAT_COMPRAS);
           if (!k) { k = { id: uid('cat_'), nombre: CAT_COMPRAS, items: [] }; compras.unshift(k); }
           k.items = k.items || [];
-          k.items.unshift({ id: uid('p_'), nombre: it.nombre, tieneRepuesto:'no', lugarRepuesto:'', cantidadRepuesto:'', queda: it.cantidad !== null ? String(it.cantidad) : '', cuando:'', urgente:false, donde:'', precio:'', instrucciones:`Viene de la caja "${c.nombre}"${c.ubicacion ? ' (' + c.ubicacion + ')' : ''}`, enlace:'', foto: it.foto || null, fotoTienda:null, deCaja: it.id });
+          k.items.unshift({
+            id: uid('p_'), nombre: it.nombre, tieneRepuesto:'no', lugarRepuesto:'', cantidadRepuesto:'',
+            queda: it.cantidad !== null ? String(it.cantidad) : '', cuando:'', urgente:false, donde:'', precio:'',
+            instrucciones:`Viene de la caja "${c.nombre}"${c.ubicacion ? ' (' + c.ubicacion + ')' : ''}`,
+            enlace:'', foto: it.foto || null, fotoTienda:null, deCaja: it.id
+          });
         }
-        if (!guardarCompras(compras)) { it.porReponer = false; alert('No pude enviarlo a Compras: no hay espacio en el navegador.'); }
+        guardarCompras(compras);
       } else {
         it.porReponer = false;
-        if (ya && ya[1].tieneRepuesto === 'no') { ya[0].items = ya[0].items.filter(p => p !== ya[1]); guardarCompras(compras); }
+        if (ya && ya[1].tieneRepuesto === 'no') {
+          ya[0].items = ya[0].items.filter(p => p !== ya[1]);
+          guardarCompras(compras);
+        }
       }
     }
-    /* Si en Compras ya lo compraste (o lo borraste), se quita la marca aquí */
+
     function sincronizar() {
-      const compras = leerCompras(); let cambio = false;
+      const compras = leerCompras();
+      let cambio = false;
       db.forEach(c => c.items.forEach(it => {
         if (!it.porReponer) return;
-        let p = null; compras.forEach(k => (k.items || []).forEach(x => { if (x && x.deCaja === it.id) p = x; }));
+        let p = null;
+        compras.forEach(k => (k.items || []).forEach(x => { if (x && x.deCaja === it.id) p = x; }));
         if (!p || p.tieneRepuesto === 'si') { it.porReponer = false; cambio = true; }
       }));
       return cambio;
     }
 
-    /* ── Fotos ── */
+    /* Compresión de fotos */
     function comprimir(file, max, cb) {
       const r = new FileReader();
       r.onload = e => {
@@ -463,58 +1264,74 @@
       };
       r.readAsDataURL(file);
     }
+
     function setPrev(k) {
       const b = $(`.pbox[data-k="${k}"]`), src = fotos[k], im = b.querySelector('img');
       im.src = src || ''; im.style.display = src ? 'block' : 'none';
       b.querySelector('.ph').style.display = src ? 'none' : 'block';
       b.querySelector('.rm').style.display = src ? 'flex' : 'none';
     }
+
     document.addEventListener('click', e => {
       const p = e.target.closest('[data-pick]'); if (p) $(`.pfile[data-k="${p.dataset.pick}"]`).click();
       const r = e.target.closest('[data-rm]'); if (r) { fotos[r.dataset.rm] = null; $(`.pfile[data-k="${r.dataset.rm}"]`).value = ''; setPrev(r.dataset.rm); }
     });
     $$('.pfile').forEach(inp => inp.onchange = e => {
       const f = e.target.files[0]; if (!f) return;
-      comprimir(f, 500, d => { fotos[inp.dataset.k] = d; setPrev(inp.dataset.k); });
+      comprimir(f, 480, d => { fotos[inp.dataset.k] = d; setPrev(inp.dataset.k); });
     });
     function verFoto(src, titulo) { $('#viewer-img').src = src; $('#viewer-title').textContent = titulo || 'Foto'; abrir('#modal-viewer'); }
 
-    /* ── Render ── */
-    function itemHTML(c, it, showCaja) {
+    /* ═══════════════════════════════════════════════════
+       RENDERIZADO: TARJETAS DE CAJAS & FILAS MINIMALISTAS
+       ═══════════════════════════════════════════════════ */
+
+    /* Fila limpia minimalista para cada objeto (sin cajas pesadas) */
+    function filaObjetoHTML(c, it, showCajaNombre) {
       const d = `data-c="${esc(c.id)}" data-i="${esc(it.id)}"`;
-      const sinStock = it.cantidad === 0;
-      return `<div class="item-row"><div class="item-top">
-        ${it.foto ? `<img src="${it.foto}" class="item-thumb" data-act="foto" ${d} alt="Foto de ${esc(it.nombre)}">` : ''}
-        <div class="grow">
-          <div class="item-name">${esc(it.nombre)}${showCaja ? ` <span class="badge cat">${esc(c.nombre)}${c.ubicacion ? ' · ' + esc(c.ubicacion) : ''}</span>` : ''}</div>
-          <div class="item-meta">
-            <div class="badges">
-              ${it.detalles ? `<span class="badge ok">${esc(it.detalles)}</span>` : ''}
-              ${it.prestadoA ? `<span class="badge warn">🤝 Prestado a ${esc(it.prestadoA)}</span>` : ''}
-              ${sinStock ? '<span class="badge bad">Agotado</span>' : ''}
+      const tieneCant = it.cantidad !== null;
+      const reponer = it.porReponer ? `<span class="mini-tag buy">🛒 Reponer</span>` : '';
+      const cantTag = tieneCant ? `<span class="mini-tag qty">${it.cantidad} un.</span>` : '';
+      const prestadoTag = it.prestadoA ? `<span class="mini-tag" style="background:var(--warn-soft);color:var(--warn)">🤝 ${esc(it.prestadoA)}</span>` : '';
+      const detTag = it.detalles ? `<span class="mini-tag detail">${esc(it.detalles)}</span>` : '';
+      const cajaTag = showCajaNombre ? `<span class="mini-tag" style="background:var(--badge);color:var(--muted)">📦 ${esc(c.nombre)}</span>` : '';
+
+      return `
+        <div class="item-row-simple" ${d} data-act="abrir-pop">
+          <div class="item-left">
+            <span class="item-bullet"></span>
+            <div class="item-title-wrap">
+              <div class="item-name">${esc(it.nombre)}</div>
+              ${ (cantTag || reponer || prestadoTag || detTag || cajaTag) ? `<div class="item-badges-mini">${cantTag}${reponer}${prestadoTag}${detTag}${cajaTag}</div>` : '' }
             </div>
-            <div>Editado: ${esc(it.fecha)}</div>
+          </div>
+          <div class="item-quick-btns" onclick="event.stopPropagation()">
+            <button class="btn-icon" data-act="edit" ${d} title="Editar">✎</button>
+            <button class="btn-icon del" data-act="del" ${d} title="Eliminar">🗑</button>
           </div>
         </div>
-        <div class="nowrap"><button class="btn-icon" data-act="edit" ${d} aria-label="Editar">✎</button><button class="btn-icon" data-act="del" ${d} aria-label="Eliminar">🗑</button></div></div>
-        <div class="item-actions">
-          ${it.cantidad !== null ? `<div class="stepper"><button data-act="menos" ${d} aria-label="Restar uno">−</button><b>${it.cantidad}</b><button data-act="mas" ${d} aria-label="Sumar uno">+</button></div>` : ''}
-          <button class="mini${it.porReponer ? ' on' : ''}" data-act="reponer" ${d}>🛒 ${it.porReponer ? 'En Compras' : 'Por reponer'}</button>
-          <button class="mini" data-act="mover" ${d}>⇄ Mover</button>
-        </div></div>`;
+      `;
     }
 
-    function tarjeta(c) {
+    /* Tarjeta principal de cada caja (Clic en cualquier parte entra a ver los objetos) */
+    function tarjetaCaja(c) {
       const d = `data-c="${esc(c.id)}"`, n = c.items.length;
-      return `<div class="group-card" ${d}>
-        <div class="c-head">
-          <div style="display:flex;gap:8px;align-items:flex-start;min-width:0">${c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : ''}<div class="c-name">${esc(c.nombre)}</div></div>
-          <div class="c-ic"><button class="btn-icon" data-act="editcaja" ${d} aria-label="Editar caja">✎</button><button class="btn-icon" data-act="delcaja" ${d} aria-label="Eliminar caja">🗑</button></div>
+      return `
+        <div class="group-card" ${d} data-act="detalles">
+          <div class="c-head">
+            <div class="c-title-box">
+              ${c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto">` : '<div class="caja-thumb" style="display:grid;place-items:center;font-size:1.15rem">📦</div>'}
+              <div class="c-name">${esc(c.nombre)}</div>
+            </div>
+            <div class="c-actions-head" onclick="event.stopPropagation()">
+              <button class="btn-icon add-fast" data-act="newitem" ${d} title="Agregar objeto rápido">＋</button>
+              <button class="btn-icon" data-act="editcaja" ${d} title="Editar caja">✎</button>
+              <button class="btn-icon" data-act="delcaja" ${d} title="Eliminar caja">🗑</button>
+            </div>
+          </div>
+          <div class="c-sub">${n} objeto${n === 1 ? '' : 's'} · 📍 ${c.ubicacion ? esc(c.ubicacion) : '<span style="opacity:.6">Sin ubicación</span>'}</div>
         </div>
-        <div class="c-sub">${n} objeto${n === 1 ? '' : 's'}</div>
-        <div class="c-sub">📍 ${c.ubicacion ? esc(c.ubicacion) : '<span style="opacity:.6;font-style:italic">Sin ubicación</span>'}</div>
-        <div class="c-acts"><button class="btn btn-det" data-act="detalles" ${d}>Detalles</button><button class="btn btn-add" data-act="newitem" ${d}>+ Agregar</button></div>
-      </div>`;
+      `;
     }
 
     function render() {
@@ -524,253 +1341,501 @@
       const nIt = db.reduce((s, c) => s + c.items.length, 0);
       $('#tot-cajas').textContent = db.length;
       $('#tot-objs').textContent = db.length ? ` · ${nIt} objeto${nIt === 1 ? '' : 's'}` : '';
-      cont.innerHTML = db.length ? db.map(tarjeta).join('') : `<div class="vacio">No tienes cajas creadas.<br>Toca <b>＋ Agregar</b> para comenzar.</div>`;
-      buscar(); espacio(); if (detId) renderDet();
+
+      cont.innerHTML = db.length
+        ? db.map(tarjetaCaja).join('')
+        : `<div style="grid-column:1/-1; text-align:center; color:var(--muted); padding:48px 0; font-size:.9rem;">No tienes cajas creadas.<br>Toca <b>＋ Agregar</b> para comenzar.</div>`;
+
+      buscar();
+      if (detId) renderDet();
+      if (popObj) actualizarPopCenter();
     }
 
-    /* Detalles: lista de todo lo que hay en la caja */
-    function abrirDet(id) { detId = id; renderDet(); abrir('#modal-det'); }
+    /* Hoja de objetos de la caja */
+    function abrirDet(id) {
+      detId = id;
+      renderDet();
+      abrir('#modal-det');
+    }
+
     function renderDet() {
       const c = db.find(x => x.id === detId);
       if (!c) { detId = null; $('#modal-det').classList.remove('active'); return; }
       const d = `data-c="${esc(c.id)}"`, n = c.items.length;
       $('#det-titulo').textContent = c.nombre;
       $('#det-sub').textContent = `${n} objeto${n === 1 ? '' : 's'} · 📍 ${c.ubicacion || 'Sin ubicación'}`;
-      $('#det-foto').innerHTML = c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto de ${esc(c.nombre)}">` : '';
-      $('#det-body').innerHTML = `<button class="btn btn-add-item" style="margin-top:0" data-act="newitem" ${d}>+ Agregar objeto</button>
-        <div class="items-container">${n ? c.items.map(it => itemHTML(c, it, false)).join('') : '<div style="font-size:.85rem;color:var(--muted);font-style:italic;padding:4px 0">Esta caja está vacía.</div>'}</div>`;
+      $('#det-foto').innerHTML = c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto">` : '';
+
+      const listContainer = $('#det-items-list');
+      if (n === 0) {
+        listContainer.innerHTML = `<div style="font-size:.85rem; color:var(--muted); font-style:italic; padding:24px 8px; text-align:center">Esta caja está vacía.<br>Toca el botón de arriba para agregar objetos.</div>`;
+      } else {
+        listContainer.innerHTML = c.items.map(it => filaObjetoHTML(c, it, false)).join('');
+      }
     }
 
+    /* ═══════════════════════════════════════════════════
+       VENTANA EMERGENTE EN EL MEDIO (CENTRO DE PANTALLA)
+       ═══════════════════════════════════════════════════ */
+    function abrirPopCenter(cid, iid) {
+      vibrar();
+      const c = db.find(x => x.id === cid);
+      const it = c && c.items.find(x => x.id === iid);
+      if (!c || !it) return;
+
+      popObj = { c, it };
+      actualizarPopCenter();
+      abrir('#modal-popup-center');
+    }
+
+    function actualizarPopCenter() {
+      if (!popObj || !popObj.c || !popObj.it) return;
+      const { c, it } = popObj;
+
+      $('#pop-title').textContent = it.nombre;
+      $('#pop-subtitle').textContent = `Guardado en ${c.nombre}${c.ubicacion ? ' · 📍 ' + c.ubicacion : ''}`;
+
+      // Nota o detalle
+      const detBox = $('#pop-det-box');
+      if (it.detalles) {
+        $('#pop-details').textContent = it.detalles;
+        detBox.style.display = 'block';
+      } else {
+        $('#pop-details').textContent = 'Sin notas ni especificaciones adicionales';
+        detBox.style.display = 'block';
+      }
+
+      // Contador numérico
+      const qtyBox = $('#pop-qty-box');
+      if (it.cantidad !== null) {
+        qtyBox.style.display = 'flex';
+        $('#pop-qty-val').textContent = it.cantidad;
+      } else {
+        qtyBox.style.display = 'none';
+      }
+
+      // Prestado a
+      const loanBox = $('#pop-loan-box');
+      if (it.prestadoA) {
+        $('#pop-loan-name').textContent = it.prestadoA;
+        loanBox.style.display = 'block';
+      } else {
+        loanBox.style.display = 'none';
+      }
+
+      // Botón Reponer
+      const btnRep = $('#pop-btn-reponer');
+      const txtRep = $('#pop-reponer-txt');
+      if (it.porReponer) {
+        btnRep.classList.add('active');
+        txtRep.textContent = 'En Compras';
+      } else {
+        btnRep.classList.remove('active');
+        txtRep.textContent = 'Por reponer';
+      }
+    }
+
+    /* Búsqueda en vivo */
     function buscar() {
       const q = $('#busqueda').value, ws = norm(q).split(/\s+/).filter(Boolean);
       $('#btn-limpiar').style.display = q ? 'block' : 'none';
       const box = $('#search-box-results');
       if (!ws.length) { box.style.display = 'none'; return; }
+
       let h = '';
       db.forEach(c => c.items.forEach(it => {
         const hay = norm([it.nombre, it.detalles, it.prestadoA, c.nombre, c.ubicacion].join(' '));
-        if (ws.every(w => hay.includes(w))) h += itemHTML(c, it, true);
+        if (ws.every(w => hay.includes(w))) h += filaObjetoHTML(c, it, true);
       }));
-      $('#search-items').innerHTML = h || '<div style="font-size:.85rem;color:var(--muted);padding:6px 0">Sin coincidencias.</div>';
+
+      $('#search-items').innerHTML = h || '<div style="font-size:.85rem; color:var(--muted); padding:10px 0; text-align:center">Sin coincidencias.</div>';
       box.style.display = 'block';
     }
 
-    /* Aviso de espacio (el navegador guarda unos 5 MB en total) */
-    function espacio() {
-      let n = 0; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); n += k.length + (localStorage.getItem(k) || '').length; } } catch (e) {}
-      const pct = Math.round(n / 5000000 * 100), el = $('#aviso-espacio');
-      el.style.display = pct >= 75 ? 'block' : 'none';
-      if (pct >= 75) el.textContent = `⚠️ El espacio del navegador va en un ${Math.min(pct, 100)}% (comparte lugar con tus otras páginas). Haz un respaldo y quita algunas fotos pronto.`;
-    }
-
-    /* ── Acciones (todo por data-atributos: los nombres con ' " < > no rompen nada) ── */
-    function acciones(e) {
+    /* ═══════════════════════════════════════════════════
+       DELEGACIÓN DE EVENTOS Y ACCIONES
+       ═══════════════════════════════════════════════════ */
+    function manejarAcciones(e) {
       const b = e.target.closest('[data-act]');
-      if (!b) {
-        const k = e.target.closest('.group-card[data-c]');
-        if (k) { vibrar(); abrirDet(k.dataset.c); }
-        return;
-      }
-      const a = b.dataset.act, c = db.find(x => x.id === b.dataset.c), it = c && c.items.find(x => x.id === b.dataset.i);
-      if (!c) return;
-      if (a === 'detalles') { vibrar(); return abrirDet(c.id); }
-      if (a === 'fotocaja') return verFoto(c.foto, c.nombre);
-      if (a === 'editcaja') { vibrar(); return abrirCaja(c.id); }
-      if (a === 'delcaja') { vibrar(); if (confirm(`¿Eliminar la caja "${c.nombre}" y su contenido?`)) { db = db.filter(x => x.id !== c.id); guardar(); } return; }
-      if (a === 'newitem') { vibrar(); return abrirItem(c.id); }
-      if (!it) return;
-      vibrar();
-      if (a === 'foto') return verFoto(it.foto, it.nombre);
-      if (a === 'edit') return abrirItem(c.id, it.id);
-      if (a === 'del') { if (confirm(`¿Eliminar "${it.nombre}"?`)) { if (it.porReponer) setReponer(c, it, false); c.items = c.items.filter(x => x.id !== it.id); guardar(); } return; }
-      if (a === 'mas') { it.cantidad = Math.min(99999, (it.cantidad || 0) + 1); return guardar(); }
-      if (a === 'menos') {
-        it.cantidad = Math.max(0, (it.cantidad || 0) - 1); guardar();
-        if (it.cantidad === 0 && !it.porReponer && confirm(`Se acabó "${it.nombre}". ¿Mandarlo a Compras?`)) { setReponer(c, it, true); guardar(); toast('Enviado a Compras'); }
-        return;
-      }
-      if (a === 'reponer') { const on = !it.porReponer; setReponer(c, it, on); guardar(); if (on && it.porReponer) toast('Enviado a Compras'); else if (!on) toast('Quitado de Compras'); return; }
-      if (a === 'mover') return abrirMover(c.id, it.id);
-    }
-    $('#contenedor-cajas').addEventListener('click', acciones);
-    $('#search-items').addEventListener('click', acciones);
-    $('#det-body').addEventListener('click', acciones);
-    $('#det-foto').addEventListener('click', acciones);
-    $('#busqueda').addEventListener('input', buscar);
-    $('#btn-limpiar').onclick = () => { $('#busqueda').value = ''; buscar(); };
-    $('#view').onclick = e => { const b = e.target.closest('button'); if (!b) return; vista = b.dataset.v; try { localStorage.setItem(VKEY, vista); } catch (er) {} render(); };
+      if (!b) return;
 
-    /* ── Cajas ── */
+      const act = b.dataset.act;
+      const cid = b.dataset.c;
+      const iid = b.dataset.i;
+      const c = db.find(x => x.id === cid);
+      const it = c && c.items.find(x => x.id === iid);
+
+      // Clic en la tarjeta de caja abre sus detalles
+      if (act === 'detalles' && c) {
+        vibrar();
+        return abrirDet(c.id);
+      }
+
+      // Ver foto de la caja
+      if (act === 'fotocaja' && c) {
+        return verFoto(c.foto, c.nombre);
+      }
+
+      // Agregar objeto rápido a la caja
+      if (act === 'newitem' && c) {
+        vibrar();
+        return abrirItem(c.id);
+      }
+
+      // Editar caja
+      if (act === 'editcaja' && c) {
+        vibrar();
+        return abrirCaja(c.id);
+      }
+
+      // Eliminar caja
+      if (act === 'delcaja' && c) {
+        vibrar();
+        if (confirm(`¿Eliminar la caja "${c.nombre}" y todo su contenido?`)) {
+          db = db.filter(x => x.id !== c.id);
+          guardar();
+          toast('Caja eliminada');
+        }
+        return;
+      }
+
+      // Tocar fila abre ventana emergente en el medio
+      if (act === 'abrir-pop' && c && it) {
+        return abrirPopCenter(c.id, it.id);
+      }
+
+      // Editar objeto desde la fila
+      if (act === 'edit' && c && it) {
+        vibrar();
+        return abrirItem(c.id, it.id);
+      }
+
+      // Eliminar objeto desde la fila
+      if (act === 'del' && c && it) {
+        vibrar();
+        if (confirm(`¿Eliminar "${it.nombre}"?`)) {
+          if (it.porReponer) setReponer(c, it, false);
+          c.items = c.items.filter(x => x.id !== it.id);
+          guardar();
+          toast('Objeto eliminado');
+        }
+        return;
+      }
+    }
+
+    document.addEventListener('click', manejarAcciones);
+
+    // Botón dentro de la hoja de la caja para agregar objeto
+    $('#btn-add-obj-inside').onclick = () => {
+      if (detId) abrirItem(detId);
+    };
+
+    // Acciones dentro del Popup emergente del medio
+    $('#pop-btn-plus').onclick = () => {
+      if (!popObj || popObj.it.cantidad === null) return;
+      popObj.it.cantidad = Math.min(99999, popObj.it.cantidad + 1);
+      guardar();
+    };
+
+    $('#pop-btn-minus').onclick = () => {
+      if (!popObj || popObj.it.cantidad === null) return;
+      popObj.it.cantidad = Math.max(0, popObj.it.cantidad - 1);
+      guardar();
+      if (popObj.it.cantidad === 0 && !popObj.it.porReponer) {
+        if (confirm(`Se acabó "${popObj.it.nombre}". ¿Enviar a Compras?`)) {
+          setReponer(popObj.c, popObj.it, true);
+          guardar();
+          toast('Enviado a Compras');
+        }
+      }
+    };
+
+    $('#pop-btn-reponer').onclick = () => {
+      if (!popObj) return;
+      const on = !popObj.it.porReponer;
+      setReponer(popObj.c, popObj.it, on);
+      guardar();
+      toast(on ? 'Enviado a Compras' : 'Quitado de Compras');
+    };
+
+    $('#pop-btn-mover').onclick = () => {
+      if (!popObj) return;
+      abrirMover(popObj.c.id, popObj.it.id);
+    };
+
+    $('#pop-btn-edit').onclick = () => {
+      if (!popObj) return;
+      const cid = popObj.c.id, iid = popObj.it.id;
+      cerrarUno($('#modal-popup-center'));
+      abrirItem(cid, iid);
+    };
+
+    $('#pop-btn-del').onclick = () => {
+      if (!popObj) return;
+      if (confirm(`¿Eliminar "${popObj.it.nombre}"?`)) {
+        if (popObj.it.porReponer) setReponer(popObj.c, popObj.it, false);
+        popObj.c.items = popObj.c.items.filter(x => x.id !== popObj.it.id);
+        guardar();
+        cerrarUno($('#modal-popup-center'));
+        toast('Objeto eliminado');
+      }
+    };
+
+    // Buscador
+    $('#busqueda').addEventListener('input', buscar);
+    $('#btn-limpiar').onclick = () => {
+      $('#busqueda').value = '';
+      buscar();
+    };
+
+    // Selector de vista de cuadrícula / lista
+    $('#view').onclick = e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      vista = b.dataset.v;
+      try { localStorage.setItem(VKEY, vista); } catch(er){}
+      render();
+    };
+
+    /* ═══════════════════════════════════════════════════
+       FORMULARIO: CAJAS
+       ═══════════════════════════════════════════════════ */
     function abrirCaja(id) {
       cajaId = id || null;
       const c = id ? db.find(x => x.id === id) : null;
       $('#caja-titulo').textContent = c ? 'Editar caja' : 'Nueva Caja';
-      $('#caja-nombre').value = c ? c.nombre : ''; $('#caja-ubi').value = c ? c.ubicacion : '';
-      fotos.cajaFoto = c ? c.foto : null; $$('.pfile').forEach(i => i.value = ''); setPrev('cajaFoto');
-      abrir('#modal-caja'); setTimeout(() => $('#caja-nombre').focus(), 150);
+      $('#caja-nombre').value = c ? c.nombre : '';
+      $('#caja-ubi').value = c ? c.ubicacion : '';
+      fotos.cajaFoto = c ? c.foto : null;
+      $$('.pfile').forEach(i => i.value = '');
+      setPrev('cajaFoto');
+      abrir('#modal-caja');
+      setTimeout(() => $('#caja-nombre').focus(), 150);
     }
+
     $('#btn-nueva-caja').onclick = () => { vibrar(); abrirCaja(); };
+
     $('#btn-guardar-caja').onclick = () => {
-      const nombre = $('#caja-nombre').value.trim(); if (!nombre) return; vibrar();
+      const nombre = $('#caja-nombre').value.trim();
+      if (!nombre) return;
+      vibrar();
       const ubicacion = $('#caja-ubi').value.trim();
-      if (cajaId) Object.assign(db.find(x => x.id === cajaId), { nombre, ubicacion, foto: fotos.cajaFoto });
-      else db.unshift({ id: uid('c_'), nombre, ubicacion, foto: fotos.cajaFoto, items: [] });
-      cerrar(); guardar();
+      if (cajaId) {
+        Object.assign(db.find(x => x.id === cajaId), { nombre, ubicacion, foto: fotos.cajaFoto });
+      } else {
+        db.unshift({ id: uid('c_'), nombre, ubicacion, foto: fotos.cajaFoto, items: [] });
+      }
+      cerrar();
+      guardar();
+      toast('Caja guardada');
     };
 
-    /* ── Objetos ── */
+    /* ═══════════════════════════════════════════════════
+       FORMULARIO: OBJETOS
+       ═══════════════════════════════════════════════════ */
     function abrirItem(cid, iid) {
-      cajaId = cid; itemId = iid || null;
-      const it = iid ? db.find(x => x.id === cid).items.find(x => x.id === iid) : null;
+      cajaId = cid;
+      itemId = iid || null;
+      const c = db.find(x => x.id === cid);
+      const it = iid ? c.items.find(x => x.id === iid) : null;
+
       $('#item-titulo').textContent = it ? 'Editar objeto' : 'Agregar objeto';
-      $('#item-nombre').value = it ? it.nombre : ''; $('#item-detalles').value = it ? it.detalles : '';
+      $('#item-nombre').value = it ? it.nombre : '';
+      $('#item-detalles').value = it ? it.detalles : '';
       $('#item-cantidad').value = it && it.cantidad !== null ? it.cantidad : '';
-      $('#item-prestado').value = it ? it.prestadoA : ''; $('#item-reponer').checked = !!it && it.porReponer;
-      fotos.itemFoto = it ? it.foto : null; $$('.pfile').forEach(i => i.value = ''); setPrev('itemFoto');
-      abrir('#modal-item'); setTimeout(() => $('#item-nombre').focus(), 150);
+      $('#item-prestado').value = it ? it.prestadoA : '';
+      $('#item-reponer').checked = !!it && it.porReponer;
+      fotos.itemFoto = it ? it.foto : null;
+      $$('.pfile').forEach(i => i.value = '');
+      setPrev('itemFoto');
+      abrir('#modal-item');
+      setTimeout(() => $('#item-nombre').focus(), 150);
     }
+
     $('#btn-guardar-item').onclick = () => {
-      const nombre = $('#item-nombre').value.trim(); if (!nombre) return; vibrar();
-      const c = db.find(x => x.id === cajaId); if (!c) return;
-      const datos = { nombre, detalles: $('#item-detalles').value.trim(), cantidad: cantN($('#item-cantidad').value), prestadoA: $('#item-prestado').value.trim(), foto: fotos.itemFoto, fecha: fechaActual() };
+      const nombre = $('#item-nombre').value.trim();
+      if (!nombre) return alert('Escribe el nombre del objeto');
+      vibrar();
+      const c = db.find(x => x.id === cajaId);
+      if (!c) return;
+
+      const datos = {
+        nombre,
+        detalles: $('#item-detalles').value.trim(),
+        cantidad: cantN($('#item-cantidad').value),
+        prestadoA: $('#item-prestado').value.trim(),
+        foto: fotos.itemFoto,
+        fecha: fechaActual()
+      };
+
       let it;
-      if (itemId) { it = c.items.find(x => x.id === itemId); Object.assign(it, datos); }
-      else { it = normItem({ id: uid('it_'), ...datos }); c.items.unshift(it); }
+      if (itemId) {
+        it = c.items.find(x => x.id === itemId);
+        Object.assign(it, datos);
+      } else {
+        it = normItem({ id: uid('it_'), ...datos });
+        c.items.unshift(it);
+      }
+
       const quiere = $('#item-reponer').checked;
       if (quiere !== it.porReponer) setReponer(c, it, quiere);
-      cerrar(); guardar();
-      if (quiere && it.porReponer) toast('Enviado a Compras');
+
+      cerrar();
+      guardar();
+      toast(quiere && it.porReponer ? 'Guardado y enviado a Compras' : 'Objeto guardado');
     };
 
-    /* ── Mover objeto a otra caja ── */
+    /* ═══════════════════════════════════════════════════
+       MOVER OBJETO A OTRA CAJA
+       ═══════════════════════════════════════════════════ */
     function abrirMover(cid, iid) {
-      cajaId = cid; itemId = iid;
+      cajaId = cid;
+      itemId = iid;
       const c = db.find(x => x.id === cid), it = c.items.find(x => x.id === iid);
       const otras = db.filter(x => x.id !== cid);
       if (!otras.length) return alert('Crea otra caja primero para poder mover objetos.');
+
       $('#mover-titulo').textContent = `Mover "${it.nombre}"`;
       $('#mover-destino').innerHTML = otras.map(x => `<option value="${esc(x.id)}">${esc(x.nombre)}${x.ubicacion ? ' — ' + esc(x.ubicacion) : ''}</option>`).join('');
       abrir('#modal-mover');
     }
+
     $('#btn-confirmar-mover').onclick = () => {
-      const c = db.find(x => x.id === cajaId), dest = db.find(x => x.id === $('#mover-destino').value);
-      const it = c && c.items.find(x => x.id === itemId); if (!it || !dest) return; vibrar();
-      c.items = c.items.filter(x => x.id !== itemId); it.fecha = fechaActual(); dest.items.unshift(it);
-      cerrar(); guardar(); toast(`Movido a ${dest.nombre}`);
+      const c = db.find(x => x.id === cajaId);
+      const dest = db.find(x => x.id === $('#mover-destino').value);
+      const it = c && c.items.find(x => x.id === itemId);
+      if (!it || !dest) return;
+
+      vibrar();
+      c.items = c.items.filter(x => x.id !== itemId);
+      it.fecha = fechaActual();
+      dest.items.unshift(it);
+
+      cerrar();
+      guardar();
+      cerrarUno($('#modal-popup-center'));
+      toast(`Movido a ${dest.nombre}`);
     };
 
-    /* ── Modales (el de Detalles queda abierto cuando se cierra uno que se abrió encima) ── */
+    /* ═══════════════════════════════════════════════════
+       CONTROL DE MODALES
+       ═══════════════════════════════════════════════════ */
     const abrir = s => $(s).classList.add('active');
+
     function cerrarUno(ov) {
       ov.classList.remove('active');
-      if (ov.id === 'modal-det') detId = null;
+      if (ov.id === 'modal-popup-center') popObj = null;
+      else if (ov.id === 'modal-det') detId = null;
       else if (ov.id !== 'modal-viewer') { cajaId = null; itemId = null; }
     }
-    function cerrar() { $$('.modal-overlay').forEach(m => { if (m.id !== 'modal-det' && m.classList.contains('active')) cerrarUno(m); }); }
+
+    function cerrar() {
+      $$('.modal-overlay').forEach(m => {
+        if (m.id !== 'modal-det' && m.classList.contains('active')) cerrarUno(m);
+      });
+    }
+
     document.addEventListener('click', e => {
-      const ov = e.target.classList.contains('modal-overlay') ? e.target : (e.target.closest('[data-close]') && e.target.closest('.modal-overlay'));
+      const ov = e.target.classList.contains('modal-overlay')
+        ? e.target
+        : (e.target.closest('[data-close]') && e.target.closest('.modal-overlay'));
       if (ov) cerrarUno(ov);
     });
-    window.addEventListener('keydown', e => { if (e.key === 'Escape') { const a = $$('.modal-overlay.active'); if (a.length) cerrarUno(a[a.length - 1]); } });
 
-    /* ── Menú ⋮ ── */
-    $('#btn-menu').onclick = e => { e.stopPropagation(); $('#menu').classList.toggle('open'); };
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const a = $$('.modal-overlay.active');
+        if (a.length) cerrarUno(a[a.length - 1]);
+      }
+    });
+
+    /* Menú superior ⋮ */
+    $('#btn-menu').onclick = e => {
+      e.stopPropagation();
+      $('#menu').classList.toggle('open');
+    };
     document.addEventListener('click', () => $('#menu').classList.remove('open'));
 
-    /* ── Respaldo (valida y pregunta antes de reemplazar) ── */
+    /* Cambio de tema */
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    const temaPref = () => { try { return localStorage.getItem('app_tema') || 'oscuro'; } catch(e){ return 'oscuro'; } };
+    const oscuro = () => temaPref() === 'oscuro' || (temaPref() === 'auto' && mq.matches);
+
+    function aplicarTema() {
+      document.documentElement.dataset.theme = oscuro() ? 'dark' : 'light';
+      $('#btn-tema').textContent = oscuro() ? '☀️' : '🌙';
+      const m = $('meta[name=theme-color]');
+      if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    }
+
+    $('#btn-tema').onclick = () => {
+      vibrar();
+      try { localStorage.setItem('app_tema', oscuro() ? 'claro' : 'oscuro'); } catch(e){}
+      aplicarTema();
+    };
+    if (mq.addEventListener) mq.addEventListener('change', aplicarTema);
+
+    /* Acentos de color */
+    function aplicarAcc() {
+      let a = 'violeta';
+      try { a = localStorage.getItem('color_cajas') || 'violeta'; } catch(e){}
+      if (!['violeta', 'rosa', 'celeste', 'agua'].includes(a)) a = 'violeta';
+      document.documentElement.dataset.acc = a;
+      $$('#dots button').forEach(b => b.classList.toggle('on', b.dataset.c === a));
+    }
+    $('#dots').onclick = e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      try { localStorage.setItem('color_cajas', b.dataset.c); } catch(er){}
+      aplicarAcc();
+    };
+
+    /* Respaldo JSON */
     $('#btn-exportar').onclick = () => {
       vibrar();
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([JSON.stringify(db, null, 2)], { type:'application/json' }));
-      a.download = `respaldo-cajas-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' }));
+      a.download = `respaldo-cajas-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      toast('Respaldo descargado');
     };
+
     $('#btn-importar').onclick = () => { vibrar(); $('#file-input').click(); };
     $('#file-input').onchange = e => {
-      const file = e.target.files[0]; if (!file) return;
+      const file = e.target.files[0];
+      if (!file) return;
       const r = new FileReader();
       r.onload = ev => {
         try {
           const d = JSON.parse(ev.target.result);
           if (!Array.isArray(d) || !d.length || d.some(c => !c || typeof c !== 'object' || typeof c.nombre !== 'string')) throw 0;
           const nuevo = d.map(normCaja), n = nuevo.reduce((s, c) => s + c.items.length, 0);
-          if (!confirm(`El archivo trae ${nuevo.length} caja${nuevo.length === 1 ? '' : 's'} con ${n} objeto${n === 1 ? '' : 's'}.\nEsto reemplaza las que tienes ahora (${db.length}). ¿Continuar?`)) return;
-          db = nuevo; guardar(); toast('¡Cajas cargadas con éxito!');
-        } catch (err) { alert('Archivo no válido: no parece un respaldo de Cajas.'); }
+          if (!confirm(`El archivo trae ${nuevo.length} cajas con ${n} objetos.\n¿Reemplazar las actuales (${db.length})?`)) return;
+          db = nuevo;
+          guardar();
+          toast('¡Cajas cargadas con éxito!');
+        } catch (err) {
+          alert('Archivo no válido: no parece un respaldo de Cajas.');
+        }
         e.target.value = '';
       };
       r.readAsText(file);
     };
 
-    /* ── Tema claro / oscuro (clave compartida app_tema) ── */
-    const mq = matchMedia('(prefers-color-scheme: dark)');
-    const temaPref = () => { try { return localStorage.getItem('app_tema') || 'auto'; } catch (e) { return 'auto'; } };
-    const oscuro = () => temaPref() === 'oscuro' || (temaPref() === 'auto' && mq.matches);
-    function aplicarTema() {
-      document.documentElement.dataset.theme = oscuro() ? 'dark' : 'light';
-      $('#btn-tema').textContent = oscuro() ? '☀️' : '🌙';
-      const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
-    }
-    $('#btn-tema').onclick = () => { vibrar(); try { localStorage.setItem('app_tema', oscuro() ? 'claro' : 'oscuro'); } catch (e) {} aplicarTema(); };
-    if (mq.addEventListener) mq.addEventListener('change', aplicarTema);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) { aplicarTema(); if (sincronizar()) guardar(); else render(); } });
-
-    aplicarTema();
-    if (sincronizar()) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }
-    render();
-  </script>
-  <script>
-    /* ── Letra de los títulos y color (se guardan en el navegador) ── */
-    const FUENTES = {fraunces:"'Fraunces',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",fira:"'Fira Sans',system-ui,sans-serif",chivo:"'Chivo',system-ui,sans-serif",space:"'Space Grotesk',system-ui,sans-serif"};
-    function aplicarFuente() {
-      let f = 'fraunces'; try { f = localStorage.getItem('app_fuente') || 'fraunces'; } catch (e) {}
-      if (!FUENTES[f]) f = 'fraunces';
-      document.documentElement.style.setProperty('--serif', FUENTES[f]);
-      $$('#fonts button').forEach(b => b.classList.toggle('on', b.dataset.f === f));
-    }
-    $('#fonts').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem('app_fuente', b.dataset.f); } catch (er) {} aplicarFuente(); };
-    aplicarFuente();
-    $('#menu').addEventListener('click', e => { if (e.target.closest('.menu-sec')) e.stopPropagation(); });
-    const ACC_KEY = 'color_cajas', ACC_DEF = 'violeta';
-    function aplicarAcc() {
-      let a = ACC_DEF; try { a = localStorage.getItem(ACC_KEY) || ACC_DEF; } catch (e) {}
-      if (!['violeta', 'rosa', 'celeste', 'agua'].includes(a)) a = ACC_DEF;
-      document.documentElement.dataset.acc = a;
-      $$('#dots button').forEach(b => b.classList.toggle('on', b.dataset.c === a));
-    }
-    $('#dots').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem(ACC_KEY, b.dataset.c); } catch (er) {} aplicarAcc(); };
-    aplicarAcc();
-  </script>
-  <script>
-    /* Títulos largos: se achican hasta que la palabra más larga quepa y el título entre en 2 líneas */
-    (function () {
-      const SEL = '.group-title, .c-name, #det-titulo';
-      const ctx = document.createElement('canvas').getContext('2d');
-      let raf = 0;
-      function ajustar() {
-        raf = 0;
-        document.querySelectorAll(SEL).forEach(el => {
-          el.style.fontSize = '';
-          const w = el.clientWidth; if (!w) return;
-          const cs = getComputedStyle(el);
-          const base = parseFloat(cs.fontSize), min = Math.max(11, base * .62);
-          const palabras = el.textContent.split(/\s+/).filter(Boolean);
-          const cabe = fs => {
-            ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
-            return palabras.every(p => ctx.measureText(p).width <= w - 1);
-          };
-          let fs = base;
-          while (!cabe(fs) && fs > min) fs -= .5;
-          if (fs !== base) el.style.fontSize = fs + 'px';
-          while (el.scrollHeight > el.clientHeight + 1 && fs > min) { fs -= .5; el.style.fontSize = fs + 'px'; }
-        });
+    /* Sincronización al volver a enfocar la pestaña */
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        aplicarTema();
+        if (sincronizar()) guardar();
+        else render();
       }
-      const pedir = () => { if (!raf) raf = requestAnimationFrame(ajustar); };
-      new MutationObserver(pedir).observe(document.body, { childList: true, subtree: true, characterData: true });
-      new MutationObserver(pedir).observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'data-theme'] });
-      addEventListener('resize', pedir);
-      if (document.fonts) { if (document.fonts.ready) document.fonts.ready.then(pedir); if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', pedir); }
-      pedir();
-    })();
+    });
+
+    /* Inicio */
+    aplicarTema();
+    aplicarAcc();
+    if (sincronizar()) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e){} }
+    render();
   </script>
 </body>
 </html>
