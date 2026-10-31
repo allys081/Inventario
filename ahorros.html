@@ -8,6 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23059669'/%3E%3Cstop offset='1' stop-color='%2334d399'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle'%3E💰%3C/text%3E%3C/svg%3E">
   <script>try{var t=localStorage.getItem('app_tema')||'auto';var d=t==='oscuro'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}</script>
   <script>try{var F={fraunces:"'Fraunces',Georgia,serif",jakarta:"'Plus Jakarta Sans',system-ui,sans-serif",fira:"'Fira Sans',system-ui,sans-serif",chivo:"'Chivo',system-ui,sans-serif",space:"'Space Grotesk',system-ui,sans-serif"},f=localStorage.getItem("app_fuente");if(F[f])document.documentElement.style.setProperty("--serif",F[f])}catch(e){}</script>
+  <script>try{var a=localStorage.getItem('color_ahorros');if(['violeta','rosa','celeste','agua'].indexOf(a)>-1)document.documentElement.dataset.acc=a}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Fira+Sans:wght@500;600;700&family=Chivo:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -230,6 +231,24 @@
     .sheet-handle{width:42px;height:5px;border-radius:99px;background:var(--border);margin:0 auto 14px;flex:none}
     #modal-det .det-head{flex:none}
   </style>
+  <style>
+    /* ===== Color de acento (se aplica solo si lo eliges en el menú ⋮) ===== */
+    [data-acc=violeta]{--green:#7c5cd6;--green-soft:#ece6fb;--green-line:#cdbff2;--acc:#7c5cd6;--pk:#7c5cd6;--pk-soft:#ece6fb;--on-pk:#fff;--s1:#dccff8;--s2:#efe9fc;--sl:#5b3fb0;--sv:#3a2580;--d1:#5b3fb0;--d2:#7c5cd6}
+    [data-theme=dark][data-acc=violeta]{--green:#a78bfa;--green-soft:rgba(167,139,250,.14);--green-line:rgba(167,139,250,.35);--acc:#a78bfa;--pk:#a78bfa;--pk-soft:rgba(167,139,250,.14);--on-pk:#14121a}
+    [data-acc=rosa]{--green:#c2417a;--green-soft:#fbe1ec;--green-line:#f0b6cf;--acc:#c2417a;--pk:#c2417a;--pk-soft:#fbe1ec;--on-pk:#fff;--s1:#f6cfe0;--s2:#fbe9f1;--sl:#a3336a;--sv:#6e1c45;--d1:#8a2c58;--d2:#b13a73}
+    [data-theme=dark][data-acc=rosa]{--green:#f472b6;--green-soft:rgba(244,114,182,.14);--green-line:rgba(244,114,182,.35);--acc:#f472b6;--pk:#f472b6;--pk-soft:rgba(244,114,182,.14);--on-pk:#14121a}
+    [data-acc=celeste]{--green:#3b82c4;--green-soft:#dcebf8;--green-line:#b3d3ee;--acc:#3b82c4;--pk:#3b82c4;--pk-soft:#dcebf8;--on-pk:#fff;--s1:#c4dcf3;--s2:#e6f1fb;--sl:#2e6aa3;--sv:#17406b;--d1:#2a5f96;--d2:#3b7ab8}
+    [data-theme=dark][data-acc=celeste]{--green:#7cb7ff;--green-soft:rgba(124,183,255,.14);--green-line:rgba(124,183,255,.35);--acc:#7cb7ff;--pk:#7cb7ff;--pk-soft:rgba(124,183,255,.14);--on-pk:#14121a}
+    [data-acc=agua]{--green:#2f8a76;--green-soft:#d9f0ea;--green-line:#a8d9cd;--acc:#2f8a76;--pk:#2f8a76;--pk-soft:#d9f0ea;--on-pk:#fff;--s1:#bfe6da;--s2:#e3f5ef;--sl:#2c6a59;--sv:#0f3d31;--d1:#2a6b5c;--d2:#3a8472}
+    [data-theme=dark][data-acc=agua]{--green:#5eead4;--green-soft:rgba(94,234,212,.14);--green-line:rgba(94,234,212,.35);--acc:#5eead4;--pk:#5eead4;--pk-soft:rgba(94,234,212,.14);--on-pk:#14121a}
+    [data-acc] .sum-card{background:linear-gradient(135deg,var(--s1),var(--s2));border:1px solid var(--green-line);color:var(--sv)}
+    [data-acc] .sum-card .sum-label,[data-acc] .sum-card .sum-sub{color:var(--sl)}
+    [data-acc] .sum-card .sum-value{color:var(--sv)}
+    [data-theme=dark][data-acc] .sum-card{background:linear-gradient(135deg,var(--d1),var(--d2));color:#fff}
+    [data-theme=dark][data-acc] .sum-card .sum-label,[data-theme=dark][data-acc] .sum-card .sum-sub{color:rgba(255,255,255,.85)}
+    [data-theme=dark][data-acc] .sum-card .sum-value{color:#fff}
+    [data-theme=dark][data-acc] .btn-green{color:#14121a}
+  </style>
 </head>
 <body>
   <div class="container">
@@ -244,6 +263,15 @@
           <button id="btn-importar">📂 Cargar</button>
           <hr>
           <div class="menu-sec"><div class="menu-t">Letra de los títulos</div><div id="fonts"><button data-f="fraunces" style="font-family:'Fraunces',Georgia,serif">Fraunces (la de ahora)</button><button data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif">Plus Jakarta (sin serif)</button><button data-f="fira" style="font-family:'Fira Sans',system-ui,sans-serif">Fira Sans</button><button data-f="chivo" style="font-family:'Chivo',system-ui,sans-serif">Chivo</button><button data-f="space" style="font-family:'Space Grotesk',system-ui,sans-serif">Space Grotesk</button></div></div>
+          <hr>
+          <div class="menu-sec"><div class="menu-t">Color de acento</div>
+            <div class="dots" id="dots">
+              <button data-c="violeta" aria-label="Morado"></button>
+              <button data-c="rosa" aria-label="Rosa"></button>
+              <button data-c="celeste" aria-label="Celeste"></button>
+              <button data-c="agua" aria-label="Aguamarina"></button>
+            </div>
+          </div>
         </div>
       </div>
       <input type="file" id="file-input" style="display:none" accept=".json">
@@ -762,6 +790,16 @@
     }
     $('#fonts').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem('app_fuente', b.dataset.f); } catch (er) {} aplicarFuente(); };
     aplicarFuente();
+    function aplicarAcc() {
+      let a = ''; try { a = localStorage.getItem('color_ahorros') || ''; } catch (e) {}
+      if (['violeta', 'rosa', 'celeste', 'agua'].includes(a)) document.documentElement.dataset.acc = a;
+      else delete document.documentElement.dataset.acc;
+      $$('#dots button').forEach(b => b.classList.toggle('on', b.dataset.c === a));
+      const m = document.querySelector('meta[name=theme-color]');
+      if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    }
+    $('#dots').onclick = e => { const b = e.target.closest('button'); if (!b) return; try { localStorage.setItem('color_ahorros', b.dataset.c); } catch (er) {} aplicarAcc(); };
+    aplicarAcc();
     $('#menu').addEventListener('click', e => { if (e.target.closest('.menu-sec')) e.stopPropagation(); });
   </script>
   <script>
