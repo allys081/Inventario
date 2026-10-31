@@ -15,12 +15,15 @@
       document.documentElement.dataset.theme = d ? 'dark' : 'light';
       var a = localStorage.getItem('color_cajas') || 'violeta';
       document.documentElement.dataset.acc = ['violeta', 'rosa', 'celeste', 'agua'].indexOf(a) > -1 ? a : 'violeta';
+      var f = localStorage.getItem('app_fuente') || 'fraunces';
+      var F = { fraunces: "'Fraunces', Georgia, serif", jakarta: "'Plus Jakarta Sans', system-ui, sans-serif", fira: "'Fira Sans', system-ui, sans-serif", chivo: "'Chivo', system-ui, sans-serif", space: "'Space Grotesk', system-ui, sans-serif" };
+      if (F[f]) document.documentElement.style.setProperty('--serif', F[f]);
     } catch (e) {}
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@600;700;800&family=Fira+Sans:wght@500;600;700&family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -248,7 +251,7 @@
 
     /* Cuadrícula de cajas principal */
     .card-list { display: flex; flex-direction: column; gap: 10px; }
-    .card-list.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .card-list.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; margin: 0 auto; }
     @media (max-width: 360px) { .card-list.grid { grid-template-columns: 1fr; } }
 
     .group-card {
@@ -331,6 +334,25 @@
       margin-top: 2px;
     }
 
+    /* Botones al pie de la tarjeta de caja */
+    .card-btns { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; padding-top: 6px; }
+    .btn-card {
+      height: 34px; border-radius: 10px; border: 0; background: transparent; cursor: pointer;
+      font-family: inherit; font-weight: 800; font-size: .84rem; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .btn-card.add { color: var(--p); padding: 0 6px 0 0; }
+    .btn-card.del { color: var(--muted); width: 34px; justify-content: center; }
+    .btn-card.del:hover { background: var(--hover); color: var(--bad); }
+    .btn-card.add:active, .btn-card.del:active { transform: scale(.94); }
+
+    /* Foto del objeto en la ventana de detalle (marco horizontal) */
+    .pop-photo {
+      width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg); cursor: zoom-in;
+    }
+    .pop-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .item-sub { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 3px; }
+
     /* Botón flotante ＋ Agregar caja */
     .fab {
       position: fixed;
@@ -374,22 +396,24 @@
     }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
-    /* Hoja inferior para la Caja */
+    /* Ventana emergente centrada con los objetos de la caja */
+    #modal-det { align-items: center; padding: 16px; }
     #modal-det .modal {
       width: 100%;
-      max-width: 580px;
+      max-width: 440px;
       background: var(--card);
-      border-radius: 26px 26px 0 0;
-      max-height: calc(100dvh - 36px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      max-height: min(80dvh, 640px);
       display: flex;
       flex-direction: column;
-      padding: 12px 18px calc(24px + env(safe-area-inset-bottom));
-      transform: translateY(100%);
-      transition: transform .3s cubic-bezier(.16, 1, .3, 1);
-      box-shadow: 0 -12px 40px rgba(0,0,0,.4);
+      padding: 18px 16px 16px;
+      transform: scale(.94);
+      transition: transform .22s cubic-bezier(.16, 1, .3, 1);
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
       margin: 0;
     }
-    #modal-det.active .modal { transform: translateY(0); }
+    #modal-det.active .modal { transform: scale(1); }
 
     .sheet-handle {
       width: 40px;
@@ -440,7 +464,7 @@
       min-height: 140px;
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: 20px;
+      padding-bottom: 6px;
     }
 
     .minimal-list {
@@ -527,6 +551,8 @@
     /* ═══════════════════════════════════════════════
        VENTANA EMERGENTE EN EL MEDIO (POPOVER DETALLE)
        ═══════════════════════════════════════════════ */
+    #modal-viewer { z-index: 140; }
+    #modal-caja, #modal-item, #modal-mover { z-index: 130; }
     #modal-popup-center {
       align-items: center;
       padding: 16px;
@@ -714,7 +740,7 @@
     }
     .check input { width: 18px; height: 18px; accent-color: var(--p); }
 
-    .photo-row { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+    .photo-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
     .pbox {
       width: 54px;
       height: 54px;
@@ -789,6 +815,10 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* Selector de letra en el menú ⋮ */
+    .menu { max-height: 75vh; overflow-y: auto; min-width: 230px; }
+    .menu .font-btn.on { background: var(--p-soft); color: var(--p); }
   </style>
 </head>
 <body>
@@ -803,6 +833,15 @@
         <div class="menu" id="menu">
           <button id="btn-exportar">💾 Respaldar</button>
           <button id="btn-importar">📂 Cargar</button>
+          <hr>
+          <div class="menu-sec">
+            <div class="menu-t">Letra de los títulos</div>
+            <button class="font-btn" data-f="fraunces" style="font-family:'Fraunces', serif;">Fraunces (la de ahora)</button>
+            <button class="font-btn" data-f="jakarta" style="font-family:'Plus Jakarta Sans', sans-serif;">Plus Jakarta (sin serif)</button>
+            <button class="font-btn" data-f="fira" style="font-family:'Fira Sans', sans-serif;">Fira Sans</button>
+            <button class="font-btn" data-f="chivo" style="font-family:'Chivo', sans-serif;">Chivo</button>
+            <button class="font-btn" data-f="space" style="font-family:'Space Grotesk', sans-serif;">Space Grotesk</button>
+          </div>
           <hr>
           <div class="menu-sec">
             <div class="menu-t">Color de acento</div>
@@ -854,13 +893,13 @@
        ═══════════════════════════════════════════════════ -->
   <div class="modal-overlay" id="modal-det">
     <div class="modal">
-      <div class="sheet-handle"></div>
       <div class="det-head">
         <div id="det-foto"></div>
         <div style="flex:1; min-width:0">
           <h3 id="det-titulo">Nombre Caja</h3>
           <div class="c-sub" id="det-sub">0 objetos · 📍 Ubicación</div>
         </div>
+        <button class="sq" id="det-edit" data-act="editcaja" aria-label="Editar caja" title="Editar caja">✎</button>
         <button class="sq" data-close aria-label="Cerrar">✕</button>
       </div>
 
@@ -895,6 +934,9 @@
           <label>Detalle / Nota</label>
           <p id="pop-details">Sin detalles adicionales</p>
         </div>
+
+        <!-- Foto del objeto -->
+        <div class="pop-photo" id="pop-photo-box" style="display:none;"><img id="pop-photo" alt="Foto del objeto"></div>
 
         <!-- Cantidad con stepper -->
         <div class="qty-control-row" id="pop-qty-box">
@@ -950,7 +992,8 @@
         <label class="form-label">Foto de la caja o lugar (opcional)</label>
         <div class="photo-row">
           <div class="pbox" data-k="cajaFoto"><span class="ph">📦</span><img alt=""><button type="button" class="rm" data-rm="cajaFoto">✕</button></div>
-          <button type="button" class="btn btn-secondary" data-pick="cajaFoto">📸 Tomar / Elegir</button>
+          <button type="button" class="btn btn-secondary" data-pick="cajaFoto" data-cam="1">📸 Tomar</button>
+          <button type="button" class="btn btn-secondary" data-pick="cajaFoto">🖼️ Elegir</button>
           <input type="file" class="pfile" data-k="cajaFoto" accept="image/*" hidden>
         </div>
       </div>
@@ -988,7 +1031,8 @@
         <label class="form-label">Foto del objeto (opcional)</label>
         <div class="photo-row">
           <div class="pbox" data-k="itemFoto"><span class="ph">📷</span><img alt=""><button type="button" class="rm" data-rm="itemFoto">✕</button></div>
-          <button type="button" class="btn btn-secondary" data-pick="itemFoto">📸 Tomar / Elegir</button>
+          <button type="button" class="btn btn-secondary" data-pick="itemFoto" data-cam="1">📸 Tomar</button>
+          <button type="button" class="btn btn-secondary" data-pick="itemFoto">🖼️ Elegir</button>
           <input type="file" class="pfile" data-k="itemFoto" accept="image/*" hidden>
         </div>
       </div>
@@ -1273,7 +1317,12 @@
     }
 
     document.addEventListener('click', e => {
-      const p = e.target.closest('[data-pick]'); if (p) $(`.pfile[data-k="${p.dataset.pick}"]`).click();
+      const p = e.target.closest('[data-pick]');
+      if (p) {
+        const inp = $(`.pfile[data-k="${p.dataset.pick}"]`);
+        if (p.dataset.cam) inp.setAttribute('capture', 'environment'); else inp.removeAttribute('capture');
+        inp.click();
+      }
       const r = e.target.closest('[data-rm]'); if (r) { fotos[r.dataset.rm] = null; $(`.pfile[data-k="${r.dataset.rm}"]`).value = ''; setPrev(r.dataset.rm); }
     });
     $$('.pfile').forEach(inp => inp.onchange = e => {
@@ -1295,6 +1344,25 @@
       const prestadoTag = it.prestadoA ? `<span class="mini-tag" style="background:var(--warn-soft);color:var(--warn)">🤝 ${esc(it.prestadoA)}</span>` : '';
       const detTag = it.detalles ? `<span class="mini-tag detail">${esc(it.detalles)}</span>` : '';
       const cajaTag = showCajaNombre ? `<span class="mini-tag" style="background:var(--badge);color:var(--muted)">📦 ${esc(c.nombre)}</span>` : '';
+
+      if (showCajaNombre) {
+        const estado = (it.porReponer ? `<span class="mini-tag buy">🛒 Reponer</span>` : '') +
+                       (it.prestadoA ? `<span class="mini-tag" style="background:var(--warn-soft);color:var(--warn)">🤝 ${esc(it.prestadoA)}</span>` : '');
+        return `
+        <div class="item-row-simple" ${d} data-act="abrir-pop">
+          <div class="item-left">
+            <span class="item-bullet"></span>
+            <div class="item-title-wrap">
+              <div class="item-name">${esc(it.nombre)}</div>
+              <div class="item-sub"><span class="mini-tag" style="background:var(--badge);color:var(--muted)">📦 ${esc(c.nombre)}</span>${estado}</div>
+            </div>
+          </div>
+          <div class="item-quick-btns" onclick="event.stopPropagation()">
+            <button class="btn-icon" data-act="edit" ${d} title="Editar">✎</button>
+            <button class="btn-icon del" data-act="del" ${d} title="Eliminar">🗑</button>
+          </div>
+        </div>`;
+      }
 
       return `
         <div class="item-row-simple" ${d} data-act="abrir-pop">
@@ -1318,18 +1386,12 @@
       const d = `data-c="${esc(c.id)}"`, n = c.items.length;
       return `
         <div class="group-card" ${d} data-act="detalles">
-          <div class="c-head">
-            <div class="c-title-box">
-              ${c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto">` : '<div class="caja-thumb" style="display:grid;place-items:center;font-size:1.15rem">📦</div>'}
-              <div class="c-name">${esc(c.nombre)}</div>
-            </div>
-            <div class="c-actions-head" onclick="event.stopPropagation()">
-              <button class="btn-icon add-fast" data-act="newitem" ${d} title="Agregar objeto rápido">＋</button>
-              <button class="btn-icon" data-act="editcaja" ${d} title="Editar caja">✎</button>
-              <button class="btn-icon" data-act="delcaja" ${d} title="Eliminar caja">🗑</button>
-            </div>
-          </div>
+          <div class="c-name">${esc(c.nombre)}</div>
           <div class="c-sub">${n} objeto${n === 1 ? '' : 's'} · 📍 ${c.ubicacion ? esc(c.ubicacion) : '<span style="opacity:.6">Sin ubicación</span>'}</div>
+          <div class="card-btns">
+            <button class="btn-card add" data-act="newitem" ${d} title="Agregar objeto">＋ Agregar</button>
+            <button class="btn-card del" data-act="delcaja" ${d} title="Eliminar caja">🗑</button>
+          </div>
         </div>
       `;
     }
@@ -1362,6 +1424,7 @@
       const c = db.find(x => x.id === detId);
       if (!c) { detId = null; $('#modal-det').classList.remove('active'); return; }
       const d = `data-c="${esc(c.id)}"`, n = c.items.length;
+      $('#det-edit').dataset.c = c.id;
       $('#det-titulo').textContent = c.nombre;
       $('#det-sub').textContent = `${n} objeto${n === 1 ? '' : 's'} · 📍 ${c.ubicacion || 'Sin ubicación'}`;
       $('#det-foto').innerHTML = c.foto ? `<img src="${c.foto}" class="caja-thumb" data-act="fotocaja" ${d} alt="Foto">` : '';
@@ -1404,6 +1467,11 @@
         $('#pop-details').textContent = 'Sin notas ni especificaciones adicionales';
         detBox.style.display = 'block';
       }
+
+      // Foto del objeto (marco horizontal)
+      const pf = $('#pop-photo-box');
+      if (it.foto) { $('#pop-photo').src = it.foto; pf.style.display = 'block'; }
+      else { $('#pop-photo').removeAttribute('src'); pf.style.display = 'none'; }
 
       // Contador numérico
       const qtyBox = $('#pop-qty-box');
@@ -1529,6 +1597,8 @@
     $('#btn-add-obj-inside').onclick = () => {
       if (detId) abrirItem(detId);
     };
+
+    $('#pop-photo-box').onclick = () => { if (popObj && popObj.it.foto) verFoto(popObj.it.foto, popObj.it.nombre); };
 
     // Acciones dentro del Popup emergente del medio
     $('#pop-btn-plus').onclick = () => {
@@ -1831,8 +1901,34 @@
       }
     });
 
+
+    /* Fuente de los títulos (se recuerda en app_fuente) */
+    const FUENTES = {
+      fraunces: "'Fraunces', Georgia, serif",
+      jakarta: "'Plus Jakarta Sans', system-ui, sans-serif",
+      fira: "'Fira Sans', system-ui, sans-serif",
+      chivo: "'Chivo', system-ui, sans-serif",
+      space: "'Space Grotesk', system-ui, sans-serif"
+    };
+    function aplicarFuente(avisar) {
+      let f = 'fraunces';
+      try { f = localStorage.getItem('app_fuente') || 'fraunces'; } catch(e){}
+      if (!FUENTES[f]) f = 'fraunces';
+      document.documentElement.style.setProperty('--serif', FUENTES[f]);
+      $$('#menu .font-btn').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+      if (avisar) toast('Letra actualizada');
+    }
+    $('#menu').addEventListener('click', e => {
+      const b = e.target.closest('.font-btn');
+      if (!b) return;
+      e.stopPropagation(); // mantiene el menú abierto para ver el cambio
+      try { localStorage.setItem('app_fuente', b.dataset.f); } catch(er){}
+      aplicarFuente(true);
+    });
+
     /* Inicio */
     aplicarTema();
+    aplicarFuente();
     aplicarAcc();
     if (sincronizar()) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e){} }
     render();
