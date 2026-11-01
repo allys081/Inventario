@@ -16,14 +16,14 @@
       var a = localStorage.getItem('color_compras') || 'rosa';
       document.documentElement.dataset.acc = ['violeta', 'rosa', 'celeste', 'agua'].indexOf(a) > -1 ? a : 'rosa';
       var f = localStorage.getItem('app_fuente') || 'fraunces';
-      var F = { fraunces: "'Fraunces', Georgia, serif", jakarta: "'Plus Jakarta Sans', system-ui, sans-serif" };
+      var F = { fraunces: "'Fraunces', Georgia, serif", jakarta: "'Plus Jakarta Sans', system-ui, sans-serif", fira: "'Fira Sans', system-ui, sans-serif", chivo: "'Chivo', system-ui, sans-serif", space: "'Space Grotesk', system-ui, sans-serif" };
       if (F[f]) document.documentElement.style.setProperty('--serif', F[f]);
     } catch(e) {}
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@600;700;800&family=Fira+Sans:wght@500;600;700&family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -398,6 +398,27 @@
     }
     .group-card.cajas .c-name { color: var(--p); }
 
+    /* Botones al pie de la tarjeta de categoría */
+    .card-list.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .c-edit { width: 28px; height: 28px; flex: none; border: 0; background: transparent; color: var(--muted); border-radius: 8px; cursor: pointer; font-size: .85rem; display: grid; place-items: center; margin-top: -2px; }
+    .c-edit:hover { background: var(--hover); color: var(--text); }
+    .c-head { justify-content: flex-start; align-items: flex-start; }
+    .c-head .c-name { flex: 0 1 auto; }
+    .card-btns { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; padding-top: 8px; }
+    .btn-card { height: 32px; border-radius: 9px; background: transparent; cursor: pointer; font-family: inherit; font-weight: 800; display: inline-grid; place-items: center; }
+    .btn-card.add { width: 40px; border: 1.5px solid var(--p); color: var(--p); font-size: 1.15rem; line-height: 1; }
+    .btn-card.del { width: 34px; border: 0; color: var(--muted); font-size: .9rem; }
+    .btn-card.del:hover { background: var(--hover); color: var(--bad); }
+    .btn-card:active { transform: scale(.93); }
+    .item-quick-btns.stack { flex-direction: column; align-items: flex-end; align-self: stretch; justify-content: space-between; }
+    .prod-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .prod-top .prod-name { white-space: normal; overflow: visible; }
+    .prod-price-row { margin-top: 4px; }
+    .store-pick-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; max-height: 50vh; overflow-y: auto; }
+    .store-pick { border: 1.5px solid var(--border); background: var(--bg); border-radius: 14px; padding: 6px; cursor: pointer; text-align: center; font-family: inherit; color: var(--text); font-weight: 700; font-size: .8rem; }
+    .store-pick img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; display: block; margin-bottom: 4px; }
+    .pop-hero { width: 62px; height: 78px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border); flex: none; cursor: zoom-in; }
+
     /* Botón flotante ＋ */
     .fab {
       position: fixed;
@@ -441,21 +462,26 @@
     }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
+    #modal-det { align-items: center; padding: 16px; }
     #modal-det .modal {
       width: 100%;
-      max-width: 580px;
+      max-width: 440px;
       background: var(--card);
-      border-radius: 26px 26px 0 0;
-      max-height: calc(100dvh - 36px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      max-height: min(80dvh, 640px);
       display: flex;
       flex-direction: column;
-      padding: 12px 18px calc(24px + env(safe-area-inset-bottom));
-      transform: translateY(100%);
-      transition: transform .3s cubic-bezier(.16, 1, .3, 1);
-      box-shadow: 0 -12px 40px rgba(0,0,0,.4);
+      padding: 18px 16px 16px;
+      transform: scale(.94);
+      transition: transform .22s cubic-bezier(.16, 1, .3, 1);
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
       margin: 0;
     }
-    #modal-det.active .modal { transform: translateY(0); }
+    #modal-det.active .modal { transform: scale(1); }
+    #modal-pop-center { z-index: 120; }
+    #modal-item, #modal-bought, #modal-cat, #modal-tiendas { z-index: 130; }
+    #modal-viewer { z-index: 140; }
 
     .sheet-handle {
       width: 40px;
@@ -849,6 +875,10 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* Selector de letra en el menú ⋮ */
+    .menu { max-height: 75vh; overflow-y: auto; min-width: 230px; }
+    .menu .font-btn.on { background: var(--p-soft); color: var(--p); }
   </style>
 </head>
 <body>
@@ -863,6 +893,15 @@
         <div class="menu" id="menu">
           <button id="btn-exportar">💾 Respaldar</button>
           <button id="btn-importar">📂 Cargar</button>
+          <hr>
+          <div class="menu-sec">
+            <div class="menu-t">Letra de los títulos</div>
+            <button class="font-btn" data-f="fraunces" style="font-family:'Fraunces', serif;">Fraunces (la de ahora)</button>
+            <button class="font-btn" data-f="jakarta" style="font-family:'Plus Jakarta Sans', sans-serif;">Plus Jakarta (sin serif)</button>
+            <button class="font-btn" data-f="fira" style="font-family:'Fira Sans', sans-serif;">Fira Sans</button>
+            <button class="font-btn" data-f="chivo" style="font-family:'Chivo', sans-serif;">Chivo</button>
+            <button class="font-btn" data-f="space" style="font-family:'Space Grotesk', sans-serif;">Space Grotesk</button>
+          </div>
           <hr>
           <div class="menu-sec">
             <div class="menu-t">Color de acento</div>
@@ -887,10 +926,10 @@
 
     <!-- Pestañas de filtrado -->
     <div class="seg tabs" id="tabs">
-      <button data-f="todos">Todos<b id="b-todos">0</b></button>
-      <button data-f="falta" class="on">Falta comprar<b id="b-falta">0</b></button>
-      <button data-f="urgente">Urgente<b id="b-urgente">0</b></button>
-      <button data-f="tengo">Repuesto<b id="b-tengo">0</b></button>
+      <button data-f="todos" class="on">Todos</button>
+      <button data-f="falta">Falta comprar</button>
+      <button data-f="urgente">Urgente</button>
+      <button data-f="tengo">Repuesto</button>
     </div>
 
     <!-- Herramientas de vista -->
@@ -921,7 +960,6 @@
        ═══════════════════════════════════════════════════ -->
   <div class="modal-overlay" id="modal-det">
     <div class="modal">
-      <div class="sheet-handle"></div>
       <div class="det-head">
         <div style="flex:1; min-width:0">
           <h3 id="det-titulo">Higiene</h3>
@@ -948,18 +986,19 @@
   <div class="modal-overlay modal-center" id="modal-pop-center">
     <div class="modal">
       <div class="pop-header">
-        <div>
+        <img class="pop-hero" id="pop-prod-img" alt="Foto del producto" style="display:none;">
+        <div style="flex:1;min-width:0;">
           <h4 class="pop-title" id="pop-prod-title">Nombre del Producto</h4>
-          <div class="badges" id="pop-badges-row" style="margin-top:4px;"></div>
+          <div class="badges" id="pop-badges-row" style="margin-top:6px;"></div>
         </div>
         <button class="pop-close" data-close aria-label="Cerrar">✕</button>
       </div>
 
       <div class="pop-body">
-        <!-- Stock / Repuesto -->
+        <!-- Repuesto / fecha prevista -->
         <div class="pop-field" id="pop-stock-box">
           <label>Disponibilidad</label>
-          <p id="pop-stock-desc">Queda la mitad</p>
+          <p id="pop-stock-desc"></p>
         </div>
 
         <!-- Dónde comprar y precio -->
@@ -968,9 +1007,9 @@
           <p id="pop-store-desc">DBS · $4.000</p>
         </div>
 
-        <!-- Instrucciones / Pasillo -->
+        <!-- Detalles -->
         <div class="pop-field" id="pop-instr-box" style="display:none;">
-          <label>Instrucciones de pasillo</label>
+          <label>Detalles</label>
           <p id="pop-instr-desc"></p>
         </div>
 
@@ -980,9 +1019,9 @@
           <p><a id="pop-link-href" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--p);font-weight:700;">🔗 Abrir enlace externo</a></p>
         </div>
 
-        <!-- Fotos -->
+        <!-- Foto de la tienda -->
         <div class="pop-field" id="pop-photos-box" style="display:none;">
-          <label>Fotos</label>
+          <label>Foto de la tienda</label>
           <div class="pop-photos" id="pop-photos-container"></div>
         </div>
 
@@ -1087,9 +1126,12 @@
             <label class="form-label">Fotos (Producto y Tienda)</label>
             <div class="photo-row">
               <div class="pbox" data-k="foto"><span style="color:var(--muted);font-size:1.1rem">📷</span><img alt=""><button type="button" class="rm" data-rm="foto">✕</button></div>
-              <button type="button" class="btn btn-secondary" data-pick="foto">📸 Producto</button>
+              <button type="button" class="btn btn-secondary" data-pick="foto" data-cam="1">📸 Producto</button>
+              <button type="button" class="btn btn-secondary" data-pick="foto" title="Elegir de mis archivos">🖼️</button>
+            </div>
+            <div class="photo-row">
               <div class="pbox" data-k="fotoTienda"><span style="color:var(--muted);font-size:1.1rem">🏪</span><img alt=""><button type="button" class="rm" data-rm="fotoTienda">✕</button></div>
-              <button type="button" class="btn btn-secondary" data-pick="fotoTienda">🏪 Tienda</button>
+              <button type="button" class="btn btn-secondary" id="btn-pick-tienda">🏪 Tienda</button>
               <input type="file" class="pfile" data-k="foto" accept="image/*" hidden>
               <input type="file" class="pfile" data-k="fotoTienda" accept="image/*" hidden>
             </div>
@@ -1135,6 +1177,18 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" data-close>Cancelar</button>
         <button class="btn btn-primary" id="btn-guardar-cat">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Elegir foto de tienda ya guardada -->
+  <div class="modal-overlay modal-center" id="modal-tiendas">
+    <div class="modal">
+      <h3>Elegir foto de tienda</h3>
+      <div class="store-pick-grid" id="store-pick-grid"></div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button class="btn btn-secondary" id="btn-tienda-galeria">🖼️ Mi galería</button>
+        <button class="btn btn-secondary" data-close>Cerrar</button>
       </div>
     </div>
   </div>
@@ -1302,7 +1356,7 @@
       ];
     }
 
-    let vista = 'cat', filtro = 'falta', catId = null, itemId = null, detId = null, popProdObj = null;
+    let vista = 'cat', filtro = 'todos', catId = null, itemId = null, detId = null, popProdObj = null;
     let disp = 'grid';
     try { disp = localStorage.getItem(VKEY) === 'list' ? 'list' : 'grid'; } catch(e){}
     const fotos = { foto: null, fotoTienda: null };
@@ -1341,7 +1395,12 @@
     }
 
     document.addEventListener('click', e => {
-      const p = e.target.closest('[data-pick]'); if (p) $(`.pfile[data-k="${p.dataset.pick}"]`).click();
+      const p = e.target.closest('[data-pick]');
+      if (p) {
+        const inp = $(`.pfile[data-k="${p.dataset.pick}"]`);
+        if (p.dataset.cam) inp.setAttribute('capture', 'environment'); else inp.removeAttribute('capture');
+        inp.click();
+      }
       const r = e.target.closest('[data-rm]'); if (r) {
         fotos[r.dataset.rm] = null;
         $(`.pfile[data-k="${r.dataset.rm}"]`).value = '';
@@ -1410,6 +1469,31 @@
       e.target.value = '';
     };
 
+    /* Foto de tienda: elegir entre las ya guardadas (o de la galería) */
+    $('#btn-pick-tienda').onclick = () => {
+      llenarTiendas();
+      const conFoto = tiendasCache.filter(t => t.foto);
+      if (!conFoto.length) {
+        const inp = $('.pfile[data-k="fotoTienda"]'); inp.removeAttribute('capture'); inp.click();
+        return;
+      }
+      $('#store-pick-grid').innerHTML = conFoto.map((t, i) => `<button type="button" class="store-pick" data-i="${i}"><img src="${t.foto}" alt="">${esc(t.n)}</button>`).join('');
+      $('#store-pick-grid').dataset.n = conFoto.length;
+      $('#store-pick-grid')._list = conFoto;
+      abrir('#modal-tiendas');
+    };
+    $('#store-pick-grid').onclick = e => {
+      const b = e.target.closest('.store-pick'); if (!b) return;
+      const t = $('#store-pick-grid')._list[b.dataset.i];
+      fotos.fotoTienda = t.foto; setPrev('fotoTienda');
+      if (!$('#p-donde').value.trim()) $('#p-donde').value = t.n;
+      cerrarUno($('#modal-tiendas'));
+    };
+    $('#btn-tienda-galeria').onclick = () => {
+      cerrarUno($('#modal-tiendas'));
+      const inp = $('.pfile[data-k="fotoTienda"]'); inp.removeAttribute('capture'); inp.click();
+    };
+
     /* Filtrado */
     const pasaFiltro = it => {
       const si = it.tieneRepuesto === 'si';
@@ -1427,11 +1511,39 @@
        RENDERIZADO: TARJETAS DE CATEGORÍA Y PRODUCTOS
        ═══════════════════════════════════════════════════ */
 
-    /* Fila de Producto Compacto con círculo táctil ( ○ ) */
-    function productoFilaHTML(c, it, showCat) {
+    /* Fila de producto. modo: 'popup' (lista de categoría, sin círculo) | 'tienda' (con círculo) | 'plano' (búsqueda/filtros, sin círculo) */
+    function productoFilaHTML(c, it, showCat, modo) {
+      modo = modo || 'popup';
       const d = `data-c="${esc(c.id)}" data-i="${esc(it.id)}"`;
       const si = it.tieneRepuesto === 'si';
       const cant = it.cantidadRepuesto || (si ? it.queda : '');
+      const circle = modo === 'tienda'
+        ? `<button class="circle-check ${si ? 'checked' : ''}" data-act="check-buy" ${d} title="${si ? 'Marcar como falta comprar' : 'Marcar como comprado'}">${si ? '✓' : ''}</button>`
+        : '';
+      const btns = `
+          <div class="item-quick-btns ${modo === 'popup' ? '' : 'stack'}">
+            <button class="btn-icon" data-act="edit" ${d} title="Editar">✎</button>
+            <button class="btn-icon del" data-act="del" ${d} title="Eliminar">🗑</button>
+          </div>`;
+
+      if (modo === 'tienda' || modo === 'plano') {
+        const queda = si
+          ? `Repuesto en: <b>${esc(it.lugarRepuesto || 'Guardado')}</b>${cant ? ' (' + esc(cant) + ')' : ''}`
+          : (it.queda ? `Queda: <b>${esc(it.queda)}</b>` : '');
+        return `
+        <div class="compact-product-item" ${d} data-act="abrir-pop">
+          ${circle}
+          <div class="prod-info">
+            <div class="prod-top">
+              <span class="prod-name">${esc(it.nombre)}</span>
+              ${showCat ? `<span class="badge cat">${esc(c.nombre)}</span>` : ''}
+            </div>
+            ${queda ? `<div class="prod-subline">${queda}</div>` : ''}
+            ${(!si && it.precio) ? `<div class="prod-price-row"><span class="badge price">$${esc(it.precio)}</span></div>` : ''}
+          </div>
+          ${btns}
+        </div>`;
+      }
 
       let subline = '';
       if (si) {
@@ -1447,13 +1559,8 @@
 
       return `
         <div class="compact-product-item" ${d} data-act="abrir-pop">
-          <!-- Círculo interactivo para comprar -->
-          <button class="circle-check ${si ? 'checked' : ''}" data-act="check-buy" ${d} title="${si ? 'Marcar como falta comprar' : 'Marcar como comprado'}">
-            ${si ? '✓' : ''}
-          </button>
-
           <div class="prod-info">
-            <div style="display:flex;align-items:center;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
               <span class="prod-name">${esc(it.nombre)}</span>
               ${!si && it.urgente ? '<span class="badge bad">⚡ Urgente</span>' : ''}
               ${si ? '<span class="badge ok">Repuesto</span>' : '<span class="badge bad">Falta</span>'}
@@ -1461,11 +1568,7 @@
             </div>
             ${subline ? `<div class="prod-subline">${subline}</div>` : ''}
           </div>
-
-          <div class="item-quick-btns" onclick="event.stopPropagation()">
-            <button class="btn-icon" data-act="edit" ${d} title="Editar">✎</button>
-            <button class="btn-icon del" data-act="del" ${d} title="Eliminar">🗑</button>
-          </div>
+          ${btns}
         </div>
       `;
     }
@@ -1473,25 +1576,21 @@
     /* Tarjeta limpia de Categoría en la cuadrícula */
     function tarjetaCat(c) {
       const d = `data-c="${esc(c.id)}"`;
-      const items = c.items || [];
-      const total = items.length;
-      const faltan = items.filter(it => it.tieneRepuesto !== 'si').length;
+      const total = (c.items || []).length;
       const esCaja = c.nombre === 'Desde Cajas';
 
       return `
         <div class="group-card ${esCaja ? 'cajas' : ''}" ${d} data-act="detalles">
           <div class="c-head">
             <div class="c-name">${esc(c.nombre)}</div>
-            <div class="c-actions-head" onclick="event.stopPropagation()">
-              <button class="btn-icon add-fast" data-act="newitem" ${d} title="Agregar producto">＋</button>
-              <button class="btn-icon" data-act="editcat" ${d} title="Editar categoría">✎</button>
-              <button class="btn-icon del" data-act="delcat" ${d} title="Eliminar categoría">🗑</button>
-            </div>
+            ${esCaja ? '' : `<button class="c-edit" data-act="editcat" ${d} title="Cambiar nombre">✎</button>`}
           </div>
           <div class="c-sub">${total} producto${total === 1 ? '' : 's'}</div>
-          <div class="badges">
-            ${faltan > 0 ? `<span class="badge bad">${faltan} por comprar</span>` : '<span class="badge ok">Todo al día</span>'}
-          </div>
+          ${esCaja ? '' : `
+          <div class="card-btns">
+            <button class="btn-card add" data-act="newitem" ${d} title="Agregar producto">＋</button>
+            <button class="btn-card del" data-act="delcat" ${d} title="Eliminar categoría">🗑</button>
+          </div>`}
         </div>
       `;
     }
@@ -1500,27 +1599,13 @@
       const q = $('#busqueda').value, ws = terminosBusq();
       $('#btn-limpiar').style.display = q ? 'block' : 'none';
 
-      // Conteos de pestañas
       const all = db.flatMap(c => (c.items || []).map(it => [c, it]));
-      let cntTodos = all.length, cntFalta = 0, cntTengo = 0, cntUrg = 0;
-      all.forEach(([, it]) => {
-        if (it.tieneRepuesto === 'si') cntTengo++;
-        else {
-          cntFalta++;
-          if (it.urgente) cntUrg++;
-        }
-      });
-
-      $('#b-todos').textContent = cntTodos;
-      $('#b-falta').textContent = cntFalta;
-      $('#b-tengo').textContent = cntTengo;
-      $('#b-urgente').textContent = cntUrg;
 
       $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.f === filtro));
       $$('#pop-filtros button').forEach(b => b.classList.toggle('on', b.dataset.v === vista));
       $('#txt-vista').textContent = vista === 'cat' ? 'Por categoría' : 'Por tienda';
 
-      $('#view').style.display = vista === 'cat' ? 'flex' : 'none';
+      $('#view').style.display = (vista === 'cat' && ws.length === 0 && filtro === 'todos') ? 'flex' : 'none';
       $$('#view button').forEach(b => b.classList.toggle('on', b.dataset.v === disp));
 
       const cont = $('#lista');
@@ -1529,13 +1614,18 @@
       let html = '';
       const filtrando = ws.length > 0 || filtro !== 'todos';
 
-      if (vista === 'cat') {
-        db.forEach(c => {
-          const items = c.items || [];
-          const vis = items.filter(it => cumpleBusq(c, it, ws));
-          if (filtrando && !vis.length) return;
+      if (vista === 'cat' && !filtrando) {
+        // "Desde Cajas" siempre primero
+        [...db].sort((a, b) => (b.nombre === 'Desde Cajas') - (a.nombre === 'Desde Cajas')).forEach(c => {
           html += tarjetaCat(c);
         });
+      } else if (vista === 'cat') {
+        // Búsqueda o filtro: se muestran los productos, no las categorías
+        cont.className = 'card-list list';
+        all.forEach(([c, it]) => {
+          if (cumpleBusq(c, it, ws)) html += productoFilaHTML(c, it, true, 'plano');
+        });
+        if (html) html = `<div class="group-card" style="cursor:default;padding:6px 8px;">${html}</div>`;
       } else {
         // Vista por tienda
         const tiendasMap = {};
@@ -1550,16 +1640,14 @@
         );
 
         ordenadas.forEach(x => {
-          const totPrice = x.list.reduce((s, [, it]) => s + num(it.precio), 0);
           html += `
             <div class="group-card" style="cursor:default;">
               <div class="c-head">
                 <div class="c-name">🏪 ${esc(x.n)}</div>
-                ${totPrice > 0 ? `<span class="badge price">≈ $${totPrice.toLocaleString('es-CL')}</span>` : ''}
               </div>
               <div class="c-sub">${x.list.length} producto${x.list.length === 1 ? '' : 's'} por comprar aquí</div>
               <div style="margin-top:8px;">
-                ${x.list.map(([c, it]) => productoFilaHTML(c, it, true)).join('')}
+                ${x.list.map(([c, it]) => productoFilaHTML(c, it, true, 'tienda')).join('')}
               </div>
             </div>
           `;
@@ -1601,7 +1689,7 @@
           No hay productos para mostrar en esta categoría con el filtro seleccionado.
         </div>`;
       } else {
-        listContainer.innerHTML = vis.map(it => productoFilaHTML(c, it, false)).join('');
+        listContainer.innerHTML = vis.map(it => productoFilaHTML(c, it, false, 'popup')).join('');
       }
     }
 
@@ -1626,20 +1714,28 @@
 
       $('#pop-prod-title').textContent = it.nombre;
 
-      // Badges
-      let bHtml = '';
+      // Foto principal arriba (se amplía al tocarla)
+      const hero = $('#pop-prod-img');
+      if (it.foto) { hero.src = it.foto; hero.style.display = 'block'; }
+      else { hero.removeAttribute('src'); hero.style.display = 'none'; }
+
+      // Etiquetas
+      let bHtml = `<span class="badge cat">${esc(c.nombre)}</span>`;
+      if (!si && it.queda) bHtml += `<span class="badge">Queda: <b>${esc(it.queda)}</b></span>`;
       if (!si && it.urgente) bHtml += '<span class="badge bad">⚡ Urgente</span>';
       bHtml += si ? '<span class="badge ok">✓ En Repuesto</span>' : '<span class="badge bad">Falta comprar</span>';
-      bHtml += `<span class="badge cat">${esc(c.nombre)}</span>`;
       $('#pop-badges-row').innerHTML = bHtml;
 
-      // Stock
+      // Repuesto / fecha prevista
+      const stockBox = $('#pop-stock-box');
       if (si) {
         $('#pop-stock-desc').innerHTML = `Guardado en: <b>${esc(it.lugarRepuesto || 'Sin asignar')}</b>${it.cantidadRepuesto ? '<br>Cantidad: ' + esc(it.cantidadRepuesto) : ''}`;
+        stockBox.style.display = 'block';
+      } else if (it.cuando) {
+        $('#pop-stock-desc').innerHTML = `Comprar: <b>${esc(it.cuando)}</b>`;
+        stockBox.style.display = 'block';
       } else {
-        let txt = it.queda ? `Queda: <b>${esc(it.queda)}</b>` : 'Sin nivel especificado';
-        if (it.cuando) txt += `<br>Fecha prevista: <b>${esc(it.cuando)}</b>`;
-        $('#pop-stock-desc').innerHTML = txt;
+        stockBox.style.display = 'none';
       }
 
       // Tienda y precio
@@ -1666,18 +1762,14 @@
         lbox.style.display = 'none';
       }
 
-      // Fotos
+      // Foto de la tienda
       const pbox = $('#pop-photos-box');
       const pCont = $('#pop-photos-container');
       pCont.innerHTML = '';
       let hayFoto = false;
-      if (it.foto) {
-        hayFoto = true;
-        pCont.innerHTML += `<img src="${it.foto}" class="pop-thumb" onclick="verFoto('${it.foto}','${esc(it.nombre)}')">`;
-      }
       if (it.fotoTienda) {
         hayFoto = true;
-        pCont.innerHTML += `<img src="${it.fotoTienda}" class="pop-thumb" style="border-color:var(--p);" onclick="verFoto('${it.fotoTienda}','${esc(it.nombre)} · Tienda')">`;
+        pCont.innerHTML = `<img src="${it.fotoTienda}" class="pop-thumb" style="border-color:var(--p);" onclick="verFoto('${it.fotoTienda}','${esc(it.nombre)} · Tienda')">`;
       }
       pbox.style.display = hayFoto ? 'block' : 'none';
     }
@@ -1790,6 +1882,8 @@
       guardar();
       toast('¡Listo! Guardado en Repuesto');
     };
+
+    $('#pop-prod-img').onclick = () => { if (popProdObj && popProdObj.it.foto) verFoto(popProdObj.it.foto, popProdObj.it.nombre); };
 
     // Acciones desde el popup centrado
     $('#pop-btn-edit').onclick = () => {
@@ -2142,8 +2236,34 @@
       aplicarAcc();
     };
 
+
+    /* Fuente de los títulos (se recuerda en app_fuente) */
+    const FUENTES = {
+      fraunces: "'Fraunces', Georgia, serif",
+      jakarta: "'Plus Jakarta Sans', system-ui, sans-serif",
+      fira: "'Fira Sans', system-ui, sans-serif",
+      chivo: "'Chivo', system-ui, sans-serif",
+      space: "'Space Grotesk', system-ui, sans-serif"
+    };
+    function aplicarFuente(avisar) {
+      let f = 'fraunces';
+      try { f = localStorage.getItem('app_fuente') || 'fraunces'; } catch(e){}
+      if (!FUENTES[f]) f = 'fraunces';
+      document.documentElement.style.setProperty('--serif', FUENTES[f]);
+      $$('#menu .font-btn').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+      if (avisar) toast('Letra actualizada');
+    }
+    $('#menu').addEventListener('click', e => {
+      const b = e.target.closest('.font-btn');
+      if (!b) return;
+      e.stopPropagation(); // mantiene el menú abierto para ver el cambio
+      try { localStorage.setItem('app_fuente', b.dataset.f); } catch(er){}
+      aplicarFuente(true);
+    });
+
     // Inicio
     aplicarTema();
+    aplicarFuente();
     aplicarAcc();
     render();
   </script>
